@@ -3,6 +3,16 @@ export type SlideType = 'title' | 'section' | 'question' | 'fact' | 'table' | 'c
 export type SlideLayout = 'default' | 'split-horizontal' | 'split-vertical';
 export type BackgroundType = 'image' | 'gradient';
 
+export interface Highlight {
+  id: string;
+  target: 'title' | 'body';
+  lineIndex: number; // Index in the content array if target is body
+  startWord: number; // 1-based index
+  endWord: number;   // 1-based index
+  bgColor: string;   // The "strip" color
+  textColor: string; // The text color
+}
+
 export interface SlideData {
   id: number;
   type: SlideType;
@@ -18,6 +28,7 @@ export interface SlideData {
   bgBlur?: number; // override global background blur
   bgType?: BackgroundType;
   bgGradient?: string;
+  highlights?: Highlight[];
 }
 
 export interface TableRow {
@@ -35,4 +46,5 @@ export interface GlobalSettings {
   boxPadding?: number;
   bgBlur?: number;    // Global background blur intensity
   brandText?: string;
+  bodyFontScale?: number; // Global multiplier for readability
 }

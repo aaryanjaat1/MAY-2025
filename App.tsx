@@ -5,11 +5,12 @@ import { SlideData, TableRow, SlideType, SlideLayout, GlobalSettings } from './t
 import { ProgressBar } from './components/ProgressBar';
 import { 
   ChevronLeft, ChevronRight, Maximize2, Minimize2, 
-  Info, Image as ImageIcon, Settings, Save, Plus, 
-  Trash2, Play, Download, Upload, X, RotateCcw,
-  Type, List, HelpCircle, Layout, Copy, FileText, Loader2,
-  Lock, Mail, LogOut, ArrowRight, Columns, Rows, Square,
-  Globe, MoveHorizontal, Maximize, CloudCheck, CloudOff
+  Settings, Save, Plus, Trash2, Play, Download, 
+  Upload, X, RotateCcw, Type, List, HelpCircle, 
+  Layout, Copy, FileText, Loader2, Lock, Mail, 
+  LogOut, ArrowRight, Columns, Rows, Square, 
+  Globe, MoveHorizontal, Maximize, CloudCheck, 
+  CloudOff, UploadCloud, Trash, ShieldCheck
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import pptxgen from 'pptxgenjs';
@@ -28,6 +29,7 @@ const App: React.FC = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   // Global Settings State
   const [globalSettings, setGlobalSettings] = useState<GlobalSettings>({
@@ -50,6 +52,7 @@ const App: React.FC = () => {
   const [exportProgress, setExportProgress] = useState(0);
 
   const slideRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // --- Supabase Data Sync ---
   useEffect(() => {
@@ -57,7 +60,6 @@ const App: React.FC = () => {
       const fetchData = async () => {
         setIsSyncing(true);
         try {
-          // Fetch Slides
           const { data: slidesData, error: slidesError } = await supabase
             .from('slides_data')
             .select('data')
@@ -68,7 +70,6 @@ const App: React.FC = () => {
             setSlides(slidesData.map(item => item.data as SlideData));
           }
 
-          // Fetch Settings
           const { data: settingsData, error: settingsError } = await supabase
             .from('app_settings')
             .select('data')
@@ -94,17 +95,14 @@ const App: React.FC = () => {
     setIsSyncing(true);
     setSyncError(null);
     try {
-      // Clear existing records before insert to maintain perfect sync
       const { error: deleteError } = await supabase.from('slides_data').delete().gte('id', 0);
       if (deleteError) throw deleteError;
 
-      // Insert new slide state
       const { error: insertError } = await supabase.from('slides_data').insert(
         updatedSlides.map((s, idx) => ({ id: idx, data: s }))
       );
       if (insertError) throw insertError;
 
-      // Upsert global settings
       const { error: settingsError } = await supabase
         .from('app_settings')
         .upsert({ id: 1, data: updatedSettings });
@@ -112,7 +110,6 @@ const App: React.FC = () => {
 
     } catch (err: any) {
       console.error("Supabase sync error:", err);
-      // Ensure we display a string, not an object
       setSyncError(err.message || JSON.stringify(err) || "Unknown sync error");
     } finally {
       setIsSyncing(false);
@@ -121,13 +118,20 @@ const App: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginEmail === 'admin@currentaffairs.com' && loginPassword === 'password2025') {
-      setIsAuthenticated(true);
-      localStorage.setItem('is_auth_may_2025', 'true');
-      setLoginError('');
-    } else {
-      setLoginError('Invalid email or password.');
-    }
+    setIsLoggingIn(true);
+    setLoginError('');
+
+    // Simulate network delay for a more professional feel
+    setTimeout(() => {
+      if (loginEmail === 'admin@currentaffairs.com' && loginPassword === 'password2025') {
+        setIsAuthenticated(true);
+        localStorage.setItem('is_auth_may_2025', 'true');
+        setIsLoggingIn(false);
+      } else {
+        setLoginError('Access Denied: Invalid credentials.');
+        setIsLoggingIn(false);
+      }
+    }, 800);
   };
 
   const handleLogout = () => {
@@ -166,49 +170,12 @@ const App: React.FC = () => {
     }
   };
 
-  const downloadAsPptx = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isExporting) return;
-    setIsExporting(true);
-    const pptx = new pptxgen();
-    pptx.layout = 'LAYOUT_16x9';
-    const originalIdx = currentIdx;
-    try {
-      for (let i = 0; i < slides.length; i++) {
-        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
-        setCurrentIdx(i);
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        if (slideRef.current) {
-          const canvas = await html2canvas(slideRef.current, { useCORS: true, scale: 2, backgroundColor: '#000000', logging: false });
-          const imgData = canvas.toDataURL('image/jpeg', 0.85);
-          const slideObj = pptx.addSlide();
-          slideObj.addImage({ data: imgData, x: 0, y: 0, w: '100%', h: '100%' });
-        }
-      }
-      await pptx.writeFile({ fileName: `May_2025_Current_Affairs.pptx` });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsExporting(false);
-      setCurrentIdx(originalIdx);
-    }
-  };
-
   const handleAddSlide = () => {
     const newSlide: SlideData = { id: Date.now(), type: 'fact', layout: 'default', title: 'New Slide', content: ['Content...'] };
     const newSlides = [...slides];
     newSlides.splice(editingIdx + 1, 0, newSlide);
     setSlides(newSlides);
     setEditingIdx(editingIdx + 1);
-    syncToCloud(newSlides, globalSettings);
-  };
-
-  const handleDuplicateSlide = (idx: number) => {
-    const newSlide: SlideData = { ...JSON.parse(JSON.stringify(slides[idx])), id: Date.now() + Math.random(), title: `${slides[idx].title || 'Slide'} (Copy)` };
-    const newSlides = [...slides];
-    newSlides.splice(idx + 1, 0, newSlide);
-    setSlides(newSlides);
-    setEditingIdx(idx + 1);
     syncToCloud(newSlides, globalSettings);
   };
 
@@ -224,6 +191,17 @@ const App: React.FC = () => {
     const newSlides = [...slides];
     newSlides[editingIdx] = { ...newSlides[editingIdx], [field]: value };
     setSlides(newSlides);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateSlideField('imageUrl', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const saveAllToCloud = () => syncToCloud(slides, globalSettings);
@@ -297,16 +275,79 @@ const App: React.FC = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 relative overflow-hidden">
-        <div className="absolute top-0 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px]" />
-        <div className="max-w-md w-full relative z-10 bg-gray-900/60 border border-gray-800 rounded-[2.5rem] p-10 shadow-2xl space-y-8">
-            <h1 className="text-3xl font-extrabold text-center">System Login</h1>
+      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center p-6 relative overflow-hidden font-sans">
+        {/* Animated Background Elements */}
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-900/10 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-indigo-900/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }} />
+        
+        <div className="max-w-md w-full relative z-10">
+          <div className="bg-[#0f0f12] border border-white/5 rounded-[2.5rem] p-12 shadow-2xl backdrop-blur-xl">
+            <div className="flex flex-col items-center mb-10">
+              <div className="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-6 border border-blue-500/20">
+                <ShieldCheck className="text-blue-500" size={32} />
+              </div>
+              <h1 className="text-2xl font-black tracking-tight text-center uppercase">Admin Access</h1>
+              <p className="text-gray-500 text-sm mt-2 font-medium tracking-wide">Unauthorized entry is strictly prohibited.</p>
+            </div>
+
             <form onSubmit={handleLogin} className="space-y-6">
-              <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-2xl px-6 py-4 outline-none focus:border-blue-500 transition-all font-bold" placeholder="Email" />
-              <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-2xl px-6 py-4 outline-none focus:border-blue-500 transition-all font-bold" placeholder="Password" />
-              {loginError && <p className="text-red-500 text-xs font-bold">{loginError}</p>}
-              <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-bold transition-all shadow-lg flex items-center justify-center gap-2">Sign In <ArrowRight size={18} /></button>
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Email Address</label>
+                <div className="relative">
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-600" size={18} />
+                  <input 
+                    type="email" 
+                    value={loginEmail} 
+                    onChange={(e) => setLoginEmail(e.target.value)} 
+                    className="w-full bg-black/40 border border-white/5 rounded-2xl pl-14 pr-6 py-4 outline-none focus:border-blue-500 focus:bg-black/60 transition-all font-bold text-sm placeholder:text-gray-800" 
+                    placeholder="name@company.com" 
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Secure Key</label>
+                <div className="relative">
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-600" size={18} />
+                  <input 
+                    type="password" 
+                    value={loginPassword} 
+                    onChange={(e) => setLoginPassword(e.target.value)} 
+                    className="w-full bg-black/40 border border-white/5 rounded-2xl pl-14 pr-6 py-4 outline-none focus:border-blue-500 focus:bg-black/60 transition-all font-bold text-sm placeholder:text-gray-800" 
+                    placeholder="••••••••" 
+                    required
+                  />
+                </div>
+              </div>
+
+              {loginError && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold py-3 px-4 rounded-xl flex items-center gap-3">
+                  <X size={14} /> {loginError}
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                disabled={isLoggingIn}
+                className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 py-4 rounded-2xl font-bold transition-all shadow-lg flex items-center justify-center gap-3 active:scale-[0.98]"
+              >
+                {isLoggingIn ? (
+                  <>
+                    <Loader2 className="animate-spin" size={20} /> Authenticating...
+                  </>
+                ) : (
+                  <>
+                    Verify Identity <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
             </form>
+          </div>
+          
+          <div className="mt-8 text-center">
+            <p className="text-gray-700 text-[10px] uppercase font-black tracking-[0.3em]">May 2025 • Presentation System v2.0</p>
+          </div>
         </div>
       </div>
     );
@@ -316,7 +357,7 @@ const App: React.FC = () => {
     const activeSlide = slides[editingIdx] || slides[0];
     return (
       <div className="fixed inset-0 bg-[#0a0a0c] text-white flex flex-col z-[100] font-sans">
-        <div className="h-16 border-b border-gray-800 flex items-center justify-between px-6 bg-[#0f0f12]">
+        <div className="h-16 border-b border-white/5 flex items-center justify-between px-6 bg-[#0f0f12]">
           <div className="flex items-center gap-3"><Settings className="text-blue-500" /><h1 className="font-bold tracking-tight text-lg">Admin Dashboard</h1></div>
           <div className="flex items-center gap-3">
              <div className="text-xs font-bold uppercase tracking-widest mr-4">
@@ -335,12 +376,12 @@ const App: React.FC = () => {
         </div>
 
         <div className="flex-1 flex overflow-hidden">
-          <div className="w-72 border-r border-gray-800 flex flex-col bg-[#0f0f12] overflow-y-auto no-scrollbar">
-            <div className="p-4 border-b border-gray-800">
+          <div className="w-72 border-r border-white/5 flex flex-col bg-[#0f0f12] overflow-y-auto no-scrollbar">
+            <div className="p-4 border-b border-white/5">
               <button onClick={handleAddSlide} className="w-full py-2 bg-blue-600/10 text-blue-400 border border-blue-500/20 rounded-lg text-sm font-bold hover:bg-blue-600/20 transition-all">+ Add Slide</button>
             </div>
             {slides.map((s, i) => (
-              <button key={s.id} onClick={() => setEditingIdx(i)} className={`w-full text-left p-4 border-b border-gray-800 transition-all group relative ${editingIdx === i ? 'bg-blue-600/10' : 'hover:bg-white/5'}`}>
+              <button key={s.id} onClick={() => setEditingIdx(i)} className={`w-full text-left p-4 border-b border-white/5 transition-all group relative ${editingIdx === i ? 'bg-blue-600/10' : 'hover:bg-white/5'}`}>
                 <p className="text-xs font-bold truncate pr-6">{s.title || 'Untitled Slide'}</p>
                 <p className="text-[10px] text-gray-500 uppercase tracking-tighter">{s.type}</p>
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all">
@@ -353,10 +394,9 @@ const App: React.FC = () => {
           <div className="flex-1 overflow-y-auto bg-[#0a0a0c] p-10 custom-scrollbar">
             <div className="max-w-4xl mx-auto space-y-12 pb-20">
               
-              {/* GLOBAL DIMENSIONS - The main request */}
               <section className="space-y-4">
                 <div className="flex items-center gap-2 text-indigo-400 font-bold uppercase text-xs tracking-widest"><Globe size={16} /> Global Card Dimensions</div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 bg-[#0f0f12] rounded-2xl border border-gray-800">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 bg-[#0f0f12] rounded-2xl border border-white/5">
                   <div className="space-y-4">
                     <label className="text-[10px] uppercase font-bold text-gray-500">Content Width ({globalSettings.boxWidth}%)</label>
                     <input type="range" min="40" max="100" value={globalSettings.boxWidth} onChange={(e) => updateGlobalField('boxWidth', parseInt(e.target.value))} className="w-full accent-blue-500" />
@@ -370,28 +410,17 @@ const App: React.FC = () => {
                     <input type="range" min="0" max="120" value={globalSettings.boxPadding} onChange={(e) => updateGlobalField('boxPadding', parseInt(e.target.value))} className="w-full accent-indigo-500" />
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-[#0f0f12] rounded-2xl border border-gray-800">
-                   <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-bold text-gray-500">Branding Text</label>
-                      <input type="text" value={globalSettings.brandText || ''} onChange={(e) => updateGlobalField('brandText', e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500" placeholder="e.g. PRACHI MAM" />
-                   </div>
-                   <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-bold text-gray-500">Default Global BG</label>
-                      <input type="text" value={globalSettings.bgImage || ''} onChange={(e) => updateGlobalField('bgImage', e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 outline-none focus:border-blue-500" placeholder="Image URL..." />
-                   </div>
-                </div>
               </section>
 
-              <div className="h-px bg-gray-800" />
+              <div className="h-px bg-white/5" />
 
-              {/* SLIDE EDITOR */}
               <section className="space-y-4">
                 <div className="flex items-center gap-2 text-blue-400 font-bold uppercase text-xs tracking-widest"><Layout size={16} /> Current Slide Editor</div>
-                <div className="p-8 bg-[#0f0f12] rounded-2xl border border-gray-800 space-y-8">
+                <div className="p-8 bg-[#0f0f12] rounded-2xl border border-white/5 space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-[10px] uppercase font-bold text-gray-500">Slide Category</label>
-                      <select value={activeSlide.type} onChange={(e) => updateSlideField('type', e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 outline-none appearance-none">
+                      <select value={activeSlide.type} onChange={(e) => updateSlideField('type', e.target.value)} className="w-full bg-gray-900 border border-white/5 rounded-xl px-4 py-3 outline-none appearance-none">
                         <option value="title">Title Slide</option>
                         <option value="section">Section/Topic</option>
                         <option value="question">Question</option>
@@ -401,7 +430,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] uppercase font-bold text-gray-500">Box Layout</label>
-                      <select value={activeSlide.layout} onChange={(e) => updateSlideField('layout', e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 outline-none appearance-none">
+                      <select value={activeSlide.layout} onChange={(e) => updateSlideField('layout', e.target.value)} className="w-full bg-gray-900 border border-white/5 rounded-xl px-4 py-3 outline-none appearance-none">
                         <option value="default">Standard (Card)</option>
                         <option value="split-horizontal">Horizontal Split (Left/Right)</option>
                         <option value="split-vertical">Vertical Split (Top/Bottom)</option>
@@ -409,19 +438,62 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase font-bold text-gray-500">Asset URL (Background or Side Image)</label>
-                    <input type="text" value={activeSlide.imageUrl || ''} onChange={(e) => updateSlideField('imageUrl', e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 outline-none font-mono text-xs" placeholder="https://..." />
+                  {/* SLIDE ASSET MANAGEMENT */}
+                  <div className="space-y-4 bg-black/40 p-6 rounded-2xl border border-white/5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-[10px] uppercase font-bold text-gray-500">Slide Asset (Image)</label>
+                      <div className="flex gap-2">
+                        <input 
+                          type="file" 
+                          ref={fileInputRef} 
+                          onChange={handleFileUpload} 
+                          accept="image/*" 
+                          className="hidden" 
+                        />
+                        <button 
+                          onClick={() => fileInputRef.current?.click()} 
+                          className="flex items-center gap-2 px-3 py-1.5 bg-blue-600/10 text-blue-400 border border-blue-500/20 hover:bg-blue-600/20 rounded-lg text-[10px] font-bold transition-all uppercase tracking-wider"
+                        >
+                          <UploadCloud size={14} /> Upload from Computer
+                        </button>
+                        {activeSlide.imageUrl && (
+                          <button 
+                            onClick={() => updateSlideField('imageUrl', '')} 
+                            className="flex items-center gap-2 px-3 py-1.5 bg-red-600/10 text-red-400 border border-red-500/20 hover:bg-red-600/20 rounded-lg text-[10px] font-bold transition-all uppercase tracking-wider"
+                          >
+                            <Trash size={14} /> Clear Asset
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      {activeSlide.imageUrl && (
+                        <div className="w-24 h-24 rounded-xl border border-white/5 overflow-hidden shrink-0 bg-gray-900">
+                          <img src={activeSlide.imageUrl} alt="Slide Asset" className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                      <div className="flex-1 space-y-2">
+                        <p className="text-[10px] text-gray-600 font-medium italic">Paste image URL below or use the upload button above.</p>
+                        <input 
+                          type="text" 
+                          value={activeSlide.imageUrl || ''} 
+                          onChange={(e) => updateSlideField('imageUrl', e.target.value)} 
+                          className="w-full bg-gray-900 border border-white/5 rounded-xl px-4 py-3 outline-none font-mono text-xs focus:border-blue-500" 
+                          placeholder="https://..." 
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase font-bold text-gray-500">Heading Title</label>
-                    <input type="text" value={activeSlide.title || ''} onChange={(e) => updateSlideField('title', e.target.value)} className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 outline-none text-lg font-bold" placeholder="Enter title..." />
+                    <input type="text" value={activeSlide.title || ''} onChange={(e) => updateSlideField('title', e.target.value)} className="w-full bg-gray-900 border border-white/5 rounded-xl px-4 py-3 outline-none text-lg font-bold" placeholder="Enter title..." />
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase font-bold text-gray-500">Slide Body (One point per line)</label>
-                    <textarea value={Array.isArray(activeSlide.content) ? activeSlide.content.join('\n') : activeSlide.content} onChange={(e) => updateSlideField('content', e.target.value.split('\n'))} className="w-full h-64 bg-gray-900 border border-gray-800 rounded-xl px-4 py-4 outline-none font-sans text-sm leading-relaxed" placeholder="Type content here..." />
+                    <textarea value={Array.isArray(activeSlide.content) ? activeSlide.content.join('\n') : activeSlide.content} onChange={(e) => updateSlideField('content', e.target.value.split('\n'))} className="w-full h-64 bg-gray-900 border border-white/5 rounded-xl px-4 py-4 outline-none font-sans text-sm leading-relaxed" placeholder="Type content here..." />
                   </div>
                 </div>
               </section>
@@ -445,7 +517,6 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden select-none relative" onClick={() => nextSlide()}>
       
-      {/* BACKGROUND LAYER */}
       {currentBg && (
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img src={currentBg} alt="" className="w-full h-full object-cover opacity-25" style={{ filter: 'blur(3px)' }} />
@@ -455,10 +526,9 @@ const App: React.FC = () => {
 
       <ProgressBar current={currentIdx + 1} total={slides.length} />
       
-      {/* NAVIGATION CONTROLS */}
       <div className="fixed top-8 right-10 z-[100] flex items-center gap-3">
-        <button onClick={(e) => { e.stopPropagation(); setIsAdmin(true); setEditingIdx(currentIdx); }} className="p-2.5 bg-gray-900/90 backdrop-blur border border-gray-800 rounded-xl hover:border-blue-500 transition-all text-gray-400 hover:text-blue-400"><Settings size={18} /></button>
-        <button onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }} className="p-2.5 bg-gray-900/90 backdrop-blur border border-gray-800 rounded-xl hover:border-white transition-all text-gray-400 hover:text-white"><Maximize2 size={18} /></button>
+        <button onClick={(e) => { e.stopPropagation(); setIsAdmin(true); setEditingIdx(currentIdx); }} className="p-2.5 bg-gray-900/90 backdrop-blur border border-white/5 rounded-xl hover:border-blue-500 transition-all text-gray-400 hover:text-blue-400"><Settings size={18} /></button>
+        <button onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }} className="p-2.5 bg-gray-900/90 backdrop-blur border border-white/5 rounded-xl hover:border-white transition-all text-gray-400 hover:text-white"><Maximize2 size={18} /></button>
       </div>
 
       <div ref={slideRef} className="relative z-10 w-full max-w-[95vw] h-[88vh] md:max-w-7xl md:aspect-[16/9] flex flex-col overflow-hidden items-center justify-center">
@@ -485,7 +555,6 @@ const App: React.FC = () => {
               </div>
             </div>
           ) : (
-            /* STANDARD LAYOUT - Respects Global Width/Height */
             <div 
               className={`flex flex-col rounded-[3rem] border-2 transition-all duration-700 relative ${theme.box}`} 
               style={{ 
@@ -502,7 +571,6 @@ const App: React.FC = () => {
               )}
               <div className="flex-1 flex flex-col justify-center overflow-y-auto no-scrollbar">{renderContent(slide.content, slide.type)}</div>
               
-              {/* BRANDING */}
               <div className="absolute bottom-8 right-10">
                 <span className="text-xs md:text-sm font-black tracking-[0.4em] uppercase opacity-40 select-none" style={{ color: theme.color }}>{globalSettings.brandText}</span>
               </div>
@@ -511,13 +579,12 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* BOTTOM NAV BAR */}
       <div className="fixed bottom-10 left-10 right-10 flex justify-between items-center z-50" onClick={(e) => e.stopPropagation()}>
         <div className="flex gap-4">
-          <button onClick={(e) => prevSlide(e)} disabled={currentIdx === 0} className="px-8 py-4 bg-gray-900/90 backdrop-blur border border-gray-800 rounded-full disabled:opacity-10 hover:border-blue-500/50 transition-all font-bold uppercase tracking-widest text-sm flex items-center gap-3 shadow-2xl active:scale-95"><ChevronLeft size={20} /> Prev</button>
-          <button onClick={(e) => nextSlide(e)} disabled={currentIdx === slides.length - 1} className="px-8 py-4 bg-gray-900/90 backdrop-blur border border-gray-800 rounded-full disabled:opacity-10 hover:border-blue-500/50 transition-all font-bold uppercase tracking-widest text-sm flex items-center gap-3 shadow-2xl active:scale-95">Next <ChevronRight size={20} /></button>
+          <button onClick={(e) => prevSlide(e)} disabled={currentIdx === 0} className="px-8 py-4 bg-gray-900/90 backdrop-blur border border-white/5 rounded-full disabled:opacity-10 hover:border-blue-500/50 transition-all font-bold uppercase tracking-widest text-sm flex items-center gap-3 shadow-2xl active:scale-95"><ChevronLeft size={20} /> Prev</button>
+          <button onClick={(e) => nextSlide(e)} disabled={currentIdx === slides.length - 1} className="px-8 py-4 bg-gray-900/90 backdrop-blur border border-white/5 rounded-full disabled:opacity-10 hover:border-blue-500/50 transition-all font-bold uppercase tracking-widest text-sm flex items-center gap-3 shadow-2xl active:scale-95">Next <ChevronRight size={20} /></button>
         </div>
-        <div className="text-[10px] font-mono text-gray-600 tracking-widest uppercase bg-gray-900/40 px-4 py-2 rounded-full border border-gray-800/50">SLIDE {currentIdx + 1} OF {slides.length}</div>
+        <div className="text-[10px] font-mono text-gray-600 tracking-widest uppercase bg-gray-900/40 px-4 py-2 rounded-full border border-white/5">SLIDE {currentIdx + 1} OF {slides.length}</div>
       </div>
 
       <style>{`

@@ -46,5 +46,7 @@ export interface GlobalSettings {
   boxPadding?: number;
   bgBlur?: number;    // Global background blur intensity
   brandText?: string;
-  bodyFontScale?: number; // Global multiplier for readability
+  bodyFontScale?: number; // Global multiplier for standard body/question text
+  titleFontScale?: number; // Global multiplier for slide titles
+  factFontScale?: number;  // Global multiplier for fact/content text
 }

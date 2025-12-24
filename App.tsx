@@ -11,9 +11,12 @@ import {
   LogOut, ArrowRight, Columns, Rows, Square, 
   Globe, MoveHorizontal, Maximize, CloudCheck, 
   CloudOff, UploadCloud, Trash, ShieldCheck, Palette,
-  Highlighter, Type as TypeIcon, Image as ImageIcon
+  Highlighter, Type as TypeIcon, Image as ImageIcon,
+  Presentation
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
+import html2canvas from 'html2canvas';
+import pptxgen from 'pptxgenjs';
 
 // Supabase Configuration
 const SUPABASE_URL = 'https://tvcwdfgvyhkjcfjljcna.supabase.co';
@@ -55,6 +58,8 @@ const App: React.FC = () => {
   // Presentation & Admin State
   const [slides, setSlides] = useState<SlideData[]>(INITIAL_SLIDES);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState(0);
   const [syncError, setSyncError] = useState<string | null>(null);
 
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -63,7 +68,6 @@ const App: React.FC = () => {
   const [editingIdx, setEditingIdx] = useState(0);
 
   const slideRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getErrorMessage = (err: any): string => {
     if (typeof err === 'string') return err;
@@ -146,6 +150,54 @@ const App: React.FC = () => {
     }
   };
 
+  const handleDownloadPPTX = async () => {
+    if (!slideRef.current || slides.length === 0) return;
+    
+    setIsExporting(true);
+    setExportProgress(0);
+    const pres = new pptxgen();
+    const originalIdx = currentIdx;
+
+    try {
+      // Small delay to ensure the UI is ready for capture mode
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      for (let i = 0; i < slides.length; i++) {
+        setCurrentIdx(i);
+        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
+        
+        // Wait for re-render and entry animation to settle
+        await new Promise(resolve => setTimeout(resolve, 800)); 
+        
+        const canvas = await html2canvas(slideRef.current, {
+          useCORS: true,
+          scale: 2, // High resolution
+          backgroundColor: null,
+          logging: false,
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        const slideObj = pres.addSlide();
+        slideObj.addImage({ 
+          data: imgData, 
+          x: 0, 
+          y: 0, 
+          w: '100%', 
+          h: '100%' 
+        });
+      }
+      
+      pres.writeFile({ fileName: `May_2025_Current_Affairs_${new Date().getTime()}.pptx` });
+    } catch (err) {
+      console.error("Export failed:", err);
+      alert("PPTX Export failed. Check console for details.");
+    } finally {
+      setCurrentIdx(originalIdx);
+      setIsExporting(false);
+      setExportProgress(0);
+    }
+  };
+
   const updateSlideField = (field: keyof SlideData, value: any) => {
     const newSlides = [...slides];
     newSlides[editingIdx] = { ...newSlides[editingIdx], [field]: value };
@@ -211,7 +263,6 @@ const App: React.FC = () => {
     }
   }, [slide]);
 
-  // Helper to render text with markers/highlights - FIXED GAPS
   const renderTextWithHighlights = (text: string, target: 'title' | 'body', lineIndex: number, slideHighlights?: Highlight[], baseClass: string = "", customStyles: React.CSSProperties = {}) => {
     if (!text) return null;
     const words = text.split(/\s+/);
@@ -223,7 +274,6 @@ const App: React.FC = () => {
           const wNum = idx + 1;
           const h = applicableHighlights.find(hl => wNum >= hl.startWord && wNum <= hl.endWord);
           if (h) {
-            // Note: Padding and background logic to create a seamless strip
             return (
               <span key={idx} className="inline relative px-0" style={{ backgroundColor: h.bgColor, color: h.textColor }}>
                 {word}{idx < words.length - 1 ? ' ' : ''}
@@ -310,6 +360,7 @@ const App: React.FC = () => {
         <div className="h-16 border-b border-white/5 flex items-center justify-between px-6 bg-[#0f0f12]">
           <h1 className="font-black tracking-widest text-lg flex items-center gap-3"><Settings className="text-blue-500" /> PRESENTATION EDITOR</h1>
           <div className="flex items-center gap-4">
+             <button onClick={handleDownloadPPTX} className="flex items-center gap-2 px-5 py-2 bg-purple-600 rounded-xl text-sm font-black active:scale-95 transition-all"><Presentation size={16} /> DOWNLOAD PPTX</button>
              <button onClick={() => syncToCloud(slides, globalSettings)} className="flex items-center gap-2 px-5 py-2 bg-blue-600 rounded-xl text-sm font-black active:scale-95 transition-all"><Save size={16} /> SYNC TO CLOUD</button>
              <button onClick={() => setIsAdmin(false)} className="px-5 py-2 bg-gray-800 rounded-xl text-sm font-black">PREVIEW MODE</button>
              <button onClick={handleLogout} className="p-2 text-gray-500 hover:text-red-500"><LogOut size={22} /></button>
@@ -332,7 +383,6 @@ const App: React.FC = () => {
           <div className="flex-1 overflow-y-auto bg-[#0a0a0c] p-12 custom-scrollbar">
             <div className="max-w-5xl mx-auto space-y-12 pb-24">
               
-              {/* GLOBAL SETTINGS */}
               <section className="space-y-4">
                 <div className="text-indigo-400 font-black uppercase text-[10px] tracking-widest flex items-center gap-2"><Globe size={14} /> Global Customization</div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8 bg-[#0f0f12] rounded-[2rem] border border-white/5">
@@ -365,7 +415,6 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* BACKGROUND CONTROLS */}
                 <div className="p-8 bg-[#0f0f12] rounded-[2rem] border border-white/5 space-y-6">
                   <div className="flex items-center justify-between">
                     <label className="text-[10px] font-black text-gray-500 uppercase">Background Presets</label>
@@ -389,7 +438,6 @@ const App: React.FC = () => {
                 </div>
               </section>
 
-              {/* SLIDE SETTINGS */}
               <section className="space-y-4">
                 <div className="text-blue-400 font-black uppercase text-[10px] tracking-widest flex items-center gap-2"><Layout size={14} /> Slide Content</div>
                 <div className="p-8 bg-[#0f0f12] rounded-[2rem] border border-white/5 space-y-8">
@@ -424,7 +472,6 @@ const App: React.FC = () => {
                 </div>
               </section>
 
-              {/* HIGHLIGHT MANAGER */}
               <section className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="text-yellow-400 font-black uppercase text-[10px] tracking-widest flex items-center gap-2"><Highlighter size={14} /> Highlight Manager (Marker Strips)</div>
@@ -499,7 +546,6 @@ const App: React.FC = () => {
       <div ref={slideRef} className="relative z-10 w-full max-w-[95vw] h-[88vh] md:max-w-7xl md:aspect-[16/9] flex items-center justify-center">
         <div key={currentIdx} className="w-full h-full flex items-center justify-center slide-entry-animation relative">
             
-            {/* Split Layout Handling */}
             {slide.layout === 'split-horizontal' ? (
               <div className="flex h-full w-full gap-4 p-4">
                 <div className={`rounded-[2.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box}`} style={{ width: `${slide.imageSize || 50}%`, padding: `${globalSettings.boxPadding}px` }}>
@@ -531,7 +577,6 @@ const App: React.FC = () => {
                 </div>
               </div>
             ) : (
-              /* Standard Single Box Layout */
               <div className={`flex flex-col rounded-[3rem] border-2 transition-all duration-700 relative ${theme.box}`} 
                   style={{ padding: `${globalSettings.boxPadding}px`, width: `${globalSettings.boxWidth}%`, height: `${globalSettings.boxHeight}%` }}>
                 {slide.title && (
@@ -560,6 +605,24 @@ const App: React.FC = () => {
         </div>
         <div className="text-[10px] font-mono text-gray-600 tracking-widest uppercase bg-gray-900/40 px-4 py-2 rounded-full border border-white/5">SLIDE {currentIdx + 1} OF {slides.length}</div>
       </div>
+
+      {isExporting && (
+        <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-xl flex flex-col items-center justify-center gap-8">
+          <div className="relative">
+            <Loader2 className="animate-spin text-purple-500" size={64} />
+            <div className="absolute inset-0 flex items-center justify-center font-black text-xs text-white">
+              {exportProgress}%
+            </div>
+          </div>
+          <div className="text-center space-y-2">
+            <h3 className="text-2xl font-black uppercase tracking-[0.2em]">Generating PPTX</h3>
+            <p className="text-gray-500 text-sm font-bold uppercase tracking-widest">Capturing slide {currentIdx + 1} of {slides.length}</p>
+          </div>
+          <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden">
+             <div className="h-full bg-purple-500 transition-all duration-300" style={{ width: `${exportProgress}%` }} />
+          </div>
+        </div>
+      )}
 
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }

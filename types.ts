@@ -24,7 +24,8 @@ export interface TableRow {
 
 export interface GlobalSettings {
   bgImage?: string;
-  gap?: number;
+  boxWidth?: number;  // Global width % for standard layout
+  boxHeight?: number; // Global height % for standard layout
   boxPadding?: number;
   brandText?: string;
 }

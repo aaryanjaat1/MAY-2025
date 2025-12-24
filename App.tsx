@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { SLIDES as INITIAL_SLIDES } from './constants/slidesData';
 import { SlideData, TableRow, SlideType, SlideLayout, GlobalSettings, BackgroundType, Highlight } from './types';
@@ -13,11 +12,12 @@ import {
   CloudOff, UploadCloud, Trash, ShieldCheck, Palette,
   Highlighter, Type as TypeIcon, Image as ImageIcon,
   Presentation, Upload as UploadIcon, ExternalLink,
-  CheckCircle2, AlertCircle
+  CheckCircle2, AlertCircle, FileDown
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import html2canvas from 'html2canvas';
 import pptxgen from 'pptxgenjs';
+import { jsPDF } from 'jspdf';
 
 // Supabase Configuration
 const SUPABASE_URL = 'https://tvcwdfgvyhkjcfjljcna.supabase.co';
@@ -60,6 +60,7 @@ const App: React.FC = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [exportType, setExportType] = useState<'PPTX' | 'PDF' | null>(null);
   const [exportProgress, setExportProgress] = useState(0);
   const [syncError, setSyncError] = useState<string | null>(null);
 
@@ -155,10 +156,37 @@ const App: React.FC = () => {
     }
   };
 
+  /**
+   * Captures the current slide as a high-resolution PNG Data URL.
+   * Ensures CORS and scaling are handled for high quality.
+   */
+  const captureSlide = async () => {
+    if (!slideRef.current) return null;
+    try {
+      const canvas = await html2canvas(slideRef.current, {
+        useCORS: true,
+        allowTaint: false, // Must be false for toDataURL to work with CORS images
+        scale: 2, // 2x scale for 4K-like sharpness in exports
+        backgroundColor: '#000000',
+        logging: false,
+        removeContainer: true,
+        scrollX: 0,
+        scrollY: 0,
+        width: slideRef.current.offsetWidth,
+        height: slideRef.current.offsetHeight,
+      });
+      return canvas.toDataURL('image/png');
+    } catch (err) {
+      console.error("Capture failed for slide:", err);
+      return null;
+    }
+  };
+
   const handleDownloadPPTX = async () => {
-    if (!slideRef.current || slides.length === 0) return;
+    if (slides.length === 0) return;
     
     setIsExporting(true);
+    setExportType('PPTX');
     setExportProgress(0);
     const pres = new pptxgen();
     pres.layout = 'LAYOUT_16x9';
@@ -168,35 +196,69 @@ const App: React.FC = () => {
       for (let i = 0; i < slides.length; i++) {
         setCurrentIdx(i);
         setExportProgress(Math.round(((i + 1) / slides.length) * 100));
-        await new Promise(resolve => setTimeout(resolve, 800)); 
         
-        if (slideRef.current) {
-          const canvas = await html2canvas(slideRef.current, {
-            useCORS: true,
-            scale: 2,
-            backgroundColor: '#000000',
-            logging: false,
-            allowTaint: true,
-            scrollX: 0,
-            scrollY: 0,
-            windowWidth: 1920,
-            windowHeight: 1080
-          });
-          const imgData = canvas.toDataURL('image/png');
+        // Wait for animations and layout shifts to settle
+        await new Promise(resolve => setTimeout(resolve, 1500)); 
+        
+        const fullDataUrl = await captureSlide();
+        if (fullDataUrl) {
+          /**
+           * PPTXGenJS Fix:
+           * The library expects the 'data' property to be the base64 string WITH header
+           * but often chokes on the 'data:' prefix. We strip 'data:' to leave 'image/png;base64,...'
+           */
+          const cleanData = fullDataUrl.replace(/^data:/, '');
           const pptSlide = pres.addSlide();
           pptSlide.addImage({ 
-            data: imgData, 
-            x: 0, y: 0, w: '100%', h: '100%',
-            sizing: { type: 'cover', w: 10, h: 5.625 } 
+            data: cleanData, 
+            x: 0, y: 0, w: '100%', h: '100%'
           });
         }
       }
       await pres.writeFile({ fileName: `Current_Affairs_May_2025.pptx` });
     } catch (err) {
       console.error("PPTX Export failed:", err);
+      alert("PPTX Export failed. Check console for details.");
     } finally {
       setCurrentIdx(originalIdx);
       setIsExporting(false);
+      setExportType(null);
+      setExportProgress(0);
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    if (slides.length === 0) return;
+
+    setIsExporting(true);
+    setExportType('PDF');
+    setExportProgress(0);
+    const originalIdx = currentIdx;
+    
+    // jsPDF uses internal pixels, standard 16:9 1080p mapping
+    const pdf = new jsPDF('landscape', 'px', [1920, 1080]);
+
+    try {
+      for (let i = 0; i < slides.length; i++) {
+        setCurrentIdx(i);
+        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
+        
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        const imgData = await captureSlide();
+        if (imgData) {
+          if (i > 0) pdf.addPage([1920, 1080], 'landscape');
+          pdf.addImage(imgData, 'PNG', 0, 0, 1920, 1080);
+        }
+      }
+      pdf.save(`Current_Affairs_May_2025.pdf`);
+    } catch (err) {
+      console.error("PDF Export failed:", err);
+      alert("PDF Export failed. Check console for details.");
+    } finally {
+      setCurrentIdx(originalIdx);
+      setIsExporting(false);
+      setExportType(null);
       setExportProgress(0);
     }
   };
@@ -263,6 +325,7 @@ const App: React.FC = () => {
     updateSlideField('highlights', updated);
   };
 
+  // Fixed handleRemoveHighlight callback to correctly reference the highlight object and its id
   const handleRemoveHighlight = (id: string) => {
     const activeSlide = slides[editingIdx];
     const updated = (activeSlide.highlights || []).filter(h => h.id !== id);
@@ -397,6 +460,7 @@ const App: React.FC = () => {
                {isSyncing ? <Loader2 size={14} className="animate-spin text-blue-500" /> : syncSuccess ? <CheckCircle2 size={14} className="text-emerald-500" /> : <CloudOff size={14} className="text-gray-500" />}
                <span className="text-[10px] font-black uppercase text-gray-400">{isSyncing ? 'Syncing...' : syncSuccess ? 'Cloud Saved' : 'Not Synced'}</span>
              </div>
+             <button onClick={handleDownloadPDF} className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-500 rounded-xl text-[10px] md:text-sm font-black active:scale-95 transition-all shadow-lg"><FileDown size={14} /> PDF</button>
              <button onClick={handleDownloadPPTX} className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-xl text-[10px] md:text-sm font-black active:scale-95 transition-all shadow-lg"><Presentation size={14} /> PPTX</button>
              <button onClick={() => syncToCloud(slides, globalSettings)} className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-[10px] md:text-sm font-black active:scale-95 transition-all shadow-lg"><Save size={14} /> SAVE ALL</button>
              <button onClick={() => setIsAdmin(false)} className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-[10px] md:text-sm font-black transition-all">PREVIEW</button>
@@ -412,7 +476,7 @@ const App: React.FC = () => {
             {slides.map((s, i) => (
               <button key={s.id} onClick={() => setEditingIdx(i)} className={`w-full text-left p-2 md:p-4 border-b border-white/5 transition-all relative group ${editingIdx === i ? 'bg-blue-600/10 border-r-4 border-r-blue-500' : 'hover:bg-white/5'}`}>
                 <p className="text-[10px] md:text-xs font-bold truncate pr-6">{i+1}. {s.title || 'Untitled'}</p>
-                <button onClick={(e) => { e.stopPropagation(); handleDeleteSlide(i); }} className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:bg-red-500/20 rounded transition-all"><Trash2 size={12} /></button>
+                <button onClick={(e) => { e.stopPropagation(); handleDeleteSlide(i); }} title="Delete Slide" className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:bg-red-500/20 rounded transition-all"><Trash2 size={12} /></button>
               </button>
             ))}
           </div>
@@ -572,14 +636,14 @@ const App: React.FC = () => {
       <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: bgGradient }} />
       {activeBgImage && slide.layout !== 'cover-page' && (
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <img src={activeBgImage} className="w-full h-full object-cover opacity-35 transition-all duration-1000" style={{ filter: `blur(${currentBlur}px)` }} />
+          <img src={activeBgImage} crossOrigin="anonymous" className="w-full h-full object-cover opacity-35 transition-all duration-1000" style={{ filter: `blur(${currentBlur}px)` }} />
           <div className="absolute inset-0 bg-black/65" />
         </div>
       )}
       <ProgressBar current={currentIdx + 1} total={slides.length} />
       <div className="fixed top-4 right-4 md:top-8 md:right-10 z-[100] flex items-center gap-2 md:gap-4">
-        <button onClick={(e) => { e.stopPropagation(); setIsAdmin(true); }} className="p-2 md:p-3 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-2xl text-gray-400 hover:text-blue-400 hover:border-blue-500/50 transition-all shadow-2xl active:scale-95"><Settings size={20} /></button>
-        <button onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }} className="p-2 md:p-3 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-2xl text-gray-400 hover:text-white transition-all shadow-2xl active:scale-95"><Maximize2 size={20} /></button>
+        <button onClick={(e) => { e.stopPropagation(); setIsAdmin(true); }} title="Open Editor" className="p-2 md:p-3 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-2xl text-gray-400 hover:text-blue-400 hover:border-blue-500/50 transition-all shadow-2xl active:scale-95"><Settings size={20} /></button>
+        <button onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"} className="p-2 md:p-3 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-2xl text-gray-400 hover:text-white transition-all shadow-2xl active:scale-95">{isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}</button>
       </div>
       <div ref={slideRef} className="relative z-10 w-full max-w-[100vw] h-[95vh] md:max-w-[1600px] md:aspect-[16/9] flex items-center justify-center pointer-events-none overflow-hidden">
         <div key={currentIdx} className="w-full h-full flex items-center justify-center slide-entry-animation relative pointer-events-auto">
@@ -587,7 +651,7 @@ const App: React.FC = () => {
               <div className="w-full h-full flex flex-col items-center justify-center p-8 md:p-16 text-center relative overflow-hidden">
                   {slide.imageUrl && (
                     <div className="absolute inset-0 -z-20 scale-up-animation">
-                      <img src={slide.imageUrl} className="w-full h-full object-cover opacity-100" style={{ filter: 'blur(0px)' }} />
+                      <img src={slide.imageUrl} crossOrigin="anonymous" className="w-full h-full object-cover opacity-100" style={{ filter: 'blur(0px)' }} />
                     </div>
                   )}
                  {slide.title && (
@@ -611,14 +675,14 @@ const App: React.FC = () => {
                 </div>
                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
                      style={{ width: `${100 - (slide.imageSize || 50)}%`, boxShadow: theme.glow }}>
-                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
+                  {slide.imageUrl ? <img src={slide.imageUrl} crossOrigin="anonymous" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
                 </div>
               </div>
             ) : slide.layout === 'split-vertical' ? (
                <div className="flex flex-col h-full w-full gap-2 md:gap-6 p-3 md:p-8">
                  <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
                       style={{ height: `${slide.imageSize || 45}%`, boxShadow: theme.glow }}>
-                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
+                  {slide.imageUrl ? <img src={slide.imageUrl} crossOrigin="anonymous" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
                  </div>
                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} 
                      style={{ height: `${100 - (slide.imageSize || 45)}%`, padding: `${globalSettings.boxPadding}px`, boxShadow: theme.glow }}>
@@ -654,16 +718,30 @@ const App: React.FC = () => {
         </div>
       </div>
       <div className="fixed bottom-4 left-4 right-4 md:bottom-10 md:left-10 md:right-10 flex flex-col sm:flex-row justify-between items-center gap-4 z-50 pointer-events-none" onClick={(e) => e.stopPropagation()}>
-        <div className="flex gap-3 md:gap-5 pointer-events-auto">
-          <button onClick={(e) => prevSlide(e)} disabled={currentIdx === 0} className="px-6 py-4 md:px-12 md:py-6 bg-gray-900/90 backdrop-blur-2xl border border-white/10 rounded-full disabled:opacity-20 font-black uppercase tracking-[0.2em] text-[10px] md:text-sm flex items-center gap-3 md:gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all active:scale-90 hover:border-blue-500/50 hover:bg-blue-600/10"><ChevronLeft size={22} /> Prev</button>
-          <button onClick={(e) => nextSlide(e)} disabled={currentIdx === slides.length - 1} className="px-6 py-4 md:px-12 md:py-6 bg-gray-900/90 backdrop-blur-2xl border border-white/10 rounded-full disabled:opacity-20 font-black uppercase tracking-[0.2em] text-[10px] md:text-sm flex items-center gap-3 md:gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all active:scale-90 hover:border-blue-500/50 hover:bg-blue-600/10">Next <ChevronRight size={22} /></button>
+        <div className="flex gap-3 md:gap-4 pointer-events-auto">
+          <button 
+            onClick={(e) => prevSlide(e)} 
+            disabled={currentIdx === 0} 
+            title="Go to Previous Slide"
+            className="px-5 py-3 md:px-8 md:py-4 bg-gray-900/90 backdrop-blur-2xl border border-white/10 rounded-full disabled:opacity-20 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center gap-2 md:gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all active:scale-90 hover:border-blue-500/50 hover:bg-blue-600/10"
+          >
+            <ChevronLeft size={18} /> PREVIOUS
+          </button>
+          <button 
+            onClick={(e) => nextSlide(e)} 
+            disabled={currentIdx === slides.length - 1} 
+            title="Go to Next Slide"
+            className="px-5 py-3 md:px-8 md:py-4 bg-gray-900/90 backdrop-blur-2xl border border-white/10 rounded-full disabled:opacity-20 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center gap-2 md:gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all active:scale-90 hover:border-blue-500/50 hover:bg-blue-600/10"
+          >
+            NEXT <ChevronRight size={18} />
+          </button>
         </div>
         <div className="text-[10px] md:text-xs font-mono text-gray-500 font-black tracking-[0.3em] uppercase bg-gray-900/80 backdrop-blur-xl px-6 py-3 rounded-full border border-white/10 shadow-2xl pointer-events-none">SLIDE {currentIdx + 1} / {slides.length}</div>
       </div>
       {isExporting && (
         <div className="fixed inset-0 z-[200] bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-center gap-10 p-8 text-center">
           <div className="relative"><div className="absolute inset-0 rounded-full blur-3xl bg-blue-600/20 animate-pulse" /><Loader2 className="animate-spin text-blue-500 relative z-10" size={120} /><div className="absolute inset-0 flex items-center justify-center font-black text-xl text-white relative z-20">{exportProgress}%</div></div>
-          <div className="space-y-4 max-w-xl"><h3 className="text-3xl md:text-5xl font-black uppercase tracking-[0.4em] text-white">Exporting PPTX</h3><p className="text-gray-400 text-sm md:text-lg font-bold uppercase tracking-widest leading-relaxed opacity-80">Generating high-resolution slide frames.<br/> Please do not close your browser.</p></div>
+          <div className="space-y-4 max-w-xl"><h3 className="text-3xl md:text-5xl font-black uppercase tracking-[0.4em] text-white">Exporting {exportType}</h3><p className="text-gray-400 text-sm md:text-lg font-bold uppercase tracking-widest leading-relaxed opacity-80">Generating high-resolution slide frames.<br/> Please do not close your browser.</p></div>
           <div className="w-full max-w-2xl h-3 bg-white/5 rounded-full overflow-hidden shadow-2xl border border-white/10"><div className="h-full bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 transition-all duration-500 ease-out shadow-[0_0_20px_rgba(59,130,246,0.6)]" style={{ width: `${exportProgress}%` }} /></div>
           <p className="text-xs text-gray-700 font-mono tracking-widest uppercase">Processing Page {currentIdx + 1} of {slides.length}</p>
         </div>

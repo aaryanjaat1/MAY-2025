@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { SLIDES as INITIAL_SLIDES } from './constants/slidesData';
 import { SlideData, TableRow, SlideType, SlideLayout, GlobalSettings, BackgroundType, Highlight } from './types';
@@ -156,34 +157,8 @@ const App: React.FC = () => {
     }
   };
 
-  /**
-   * Captures the current slide as a high-resolution PNG Data URL.
-   * Ensures CORS and scaling are handled for high quality.
-   */
-  const captureSlide = async () => {
-    if (!slideRef.current) return null;
-    try {
-      const canvas = await html2canvas(slideRef.current, {
-        useCORS: true,
-        allowTaint: false, // Must be false for toDataURL to work with CORS images
-        scale: 2, // 2x scale for 4K-like sharpness in exports
-        backgroundColor: '#000000',
-        logging: false,
-        removeContainer: true,
-        scrollX: 0,
-        scrollY: 0,
-        width: slideRef.current.offsetWidth,
-        height: slideRef.current.offsetHeight,
-      });
-      return canvas.toDataURL('image/png');
-    } catch (err) {
-      console.error("Capture failed for slide:", err);
-      return null;
-    }
-  };
-
   const handleDownloadPPTX = async () => {
-    if (slides.length === 0) return;
+    if (!slideRef.current || slides.length === 0) return;
     
     setIsExporting(true);
     setExportType('PPTX');
@@ -196,29 +171,32 @@ const App: React.FC = () => {
       for (let i = 0; i < slides.length; i++) {
         setCurrentIdx(i);
         setExportProgress(Math.round(((i + 1) / slides.length) * 100));
+        await new Promise(resolve => setTimeout(resolve, 800)); 
         
-        // Wait for animations and layout shifts to settle
-        await new Promise(resolve => setTimeout(resolve, 1500)); 
-        
-        const fullDataUrl = await captureSlide();
-        if (fullDataUrl) {
-          /**
-           * PPTXGenJS Fix:
-           * The library expects the 'data' property to be the base64 string WITH header
-           * but often chokes on the 'data:' prefix. We strip 'data:' to leave 'image/png;base64,...'
-           */
-          const cleanData = fullDataUrl.replace(/^data:/, '');
+        if (slideRef.current) {
+          const canvas = await html2canvas(slideRef.current, {
+            useCORS: true,
+            scale: 2,
+            backgroundColor: '#000000',
+            logging: false,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 1920,
+            windowHeight: 1080
+          });
+          const imgData = canvas.toDataURL('image/png');
           const pptSlide = pres.addSlide();
           pptSlide.addImage({ 
-            data: cleanData, 
-            x: 0, y: 0, w: '100%', h: '100%'
+            data: imgData, 
+            x: 0, y: 0, w: '100%', h: '100%',
+            sizing: { type: 'cover', w: 10, h: 5.625 } 
           });
         }
       }
       await pres.writeFile({ fileName: `Current_Affairs_May_2025.pptx` });
     } catch (err) {
       console.error("PPTX Export failed:", err);
-      alert("PPTX Export failed. Check console for details.");
     } finally {
       setCurrentIdx(originalIdx);
       setIsExporting(false);
@@ -228,25 +206,34 @@ const App: React.FC = () => {
   };
 
   const handleDownloadPDF = async () => {
-    if (slides.length === 0) return;
+    if (!slideRef.current || slides.length === 0) return;
 
     setIsExporting(true);
     setExportType('PDF');
     setExportProgress(0);
     const originalIdx = currentIdx;
-    
-    // jsPDF uses internal pixels, standard 16:9 1080p mapping
     const pdf = new jsPDF('landscape', 'px', [1920, 1080]);
 
     try {
       for (let i = 0; i < slides.length; i++) {
         setCurrentIdx(i);
         setExportProgress(Math.round(((i + 1) / slides.length) * 100));
-        
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 800));
 
-        const imgData = await captureSlide();
-        if (imgData) {
+        if (slideRef.current) {
+          const canvas = await html2canvas(slideRef.current, {
+            useCORS: true,
+            scale: 2,
+            backgroundColor: '#000000',
+            logging: false,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 1920,
+            windowHeight: 1080
+          });
+          const imgData = canvas.toDataURL('image/png');
+          
           if (i > 0) pdf.addPage([1920, 1080], 'landscape');
           pdf.addImage(imgData, 'PNG', 0, 0, 1920, 1080);
         }
@@ -254,7 +241,6 @@ const App: React.FC = () => {
       pdf.save(`Current_Affairs_May_2025.pdf`);
     } catch (err) {
       console.error("PDF Export failed:", err);
-      alert("PDF Export failed. Check console for details.");
     } finally {
       setCurrentIdx(originalIdx);
       setIsExporting(false);
@@ -325,7 +311,6 @@ const App: React.FC = () => {
     updateSlideField('highlights', updated);
   };
 
-  // Fixed handleRemoveHighlight callback to correctly reference the highlight object and its id
   const handleRemoveHighlight = (id: string) => {
     const activeSlide = slides[editingIdx];
     const updated = (activeSlide.highlights || []).filter(h => h.id !== id);
@@ -636,7 +621,7 @@ const App: React.FC = () => {
       <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: bgGradient }} />
       {activeBgImage && slide.layout !== 'cover-page' && (
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <img src={activeBgImage} crossOrigin="anonymous" className="w-full h-full object-cover opacity-35 transition-all duration-1000" style={{ filter: `blur(${currentBlur}px)` }} />
+          <img src={activeBgImage} className="w-full h-full object-cover opacity-35 transition-all duration-1000" style={{ filter: `blur(${currentBlur}px)` }} />
           <div className="absolute inset-0 bg-black/65" />
         </div>
       )}
@@ -651,7 +636,7 @@ const App: React.FC = () => {
               <div className="w-full h-full flex flex-col items-center justify-center p-8 md:p-16 text-center relative overflow-hidden">
                   {slide.imageUrl && (
                     <div className="absolute inset-0 -z-20 scale-up-animation">
-                      <img src={slide.imageUrl} crossOrigin="anonymous" className="w-full h-full object-cover opacity-100" style={{ filter: 'blur(0px)' }} />
+                      <img src={slide.imageUrl} className="w-full h-full object-cover opacity-100" style={{ filter: 'blur(0px)' }} />
                     </div>
                   )}
                  {slide.title && (
@@ -675,14 +660,14 @@ const App: React.FC = () => {
                 </div>
                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
                      style={{ width: `${100 - (slide.imageSize || 50)}%`, boxShadow: theme.glow }}>
-                  {slide.imageUrl ? <img src={slide.imageUrl} crossOrigin="anonymous" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
+                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
                 </div>
               </div>
             ) : slide.layout === 'split-vertical' ? (
                <div className="flex flex-col h-full w-full gap-2 md:gap-6 p-3 md:p-8">
                  <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
                       style={{ height: `${slide.imageSize || 45}%`, boxShadow: theme.glow }}>
-                  {slide.imageUrl ? <img src={slide.imageUrl} crossOrigin="anonymous" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
+                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
                  </div>
                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} 
                      style={{ height: `${100 - (slide.imageSize || 45)}%`, padding: `${globalSettings.boxPadding}px`, boxShadow: theme.glow }}>

@@ -1,6 +1,6 @@
 
 export type SlideType = 'title' | 'section' | 'question' | 'fact' | 'table' | 'content';
-export type SlideLayout = 'default' | 'split-horizontal' | 'split-vertical';
+export type SlideLayout = 'default' | 'split-horizontal' | 'split-vertical' | 'cover-page';
 export type BackgroundType = 'image' | 'gradient';
 
 export interface Highlight {

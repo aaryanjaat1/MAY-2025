@@ -101,7 +101,6 @@ const App: React.FC = () => {
     setSyncError(null);
     setSyncSuccess(false);
     try {
-      // Clear current slides and settings to ensure fresh state
       await supabase.from('slides_data').delete().gte('id', 0);
       await supabase.from('slides_data').insert(updatedSlides.map((s, idx) => ({ id: idx, data: s })));
       await supabase.from('app_settings').upsert({ id: 1, data: updatedSettings });
@@ -474,32 +473,33 @@ const App: React.FC = () => {
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-500 uppercase">Category (Font Trigger)</label>
                       <select value={activeSlide.type} onChange={(e) => updateSlideField('type', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-xs outline-none">
-                        <option value="fact">Fact Slide (Large)</option>
-                        <option value="question">Question Slide (Bold)</option>
+                        <option value="fact">Fact Slide</option>
+                        <option value="question">Question Slide</option>
                         <option value="title">Title Page</option>
                         <option value="section">Section Break</option>
                         <option value="table">Data Table</option>
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black text-gray-500 uppercase">Layout</label>
+                      <label className="text-[10px] font-black text-gray-500 uppercase">Layout Choice</label>
                       <select value={activeSlide.layout || 'default'} onChange={(e) => updateSlideField('layout', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-xs outline-none">
                         <option value="default">Standard Box</option>
-                        <option value="split-horizontal">Horizontal Split</option>
-                        <option value="split-vertical">Vertical Split</option>
+                        <option value="cover-page">Cover Page (Full Screen)</option>
+                        <option value="split-horizontal">Horizontal Split (Asset on Right)</option>
+                        <option value="split-vertical">Vertical Split (Asset on Top)</option>
                       </select>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Heading</label>
+                    <label className="text-[10px] font-black text-gray-500 uppercase">Slide Heading</label>
                     <input type="text" value={activeSlide.title || ''} onChange={(e) => updateSlideField('title', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-sm font-bold focus:border-blue-500/30 outline-none" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Body Lines</label>
+                    <label className="text-[10px] font-black text-gray-500 uppercase">Body Content (Bullets)</label>
                     <textarea value={Array.isArray(activeSlide.content) ? activeSlide.content.join('\n') : activeSlide.content} onChange={(e) => updateSlideField('content', e.target.value.split('\n'))} className="w-full h-48 bg-black border border-white/5 rounded-xl px-4 py-3 text-xs md:text-sm leading-relaxed custom-scrollbar focus:border-blue-500/30 outline-none" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Asset Image URL</label>
+                    <label className="text-[10px] font-black text-gray-500 uppercase">Direct Asset URL (Slide Image)</label>
                     <input type="text" value={activeSlide.imageUrl || ''} onChange={(e) => updateSlideField('imageUrl', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-[10px] font-mono focus:border-blue-500/30 outline-none" />
                   </div>
                 </div>
@@ -552,7 +552,17 @@ const App: React.FC = () => {
       </div>
       <div ref={slideRef} className="relative z-10 w-full max-w-[100vw] h-[95vh] md:max-w-[1600px] md:aspect-[16/9] flex items-center justify-center pointer-events-none overflow-hidden">
         <div key={currentIdx} className="w-full h-full flex items-center justify-center slide-entry-animation relative pointer-events-auto">
-            {slide.layout === 'split-horizontal' ? (
+            {slide.layout === 'cover-page' ? (
+              <div className="w-full h-full flex flex-col items-center justify-center p-8 md:p-16 text-center">
+                 {slide.title && (
+                    <div className="mb-10 md:mb-16 shrink-0 scale-up-animation">
+                      <h2 className="font-black tracking-tighter leading-tight drop-shadow-2xl" style={{ color: theme.color, fontSize: `calc(clamp(3rem, 10vw, 8rem) * ${titleFontScale})` }}>{renderTextWithHighlights(slide.title, 'title', 0, slide.highlights)}</h2>
+                    </div>
+                  )}
+                  <div className="max-w-4xl opacity-90">{renderContent(slide.content, slide.type, slide.highlights)}</div>
+                  {slide.imageUrl && <div className="absolute inset-0 -z-10 opacity-40"><img src={slide.imageUrl} className="w-full h-full object-cover" /></div>}
+              </div>
+            ) : slide.layout === 'split-horizontal' ? (
               <div className="flex h-full w-full gap-2 md:gap-6 lg:gap-8 p-3 md:p-8">
                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} style={{ width: `${slide.imageSize || 50}%`, padding: `${globalSettings.boxPadding}px` }}>
                    {slide.title && (
@@ -588,9 +598,13 @@ const App: React.FC = () => {
                   </div>
                 )}
                 <div className="flex-1 flex flex-col justify-start overflow-y-auto custom-scrollbar pr-2 md:pr-8 pb-20 mt-2">{renderContent(slide.content, slide.type, slide.highlights)}</div>
-                <div className="absolute bottom-6 right-10 md:bottom-12 md:right-16 shrink-0 pointer-events-none bg-gray-900/40 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/5 shadow-xl"><span className="text-xs md:text-sm font-black tracking-[0.4em] md:tracking-[0.8em] uppercase opacity-60 select-none" style={{ color: theme.color }}>{globalSettings.brandText}</span></div>
               </div>
             )}
+            
+            {/* CLEAN BRAND TEXT WATERMARK - BOTTOM RIGHT */}
+            <div className="absolute bottom-4 right-10 md:bottom-8 md:right-12 pointer-events-none select-none">
+              <span className="text-[10px] md:text-xs font-black tracking-[0.4em] md:tracking-[0.8em] uppercase opacity-40 hover:opacity-100 transition-opacity duration-500" style={{ color: theme.color }}>{globalSettings.brandText}</span>
+            </div>
         </div>
       </div>
       <div className="fixed bottom-4 left-4 right-4 md:bottom-10 md:left-10 md:right-10 flex flex-col sm:flex-row justify-between items-center gap-4 z-50 pointer-events-none" onClick={(e) => e.stopPropagation()}>
@@ -615,7 +629,9 @@ const App: React.FC = () => {
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); border: 3px solid transparent; background-clip: content-box; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         @keyframes slideInUp { from { opacity: 0; transform: translateY(80px) scale(0.94); filter: blur(20px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+        @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .slide-entry-animation { animation: slideInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .scale-up-animation { animation: scaleUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         input[type="range"] { -webkit-appearance: none; background: transparent; }
         input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: rgba(255,255,255,0.05); border-radius: 10px; }
         input[type="range"]::-webkit-slider-thumb { height: 24px; width: 24px; border-radius: 50%; background: #3b82f6; cursor: pointer; -webkit-appearance: none; margin-top: -8px; box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); border: 3px solid white; transition: all 0.2s; }

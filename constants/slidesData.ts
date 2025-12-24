@@ -30,6 +30,7 @@ export const SLIDES: SlideData[] = [
     id: 4,
     type: 'fact',
     title: 'एम.एस. स्वामीनाथन पुरस्कार (M.S. Swaminathan Award for Food and Peace)',
+    imageUrl: 'https://images.unsplash.com/photo-1599148400620-8e1ff0bf28d8?auto=format&fit=crop&q=80&w=1200',
     content: [
       'प्रधानमंत्री नरेंद्र मोदी ने दिल्ली में आयोजित \'एम.एस. स्वामीनाथन शताब्दी अंतर्राष्ट्रीय सम्मेलन\' के दौरान इस वैश्विक पुरस्कार की शुरुआत की।',
       'खाद्य सुरक्षा (Food Security) और टिकाऊ कृषि (Sustainable Agriculture) के क्षेत्र में उत्कृष्ट योगदान',
@@ -57,6 +58,7 @@ export const SLIDES: SlideData[] = [
     id: 7,
     type: 'fact',
     title: 'मिस यूनिवर्स इंडिया 2025 (Miss Universe India 2025)',
+    imageUrl: 'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?auto=format&fit=crop&q=80&w=1200',
     content: [
       'राजस्थान के गंगानगर की मणिका विश्वकर्मा (Manika Vishwakarma) को जयपुर में \'मिस यूनिवर्स इंडिया 2025\' का ताज पहनाया गया।'
     ]
@@ -65,6 +67,7 @@ export const SLIDES: SlideData[] = [
     id: 8,
     type: 'fact',
     title: 'आरबीआई: सबसे नवीन वित्तीय संस्थान (RBI: Most Innovative Financial Institution)',
+    imageUrl: 'https://images.unsplash.com/photo-1601597111158-2fcee29ec7d0?auto=format&fit=crop&q=80&w=1200',
     content: [
       'ग्लोबल फाइनेंस (Global Finance) पत्रिका ने भारतीय रिजर्व बैंक (RBI) को 2025 के लिए दुनिया का \'सबसे नवीन वित्तीय संस्थान\' घोषित किया है।',
       'आरबीआई यह सम्मान पाने वाला दुनिया का पहला केंद्रीय बैंक (First Central Bank) बना है।',
@@ -83,6 +86,7 @@ export const SLIDES: SlideData[] = [
     id: 10,
     type: 'fact',
     title: 'प्रधानमंत्री मोदी को श्रीलंका का सर्वोच्च सम्मान (PM Modi: Sri Lanka\'s Highest Honour)',
+    imageUrl: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1200',
     content: [
       'प्रधानमंत्री नरेंद्र मोदी को श्रीलंका के सर्वोच्च नागरिक सम्मान \'मित्र विभूषण\' (Mithra Vibhushana) से सम्मानित किया गया है।',
       'यह मोदी जी को मिलने वाला 22वां अंतर्राष्ट्रीय सम्मान (22nd International Recognition) है।'
@@ -136,12 +140,14 @@ export const SLIDES: SlideData[] = [
     id: 15.1,
     type: 'fact',
     title: 'Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&q=80&w=1200',
     content: 'Gujarat (गुजरात)'
   },
   {
     id: 16,
     type: 'fact',
     title: 'मेलबर्न का भारतीय फिल्म महोत्सव 2025 (IFFM 2025)',
+    imageUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=1200',
     content: [
       'नीरज घेवान (Neeraj Ghaywan) की नवीनतम फिल्म \'होमबाउंड\' (Homebound) ने मेलबर्न के भारतीय फिल्म महोत्सव (IFFM) 2025 में \'सर्वश्रेष्ठ फिल्म\' (Best Film) का पुरस्कार जीता है।',
       'नीरज घेवान को 15 अगस्त, 2025 को इसी महोत्सव में \'सर्वश्रेष्ठ निर्देशक\' (Best Director) का पुरस्कार भी दिया गया।'
@@ -157,6 +163,7 @@ export const SLIDES: SlideData[] = [
     id: 18,
     type: 'fact',
     title: 'ऑस्कर में नई श्रेणी: स्टंट डिजाइन (Best Stunt Design in Oscars)',
+    imageUrl: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=1200',
     content: [
       'एकाडमी ऑफ मोशन पिक्चर आर्ट्स एंड साइंसेज (Academy of Motion Picture Arts and Sciences) फिल्मों के लिए एक नई प्रतिस्पर्धी श्रेणी \'सर्वश्रेष्ठ स्टंट डिजाइन\' (Best Stunt Design) शुरू करेगी।',
       'इस श्रेणी की शुरुआत 2027 में 100वें अकादमी पुरस्कारों (100th Academy Awards) के दौरान होगी।',
@@ -179,6 +186,7 @@ export const SLIDES: SlideData[] = [
     id: 20,
     type: 'fact',
     title: 'राष्ट्रपति मुर्मू को मानद डॉक्टरेट (Honorary Doctorate to President Murmu)',
+    imageUrl: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=1200',
     content: [
       'राष्ट्रपति द्रौपदी मुर्मू को स्लोवाकिया के \'कॉन्स्टैंटाइन द फिलॉसफर यूनिवर्सिटी\' (Constantine The Philosopher University) द्वारा मानद डॉक्टरेट (Honorary Doctorate) प्रदान की गई है।',
       'यह सम्मान उन्हें सार्वजनिक सेवा, सामाजिक न्याय, शिक्षा और महिला सशक्तिकरण (Women’s Empowerment) में उनके योगदान के लिए दिया गया।'
@@ -188,7 +196,7 @@ export const SLIDES: SlideData[] = [
     id: 21,
     type: 'fact',
     title: 'Information',
-    content: 'द्रौपदी मुर्मू भारत की 15वीं और वर्तमान राष्ट्रपति हैं, साथ ही वे इस पद पर बैठने वाली पहली आदिवासी महिला हैं।'
+    content: 'द्रौपदी मुर्मू भारत की 15वीं and वर्तमान राष्ट्रपति हैं, साथ ही वे इस पद पर बैठने वाली पहली आदिवासी महिला हैं।'
   },
   {
     id: 22,
@@ -200,6 +208,7 @@ export const SLIDES: SlideData[] = [
     id: 23,
     type: 'fact',
     title: 'पवन और सौर ऊर्जा उत्पादन: भारत की उपलब्धि (Wind and Solar Power Generation)',
+    imageUrl: 'https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?auto=format&fit=crop&q=80&w=1200',
     content: [
       '2024 में, भारत जर्मनी को पीछे छोड़कर दुनिया का तीसरा सबसे बड़ा पवन और सौर ऊर्जा उत्पादक बन गया है.',
       'एम्बर (Ember) की वैश्विक बिजली समीक्षा के अनुसार, भारत की हिस्सेदारी वैश्विक उत्पादन में 10% रही.',
@@ -224,12 +233,14 @@ export const SLIDES: SlideData[] = [
     id: 25,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=1200',
     content: 'C) जर्मनी (Germany)'
   },
   {
     id: 26,
     type: 'fact',
     title: 'वैश्विक AI निवेश रैंकिंग 2025 (Global AI Private Investment Ranking)',
+    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200',
     content: [
       'भारत AI क्षेत्र में निजी निवेश के मामले में दुनिया में 10वें स्थान पर है, जहाँ 2023 में 1.4 बिलियन डॉलर का निवेश हुआ.',
       'यह रैंकिंग UNCTAD द्वारा जारी \'यूएन टेक्नोलॉजी और इनोवेशन रिपोर्ट 2025\' का हिस्सा है.',
@@ -253,12 +264,14 @@ export const SLIDES: SlideData[] = [
     id: 28,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&q=80&w=1200',
     content: 'B) 10वीं (10th)'
   },
   {
     id: 29,
     type: 'fact',
     title: 'विश्व हवाई अड्डा रैंकिंग और व्यस्तता (World Airport Rankings 2025)',
+    imageUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109c0f2?auto=format&fit=crop&q=80&w=1200',
     content: [
       'सिंगापुर चांगी एयरपोर्ट को 2025 में लगातार 13वीं बार दुनिया का सर्वश्रेष्ठ हवाई अड्डा चुना गया है.',
       'दिल्ली हवाई अड्डा (IGIA): 77 मिलियन यात्रियों के साथ दुनिया का 9वां सबसे व्यस्त हवाई अड्डा बना.',
@@ -276,6 +289,7 @@ export const SLIDES: SlideData[] = [
     id: 31,
     type: 'fact',
     title: 'फोर्ब्स अरबपति सूची 2025 (Forbes World’s Billionaires List 2025)',
+    imageUrl: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=1200',
     content: [
       'एलोन मस्क $342 बिलियन की संपत्ति के साथ दुनिया के सबसे अमीर व्यक्ति बने हुए हैं.',
       'मुकेश अंबानी ($92.5 बिलियन) दुनिया में 18वें स्थान पर हैं और सबसे अमीर भारतीय व एशियाई हैं.',
@@ -299,12 +313,14 @@ export const SLIDES: SlideData[] = [
     id: 33,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1444491741275-3747c53c99b4?auto=format&fit=crop&q=80&w=1200',
     content: 'B) एलिस वॉल्टन (Alice Walton)'
   },
   {
     id: 34,
     type: 'fact',
     title: 'मानव विकास और प्रेस स्वतंत्रता (HDI & Press Freedom 2025)',
+    imageUrl: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=1200',
     content: [
       'मानव विकास सूचकांक (HDI): भारत 130वें स्थान (193 देशों में) पर पहुँच गया है. भारत का स्कोर बढ़कर 0.685 हो गया है.',
       'जीवन प्रत्याशा: भारत में जीवन प्रत्याशा अपने उच्चतम स्तर 72 वर्ष पर पहुँच गई है.',
@@ -334,6 +350,7 @@ export const SLIDES: SlideData[] = [
     id: 37,
     type: 'fact',
     title: 'CISF Commando Unit',
+    imageUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=1200',
     content: [
       'सीआईएसएफ (CISF) ने लैंगिक समानता को बढ़ावा देने के लिए मध्य प्रदेश (Madhya Pradesh) में अपनी पहली सर्व-महिला कमांडो यूनिट शुरू की है.',
       'इसकी ट्रेनिंग बड़वाह (Barwaha) के क्षेत्रीय प्रशिक्षण केंद्र में दी जा रही है.',
@@ -356,12 +373,14 @@ export const SLIDES: SlideData[] = [
     id: 39,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1448375003491-6b2b77a7d263?auto=format&fit=crop&q=80&w=1200',
     content: 'B) बड़वाह, मध्य प्रदेश (Barwaha, MP)'
   },
   {
     id: 40,
     type: 'fact',
     title: 'मिशन सुदर्शन चक्र और ऑपरेशन अलर्ट (Mission Sudarshan Chakra & Op Alert)',
+    imageUrl: 'https://images.unsplash.com/photo-1579621970795-87faff3f5670?auto=format&fit=crop&q=80&w=1200',
     content: [
       'मिशन सुदर्शन चक्र: 79वें स्वतंत्रता दिवस पर पीएम मोदी ने राष्ट्रीय सुरक्षा के लिए इस 10-वर्षीय मिशन की घोषणा की, जिसका लक्ष्य स्वदेशी तकनीक (Indigenous Technology) से महत्वपूर्ण प्रतिष्ठानों को सुरक्षित करना है.',
       'ऑपरेशन अलर्ट: सीमा सुरक्षा बल (BSF) ने स्वतंत्रता दिवस से पहले राजस्थान सीमा (Rajasthan Border) पर सुरक्षा मजबूत करने के लिए इसे लॉन्च किया है.'
@@ -390,6 +409,7 @@ export const SLIDES: SlideData[] = [
     id: 43,
     type: 'fact',
     title: 'यूनेस्को का \'मेमोरी ऑफ द वर्ल्ड रजिस्टर\' (UNESCO\'s Memory of the World Register)',
+    imageUrl: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&q=80&w=1200',
     content: [
       'इस वर्ष श्रीमद्भगवद्गीता (Bhagavad Gita) और भरत मुनि के नाट्यशास्त्र (Bharata’s Natyashastra) की पांडुलिपियों को यूनेस्को के \'मेमोरी ऑफ द वर्ल्ड रजिस्टर\' में शामिल किया गया है.',
       'इस वर्ष इस रजिस्टर में कुल 74 नए संयोजन किए गए हैं.',
@@ -418,12 +438,14 @@ export const SLIDES: SlideData[] = [
     id: 46,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1200',
     content: 'B) भगवद्गीता और नाट्यशास्त्र (Bhagavad Gita and Natyashastra)'
   },
   {
     id: 47,
     type: 'fact',
     title: 'नया पम्बन ब्रिज: भारत का पहला वर्टिकल लिफ्ट सी ब्रिज (New Pamban Bridge: India\'s First Vertical Lift Sea Bridge)',
+    imageUrl: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&q=80&w=1200',
     content: [
       'प्रधानमंत्री नरेंद्र मोदी ने 6 अप्रैल, 2025 (राम नवमी) को रामेश्वरम में उद्घाटन किया.',
       'इस पुल की कुल लंबाई 2.08 किलोमीटर है और इसमें 99 स्पैन (spans) हैं.',
@@ -447,6 +469,7 @@ export const SLIDES: SlideData[] = [
     id: 49,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=1200',
     content: 'C) रामेश्वरम (Rameswaram)'
   },
   {
@@ -490,6 +513,7 @@ export const SLIDES: SlideData[] = [
     id: 53,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1200',
     content: 'C) अनुच्छेद 21 (Article 21)'
   },
   {
@@ -502,8 +526,9 @@ export const SLIDES: SlideData[] = [
     id: 55,
     type: 'fact',
     title: 'मुंबई-अहमदाबाद बुलेट ट्रेन: जापान का उपहार (Japan\'s Gift for Bullet Train Project)',
+    imageUrl: 'https://images.unsplash.com/photo-1474487059207-ef09f856006c?auto=format&fit=crop&q=80&w=1200',
     content: [
-      'जापान परीक्षण (Trial runs) के लिए दो शिंकानसेन (Shinkansen) ट्रेन सेट—एक E5 और एक E3—उपहार में दे रहा है.',
+      'जापान परीक्षण (Trial runs) के लिए दो शिंकानसेन (Shinkansen) ट्रेन सेट—एक E5 and एक E3—उपहार में दे रहा है.',
       'ये ट्रेन सेट 2026 की शुरुआत में भारत को वितरित किए जाएंगे.',
       'मुंबई-अहमदाबाद रेल कॉरिडोर भारत की पहली हाई-स्पीड रेल line होगी.',
       'इन परीक्षणों से अगली पीढ़ी की E10 ट्रेनों के उत्पादन का आधार बनेगा.'
@@ -513,7 +538,7 @@ export const SLIDES: SlideData[] = [
     id: 56,
     type: 'fact',
     title: 'Shinkansen System',
-    content: 'जापान की \'शिंकानसेन\' (Shinkansen) प्रणाली अपनी शून्य दुर्घटना रिकॉर्ड और असाधारण समय की पाबंदी के लिए विश्व विख्यात है।'
+    content: 'जापान की \'शिंकानसेन\' (Shinkansen) प्रणाली अपनी शून्य दुर्घटना रिकॉर्ड and असाधारण समय की पाबंदी के लिए विश्व विख्यात है।'
   },
   {
     id: 57,
@@ -531,16 +556,18 @@ export const SLIDES: SlideData[] = [
     id: 58,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&q=80&w=1200',
     content: 'B) E5 and E3'
   },
   {
     id: 59,
     type: 'fact',
     title: 'मॉरीशस: ISA के कंट्री पार्टनरशिप फ्रेमवर्क पर हस्ताक्षर (Mauritius signs ISA\'s CPF)',
+    imageUrl: 'https://images.unsplash.com/photo-1543731068-7e0f5beff43a?auto=format&fit=crop&q=80&w=1200',
     content: [
       'मॉरीशस अंतर्राष्ट्रीय सौर गठबंधन (ISA) के साथ कंट्री पार्टनरशिप फ्रेमवर्क (CPF) पर हस्ताक्षर करने वाला पहला अफ्रीकी देश बन गया है.',
       'वैश्विक स्तर पर मॉरीशस चौथा देश है.',
-      'ISA की स्थापना 2015 में भारत और फ्रांस द्वारा की गई थी, जिसका लक्ष्य सौर निवेश जुटाना है.'
+      'ISA की स्थापना 2015 में भारत and फ्रांस द्वारा की गई थी, जिसका लक्ष्य सौर निवेश जुटाना है.'
     ]
   },
   {
@@ -559,26 +586,29 @@ export const SLIDES: SlideData[] = [
     id: 70,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1543731068-7e0f5beff43a?auto=format&fit=crop&q=80&w=1200',
     content: 'B) मॉरीशस (Mauritius)'
   },
   {
     id: 71,
     type: 'fact',
     title: 'ब्रिक्स श्रम मंत्रियों का ब्रासीलिया घोषणापत्र (BRICS Labour Ministers\' Declaration)',
+    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200',
     content: [
-      '25 अप्रैल, 2025 को ब्रासीलिया में आयोजित बैठक में ब्रिक्स (BRICS) मंत्रियों ने एआई (AI) गवर्नेंस और समावेशी रोजगार पर एक घोषणापत्र अपनाया.',
+      '25 अप्रैल, 2025 को ब्रासीलिया में आयोजित बैठक में ब्रिक्स (BRICS) मंत्रियों ने एआई (AI) गवर्नेंस and समावेशी रोजगार पर एक घोषणापत्र अपनाया.',
       'यह घोषणापत्र मानव-केंद्रित एआई नीतियों को बढ़ावा देता है जो श्रमिकों के अधिकारों की रक्षा करती हैं.',
-      'भारत ने इसमें Future Skills Prime और National AI Strategy के माध्यम से अपनी प्रतिबद्धता दोहराई.'
+      'भारत ने इसमें Future Skills Prime and National AI Strategy के माध्यम से अपनी प्रतिबद्धता दोहराई.'
     ]
   },
   {
     id: 72,
     type: 'fact',
     title: 'अंगोला: ISA का 123वां सदस्य (Angola Joins ISA & Signs MoUs)',
+    imageUrl: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=1200',
     content: [
       'अंगोला अंतर्राष्ट्रीय सौर गठबंधन (ISA) का 123वां सदस्य बन गया है.',
       'भारत ने अंगोला के सशस्त्र बलों के आधुनिकीकरण के लिए $200 मिलियन की line of credit प्रदान की.',
-      'दोनों देशों ने आयुर्वेद, कृषि और रक्षा के क्षेत्र में महत्वपूर्ण समझौतों (MoUs) पर हस्ताक्षर किए.'
+      'दोनों देशों ने आयुर्वेद, कृषि and रक्षा के क्षेत्र में महत्वपूर्ण समझौतों (MoUs) पर हस्ताक्षर किए.'
     ]
   },
   {
@@ -597,6 +627,7 @@ export const SLIDES: SlideData[] = [
     id: 74,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=1200',
     content: 'C) अंगोला (Angola)'
   },
   {
@@ -621,10 +652,11 @@ export const SLIDES: SlideData[] = [
     id: 77,
     type: 'fact',
     title: 'खेलो इंडिया यूथ गेम्स 2025 - बिहार',
+    imageUrl: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=1200',
     content: [
       'बिहार 4 से 15 मई, 2025 तक खेलो इंडिया यूथ गेम्स के 7वें संस्करण (7th Edition) की मेजबानी कर रहा है.',
-      'शुभंकर \'गजसिंह\' (Gajasimha) है, जो हाथी की शक्ति और शेर के साहस का प्रतीक है.',
-      'पहली बार ई-स्पोर्ट्स (Esports) और सेपाकटकरॉ (Sepaktakraw) को शामिल किया गया है.'
+      'शुभंकर \'गजसिंह\' (Gajasimha) है, जो हाथी की शक्ति and शेर के साहस का प्रतीक है.',
+      'पहली बार ई-स्पोर्ट्स (Esports) and सेपाकटकरॉ (Sepaktakraw) को शामिल किया गया है.'
     ]
   },
   {
@@ -643,16 +675,18 @@ export const SLIDES: SlideData[] = [
     id: 79,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1200',
     content: 'C) गजसिंह (Gajasimha)'
   },
   {
     id: 80,
     type: 'fact',
     title: 'मुक्केबाजी में भारतीय सफलता (Indian Success in Boxing - 2025)',
+    imageUrl: 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&q=80&w=1200',
     content: [
       'हितेश गुलिया (Hitesh Gulia) ने विश्व मुक्केबाजी कप (World Boxing Cup) में 70 किग्रा वर्ग में स्वर्ण पदक जीतकर इतिहास रचा.',
-      'बैंकॉक में एशियाई U-19 और U-22 चैंपियनशिप में भारत ने कुल 27 पदक (27 Medals) जीते.',
-      'अम्मान में एशियाई U-15 और U-17 चैंपियनशिप में भारतीय मुक्केबाजों ने 43 पदक जीते.'
+      'बैंकॉक में एशियाई U-19 and U-22 चैंपियनशिप में भारत ने कुल 27 पदक (27 Medals) जीते.',
+      'अम्मान में एशियाई U-15 and U-17 चैंपियनशिप में भारतीय मुक्केबाजों ने 43 पदक जीते.'
     ]
   },
   {
@@ -671,12 +705,14 @@ export const SLIDES: SlideData[] = [
     id: 82,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&q=80&w=1200',
     content: 'B) हितेश गुलिया (Hitesh Gulia)'
   },
   {
     id: 83,
     type: 'fact',
-    title: 'वेटलिफ्टिंग और तीरंदाजी (Weightlifting and Archery Achievements)',
+    title: 'वेटलिफ्टिंग and तीरंदाजी (Weightlifting and Archery Achievements)',
+    imageUrl: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&q=80&w=1200',
     content: [
       'मीराबाई चानू (Mirabai Chanu) ने कॉमनवेल्थ वेटलिफ्टिंग चैंपियनशिप में 48 किग्रा वर्ग में स्वर्ण पदक (Gold medal) जीता.',
       'चिकीथा तनीपार्थी (Chikitha Taniparthi) जूनियर विश्व तीरंदाजी चैंपियनशिप में खिताब जीतने वाली पहली भारतीय महिला Compound तीरंदाज बनीं.'
@@ -698,19 +734,20 @@ export const SLIDES: SlideData[] = [
     id: 85,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&q=80&w=1200',
     content: 'B) 48 किग्रा'
   },
   {
     id: 86,
     type: 'table',
-    title: 'अन्य प्रमुख खेल नियुक्तियाँ और घटनाएँ',
+    title: 'अन्य प्रमुख खेल नियुक्तियाँ and घटनाएँ',
     content: [
       { col1: 'श्रेणी (Category)', col2: 'विवरण (Description)' },
       { col1: 'क्रिकेट (Cricket)', col2: 'श्रेयस अय्यर (Shreyas Iyer): Player of the Month' },
       { col1: 'टेनिस (Tennis)', col2: 'कार्लोस अल्काराज़: मोंटे कार्लो मास्टर्स' },
       { col1: 'F1 रेसिंग', col2: 'मैक्स वर्स्टापेन: जापानी ग्रैंड प्रिक्स' },
       { col1: 'निशानेबाजी', col2: 'गुरप्रीत सिंह: एशियाई शूटिंग चैंपियनशिप' },
-      { col1: 'कुश्ती', col2: 'एशियाई चैंपियनशिप: भारत के 10 पदक' }
+      { col1: 'कुश्ती', col2: 'कुश्ती एशियाई चैंपियनशिप: भारत के 10 पदक' }
     ]
   },
   {
@@ -729,22 +766,24 @@ export const SLIDES: SlideData[] = [
     id: 88,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1622279457486-62dcc4a4bd13?auto=format&fit=crop&q=80&w=1200',
     content: 'B) कार्लोस अल्काराज़ (Carlos Alcaraz)'
   },
   {
     id: 89,
     type: 'fact',
     title: 'एशियाई शूटिंग चैंपियनशिप (Asian Shooting Championships 2025)',
+    imageUrl: 'https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&q=80&w=1200',
     content: [
       'चैंपियनशिप कज़ाकिस्तान के शिमकेंट (Shymkent) में आयोजित की गई.',
       'गुरप्रीत सिंह (Gurpreet सिंह) ने 25 मीटर सेंटर फायर (25m Centre Fire) स्पर्धा में टीम स्वर्ण पदक दिलाया.',
-      'विजेता टीम: गुरप्रीत सिंह, राजकंवर सिंह संधू और अंकुर गोयल.'
+      'विजेता टीम: गुरप्रीत सिंह, राजकंवर सिंह संधू and अंकुर गोयल.'
     ]
   },
   {
     id: 90,
     type: 'fact',
-    title: 'एशियाई मुक्केबाजी और अन्य खेल अपडेट',
+    title: 'एशियाई मुक्केबाजी and अन्य खेल अपडेट',
     content: [
       'Asian U19 & U22: भारत ने कुल 27 पदक (U19: 14, U22: 13) जीते.',
       'वानखेड़े स्टेडियम में लेजेंड सुनील गावस्कर की प्रतिमा का अनावरण किया गया.',
@@ -769,6 +808,7 @@ export const SLIDES: SlideData[] = [
     id: 92,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&q=80&w=1200',
     content: 'C) 25 मीटर सेंटर फायर'
   },
   {
@@ -787,6 +827,7 @@ export const SLIDES: SlideData[] = [
     id: 94,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=1200',
     content: 'B) वानखेड़े स्टेडियम'
   },
   {
@@ -811,15 +852,17 @@ export const SLIDES: SlideData[] = [
     id: 97,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=1200',
     content: 'B) अनन्या पांडे (Ananya Panday)'
   },
   {
     id: 98,
     type: 'fact',
     title: 'अजय भूषण पांडे (Ajay Bhushan Pandey): एआईआईबी के उपाध्यक्ष',
+    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200',
     content: [
       'पूर्व वित्त सचिव अजय भूषण पांडे एशियाई बुनियादी ढांचा निवेश बैंक (AIIB) में उपाध्यक्ष (Vice President) के रूप में शामिल हुए हैं.',
-      'वह निवेश समाधान विभाग संभालेंगे और बीजिंग (Beijing) में स्थित रहेंगे.',
+      'वह निवेश समाधान विभाग संभालेंगे and बीजिंग (Beijing) में स्थित रहेंगे.',
       'AIIB की स्थापना 2016 में हुई थी। मुख्यालय बीजिंग, चीन में है.'
     ]
   },
@@ -827,18 +870,20 @@ export const SLIDES: SlideData[] = [
     id: 99,
     type: 'fact',
     title: 'निधि कैस्था (Nidhi Kaistha): लेम्बोर्गिनी इंडिया की प्रमुख',
+    imageUrl: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=1200',
     content: [
       'ऑटोमोबाइली लेम्बोर्गिनी ने निधि कैस्था को लेम्बोर्गिनी इंडिया (Lamborghini India) का प्रमुख नियुक्त किया है.',
       'नियुक्ति 1 अप्रैल 2025 से प्रभावी होगी.',
-      'उनके पास विमानन और ऑटोमोटिव उद्योगों में 25 वर्षों से अधिक का अनुभव है.'
+      'उनके पास विमानन and ऑटोमोटिव उद्योगों में 25 वर्षों से अधिक का अनुभव है.'
     ]
   },
   {
     id: 100,
     type: 'fact',
     title: 'आलोक जोशी (Alok Joshi): राष्ट्रीय सुरक्षा सलाहकार बोर्ड के अध्यक्ष',
+    imageUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=1200',
     content: [
-      'केंद्र सरकार ने राष्ट्रीय सुरक्षा सलाहकार बोर्ड (NSAB) का पुनर्गठन किया है और आलोक जोशी को अध्यक्ष नियुक्त किया है.',
+      'केंद्र सरकार ने राष्ट्रीय सुरक्षा सलाहकार बोर्ड (NSAB) का पुनर्गठन किया है and आलोक जोशी को अध्यक्ष नियुक्त किया है.',
       'NSAB बहु-विषयक विश्लेषण के माध्यम से राष्ट्रीय सुरक्षा परिषद (NSC) को सिफारिशें प्रदान करता है.',
       '\'रॉ\' (R&AW) भारत की विदेशी खुफिया एजेंसी है। जोशी इसके पूर्व प्रमुख रह चुके हैं.'
     ]
@@ -847,6 +892,7 @@ export const SLIDES: SlideData[] = [
     id: 101,
     type: 'fact',
     title: 'कशिश चौधरी (Kashish Chaudhary): बलूचिस्तान की पहली हिंदू महिला सहायक आयुक्त',
+    imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1200',
     content: [
       '25 वर्षीय कशिश चौधरी बलूचिस्तान में पहली हिंदू महिला सहायक आयुक्त (Assistant Commissioner) बनी हैं.',
       'उन्होंने बलूचिस्तान लोक सेवा आयोग (BPSC) की परीक्षा उत्तीर्ण कर यह उपलब्धि हासिल की है.',
@@ -859,23 +905,24 @@ export const SLIDES: SlideData[] = [
     title: 'अन्य महत्वपूर्ण नियुक्तियाँ (Other Key Appointments)',
     content: [
       { col1: 'व्यक्ति (Person)', col2: 'पद (Position)', col3: 'मुख्य तथ्य (Key Fact)' },
-      { col1: 'सलीला पांडे', col2: 'एमडी और सीईओ, एसबीआई कार्ड', col3: '1 अप्रैल 2025 से प्रभावी' },
-      { col1: 'अनीता आनंद', col2: 'विदेश मंत्री, कनाडा', col3: 'पहली हिंदू और भारतीय मूल की महिला' }
+      { col1: 'सलीला पांडे', col2: 'एमडी and सीईओ, एसबीआई कार्ड', col3: '1 अप्रैल 2025 से प्रभावी' },
+      { col1: 'अनीता आनंद', col2: 'विदेश मंत्री, कनाडा', col3: 'पहली हिंदू and भारतीय मूल की महिला' }
     ]
   },
   {
     id: 103,
     type: 'section',
     title: 'Section 8',
-    content: 'राष्ट्रीय और अंतर्राष्ट्रीय घटनाक्रम (National & International Events) 2025'
+    content: 'राष्ट्रीय and अंतर्राष्ट्रीय घटनाक्रम (National & International Events) 2025'
   },
   {
     id: 104,
     type: 'fact',
     title: 'अंतर्राष्ट्रीय बौद्ध सम्मेलन (International Buddhist Conclave)',
+    imageUrl: 'https://images.unsplash.com/photo-1590059392610-863a35e89139?auto=format&fit=crop&q=80&w=1200',
     content: [
       'अरुणाचल प्रदेश के नामसाई (Namsai) में 21-22 अप्रैल, 2025 को सम्मेलन आयोजित किया गया.',
-      'शीर्षक "बुद्ध धम्म और उत्तर-पूर्व भारत की संस्कृति" (Buddha Dhamma and the Culture of North-East India) था.',
+      'शीर्षक "बुद्ध धम्म and उत्तर-पूर्व भारत की संस्कृति" (Buddha Dhamma and the Culture of North-East India) था.',
       'सम्मेलन का मुख्य उद्देश्य बौद्ध परंपराओं के संरक्षण को रेखांकित करना था.'
     ]
   },
@@ -883,15 +930,16 @@ export const SLIDES: SlideData[] = [
     id: 105,
     type: 'fact',
     title: 'Tawang Monastery',
-    content: 'अरुणाचल प्रदेश में स्थित \'तवांग मठ\' (Tawang Monastery) भारत का सबसे बड़ा और दुनिया का दूसरा सबसे बड़ा बौद्ध मठ है।'
+    content: 'अरुणाचल प्रदेश में स्थित \'तवांग मठ\' (Tawang Monastery) भारत का सबसे बड़ा and दुनिया का दूसरा सबसे बड़ा बौद्ध मठ है।'
   },
   {
     id: 106,
     type: 'fact',
     title: '\'जीरो खसरा-रुबेला\' अभियान (\'Zero Measles-Rubella\' Campaign)',
+    imageUrl: 'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?auto=format&fit=crop&q=80&w=1200',
     content: [
       'स्वास्थ्य मंत्री जे.पी. नड्डा ने 24 अप्रैल, 2025 को राष्ट्रीय \'जीरो खसरा-रुबेला\' उन्मूलन अभियान लॉन्च किया.',
-      'इसका लक्ष्य 2026 तक भारत से खसरा (Measles) और रुबेला (Rubella) को पूरी तरह समाप्त करना है.',
+      'इसका लक्ष्य 2026 तक भारत से खसरा (Measles) and रुबेला (Rubella) को पूरी तरह समाप्त करना है.',
       'लक्ष्य प्राप्ति के लिए 100% टीकाकरण कवरेज (100% immunization coverage) हासिल करना अनिवार्य है.'
     ]
   },
@@ -899,7 +947,7 @@ export const SLIDES: SlideData[] = [
     id: 107,
     type: 'question',
     content: [
-      'Que. भारत सरकार ने किस वर्ष तक खसरा और रुबेला उन्मूलन का लक्ष्य रखा है?',
+      'Que. भारत सरकार ने किस वर्ष तक खसरा and रुबेला उन्मूलन का लक्ष्य रखा है?',
       'By which year has India set a target to eliminate measles and rubella?',
       'A) 2025',
       'B) 2027',
@@ -911,12 +959,14 @@ export const SLIDES: SlideData[] = [
     id: 108,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1200',
     content: 'C) 2026'
   },
   {
     id: 109,
     type: 'fact',
     title: 'एआई किरण पहल (AI Kiran Initiative)',
+    imageUrl: 'https://images.unsplash.com/photo-1620712943543-bcc46386c635?auto=format&fit=crop&q=80&w=1200',
     content: [
       'भारत सरकार ने 21 अप्रैल, 2025 को एआई किरण पहल शुरू की.',
       'इसका उद्देश्य AI के क्षेत्र में 250 से अधिक महिला नेताओं (Women leaders) को सशक्त बनाना है.',
@@ -939,15 +989,17 @@ export const SLIDES: SlideData[] = [
     id: 111,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=1200',
     content: 'B) एआई में महिलाओं के नेतृत्व को बढ़ावा देना'
   },
   {
     id: 112,
     type: 'fact',
     title: 'संयुक्त राष्ट्र वन मंच (United Nations Forum on Forests - UNFF20)',
+    imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1200',
     content: [
       'UNFF20 का 20वाँ सत्र 5 से 9 मई, 2025 तक न्यूयॉर्क में आयोजित किया गया.',
-      'भारत का वन और वृक्ष आवरण (Forest and tree cover) भौगोलिक क्षेत्र का 25.17% हो गया है.',
+      'भारत का वन and वृक्ष आवरण (Forest and tree cover) भौगोलिक क्षेत्र का 25.17% हो गया है.',
       'मैंग्रोव आवरण (Mangrove cover) में 7.86% की वृद्धि दर्ज की गई है.'
     ]
   },
@@ -961,7 +1013,7 @@ export const SLIDES: SlideData[] = [
     id: 114,
     type: 'question',
     content: [
-      'Que. UNFF20 सत्र में भारत द्वारा दी गई जानकारी के अनुसार भारत का वर्तमान वन और वृक्ष आवरण कितना है?',
+      'Que. UNFF20 सत्र में भारत द्वारा दी गई जानकारी के अनुसार भारत का वर्तमान वन and वृक्ष आवरण कितना है?',
       'What is India\'s current forest and tree cover?',
       'A) 21.67%',
       'B) 24.56%',
@@ -973,6 +1025,7 @@ export const SLIDES: SlideData[] = [
     id: 115,
     type: 'fact',
     title: 'Correct Answer',
+    imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1200',
     content: 'C) 25.17%'
   },
   {

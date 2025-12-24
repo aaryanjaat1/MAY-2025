@@ -43,7 +43,7 @@ const App: React.FC = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const [globalSettings, setGlobalSettings] = useState<GlobalSettings>({
-    brandText: 'PRACHI MAM',
+    brandText: '',
     boxWidth: 90,
     boxHeight: 85,
     boxPadding: 40,
@@ -215,12 +215,22 @@ const App: React.FC = () => {
   const handleLocalImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = (event) => {
       const base64String = event.target?.result as string;
       updateGlobalField('bgImage', base64String);
       updateGlobalField('bgType', 'image');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSlideLocalImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64String = event.target?.result as string;
+      updateSlideField('imageUrl', base64String);
     };
     reader.readAsDataURL(file);
   };
@@ -262,12 +272,28 @@ const App: React.FC = () => {
   const slide = useMemo(() => slides[currentIdx] || INITIAL_SLIDES[0], [slides, currentIdx]);
 
   const theme = useMemo(() => {
-    if (!slide) return { box: '', color: '' };
+    if (!slide) return { box: '', color: '', glow: '' };
     switch (slide.type) {
-      case 'title': return { box: 'border-blue-500/50 shadow-2xl bg-gray-900/70', color: '#3b82f6' };
-      case 'section': return { box: 'border-emerald-500/50 shadow-2xl bg-gray-900/70', color: '#10b981' };
-      case 'question': return { box: 'border-amber-500/50 shadow-2xl bg-gray-900/70', color: '#f59e0b' };
-      default: return { box: 'border-gray-800 shadow-2xl bg-gray-900/80', color: '#ffffff' };
+      case 'title': return { 
+        box: 'border-blue-500/50 bg-gray-900/70', 
+        color: '#3b82f6',
+        glow: '0 20px 60px -15px rgba(59, 130, 246, 0.3)' 
+      };
+      case 'section': return { 
+        box: 'border-emerald-500/50 bg-gray-900/70', 
+        color: '#10b981',
+        glow: '0 20px 60px -15px rgba(16, 185, 129, 0.3)' 
+      };
+      case 'question': return { 
+        box: 'border-amber-500/50 bg-gray-900/70', 
+        color: '#f59e0b',
+        glow: '0 20px 60px -15px rgba(245, 158, 11, 0.3)' 
+      };
+      default: return { 
+        box: 'border-gray-800 bg-gray-900/80', 
+        color: '#ffffff',
+        glow: '0 20px 60px -15px rgba(255, 255, 255, 0.05)' 
+      };
     }
   }, [slide]);
 
@@ -434,7 +460,7 @@ const App: React.FC = () => {
 
                 <div className="p-4 md:p-8 bg-[#0f0f12] rounded-[1.5rem] border border-white/5 space-y-6">
                    <div className="flex items-center justify-between">
-                     <label className="text-[10px] font-black text-gray-500 uppercase flex items-center gap-2"><ImageIcon size={14} /> Background Sources</label>
+                     <label className="text-[10px] font-black text-gray-500 uppercase flex items-center gap-2"><ImageIcon size={14} /> Background Sources (Global)</label>
                      <div className="flex gap-2">
                         <button onClick={() => updateGlobalField('bgType', 'gradient')} className={`px-4 py-1.5 text-[9px] font-black rounded uppercase transition-all ${globalSettings.bgType === 'gradient' ? 'bg-blue-600 shadow-lg' : 'bg-white/5 hover:bg-white/10'}`}>Gradient</button>
                         <button onClick={() => updateGlobalField('bgType', 'image')} className={`px-4 py-1.5 text-[9px] font-black rounded uppercase transition-all ${globalSettings.bgType === 'image' ? 'bg-blue-600 shadow-lg' : 'bg-white/5 hover:bg-white/10'}`}>Image</button>
@@ -442,13 +468,13 @@ const App: React.FC = () => {
                    </div>
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                      <div className="space-y-3">
-                        <p className="text-[9px] text-gray-400 font-bold uppercase flex items-center gap-1"><ExternalLink size={10} /> Source A: External URL (Google Images)</p>
+                        <p className="text-[9px] text-gray-400 font-bold uppercase flex items-center gap-1"><ExternalLink size={10} /> Global A: External URL</p>
                         <input type="text" value={globalSettings.bgImage || ''} onChange={(e) => updateGlobalField('bgImage', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-3 text-[10px] font-mono focus:border-blue-500/30 outline-none" placeholder="https://link-to-your-image.com" />
                      </div>
                      <div className="space-y-3">
-                        <p className="text-[9px] text-gray-400 font-bold uppercase flex items-center gap-1"><UploadIcon size={10} /> Source B: Local System Upload</p>
+                        <p className="text-[9px] text-gray-400 font-bold uppercase flex items-center gap-1"><UploadIcon size={10} /> Global B: Local System Upload</p>
                         <label className="flex items-center justify-center gap-3 w-full bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/20 rounded-xl px-4 py-3 text-[10px] font-black cursor-pointer transition-all uppercase tracking-widest group">
-                          <UploadIcon size={16} className="group-hover:scale-110 transition-transform" /> Browse Files
+                          <UploadIcon size={16} className="group-hover:scale-110 transition-transform" /> Browse Global BG
                           <input type="file" accept="image/*" onChange={handleLocalImageUpload} className="hidden" />
                         </label>
                      </div>
@@ -457,10 +483,6 @@ const App: React.FC = () => {
                      <div className="space-y-2">
                        <label className="text-[10px] font-black text-gray-500 uppercase flex justify-between">Background Blur <span>{globalSettings.bgBlur}px</span></label>
                        <input type="range" min="0" max="20" value={globalSettings.bgBlur} onChange={(e) => updateGlobalField('bgBlur', parseInt(e.target.value))} className="w-full accent-red-500" />
-                     </div>
-                     <div className="space-y-2">
-                       <label className="text-[10px] font-black text-gray-500 uppercase">Brand/Footer Identity</label>
-                       <input type="text" value={globalSettings.brandText || ''} onChange={(e) => updateGlobalField('brandText', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2.5 text-xs focus:border-blue-500/30 outline-none" placeholder="e.g. PRACHI MAM" />
                      </div>
                    </div>
                 </div>
@@ -471,7 +493,7 @@ const App: React.FC = () => {
                 <div className="p-4 md:p-8 bg-[#0f0f12] rounded-[1.5rem] border border-white/5 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black text-gray-500 uppercase">Category (Font Trigger)</label>
+                      <label className="text-[10px] font-black text-gray-500 uppercase">Category</label>
                       <select value={activeSlide.type} onChange={(e) => updateSlideField('type', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-xs outline-none">
                         <option value="fact">Fact Slide</option>
                         <option value="question">Question Slide</option>
@@ -484,23 +506,32 @@ const App: React.FC = () => {
                       <label className="text-[10px] font-black text-gray-500 uppercase">Layout Choice</label>
                       <select value={activeSlide.layout || 'default'} onChange={(e) => updateSlideField('layout', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-xs outline-none">
                         <option value="default">Standard Box</option>
-                        <option value="cover-page">Cover Page (Full Screen)</option>
-                        <option value="split-horizontal">Horizontal Split (Asset on Right)</option>
-                        <option value="split-vertical">Vertical Split (Asset on Top)</option>
+                        <option value="cover-page">Cover Page (Sharp Full-Screen)</option>
+                        <option value="split-horizontal">Horizontal Split</option>
+                        <option value="split-vertical">Vertical Split</option>
                       </select>
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Slide Heading</label>
+                    <label className="text-[10px] font-black text-gray-500 uppercase">Heading</label>
                     <input type="text" value={activeSlide.title || ''} onChange={(e) => updateSlideField('title', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-sm font-bold focus:border-blue-500/30 outline-none" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Body Content (Bullets)</label>
+                    <label className="text-[10px] font-black text-gray-500 uppercase">Body Content</label>
                     <textarea value={Array.isArray(activeSlide.content) ? activeSlide.content.join('\n') : activeSlide.content} onChange={(e) => updateSlideField('content', e.target.value.split('\n'))} className="w-full h-48 bg-black border border-white/5 rounded-xl px-4 py-3 text-xs md:text-sm leading-relaxed custom-scrollbar focus:border-blue-500/30 outline-none" />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Direct Asset URL (Slide Image)</label>
-                    <input type="text" value={activeSlide.imageUrl || ''} onChange={(e) => updateSlideField('imageUrl', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-[10px] font-mono focus:border-blue-500/30 outline-none" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-gray-500 uppercase">Slide Image (URL)</label>
+                      <input type="text" value={activeSlide.imageUrl || ''} onChange={(e) => updateSlideField('imageUrl', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-[10px] font-mono focus:border-blue-500/30 outline-none" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black text-gray-500 uppercase">Slide Image (Local)</label>
+                      <label className="flex items-center justify-center gap-2 w-full bg-emerald-600/10 hover:bg-emerald-600/20 border border-emerald-500/20 rounded-xl px-4 py-2 text-[10px] font-black cursor-pointer transition-all uppercase group">
+                        <UploadIcon size={14} /> Upload Image
+                        <input type="file" accept="image/*" onChange={handleSlideLocalImageUpload} className="hidden" />
+                      </label>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -539,7 +570,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-2 md:p-8 overflow-hidden select-none relative font-sans" onClick={() => nextSlide()}>
       <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: bgGradient }} />
-      {activeBgImage && (
+      {activeBgImage && slide.layout !== 'cover-page' && (
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img src={activeBgImage} className="w-full h-full object-cover opacity-35 transition-all duration-1000" style={{ filter: `blur(${currentBlur}px)` }} />
           <div className="absolute inset-0 bg-black/65" />
@@ -553,18 +584,23 @@ const App: React.FC = () => {
       <div ref={slideRef} className="relative z-10 w-full max-w-[100vw] h-[95vh] md:max-w-[1600px] md:aspect-[16/9] flex items-center justify-center pointer-events-none overflow-hidden">
         <div key={currentIdx} className="w-full h-full flex items-center justify-center slide-entry-animation relative pointer-events-auto">
             {slide.layout === 'cover-page' ? (
-              <div className="w-full h-full flex flex-col items-center justify-center p-8 md:p-16 text-center">
-                 {slide.title && (
-                    <div className="mb-10 md:mb-16 shrink-0 scale-up-animation">
-                      <h2 className="font-black tracking-tighter leading-tight drop-shadow-2xl" style={{ color: theme.color, fontSize: `calc(clamp(3rem, 10vw, 8rem) * ${titleFontScale})` }}>{renderTextWithHighlights(slide.title, 'title', 0, slide.highlights)}</h2>
+              <div className="w-full h-full flex flex-col items-center justify-center p-8 md:p-16 text-center relative overflow-hidden">
+                  {slide.imageUrl && (
+                    <div className="absolute inset-0 -z-20 scale-up-animation">
+                      <img src={slide.imageUrl} className="w-full h-full object-cover opacity-100" style={{ filter: 'blur(0px)' }} />
                     </div>
                   )}
-                  <div className="max-w-4xl opacity-90">{renderContent(slide.content, slide.type, slide.highlights)}</div>
-                  {slide.imageUrl && <div className="absolute inset-0 -z-10 opacity-40"><img src={slide.imageUrl} className="w-full h-full object-cover" /></div>}
+                 {slide.title && (
+                    <div className="mb-10 md:mb-16 shrink-0 scale-up-animation relative z-10">
+                      <h2 className="font-black tracking-tighter leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]" style={{ color: theme.color, fontSize: `calc(clamp(3rem, 10vw, 8rem) * ${titleFontScale})` }}>{renderTextWithHighlights(slide.title, 'title', 0, slide.highlights)}</h2>
+                    </div>
+                  )}
+                  <div className="max-w-4xl relative z-10 drop-shadow-[0_5px_15px_rgba(0,0,0,0.9)]">{renderContent(slide.content, slide.type, slide.highlights)}</div>
               </div>
             ) : slide.layout === 'split-horizontal' ? (
               <div className="flex h-full w-full gap-2 md:gap-6 lg:gap-8 p-3 md:p-8">
-                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} style={{ width: `${slide.imageSize || 50}%`, padding: `${globalSettings.boxPadding}px` }}>
+                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} 
+                     style={{ width: `${slide.imageSize || 50}%`, padding: `${globalSettings.boxPadding}px`, boxShadow: theme.glow }}>
                    {slide.title && (
                     <div className="mb-6 md:mb-8 flex items-center gap-4 shrink-0">
                       <div className="w-2.5 h-10 md:h-12 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
@@ -573,12 +609,19 @@ const App: React.FC = () => {
                   )}
                   <div className="flex-1 overflow-y-auto custom-scrollbar pr-3 md:pr-6">{renderContent(slide.content, slide.type, slide.highlights)}</div>
                 </div>
-                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} style={{ width: `${100 - (slide.imageSize || 50)}%` }}>{slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}</div>
+                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
+                     style={{ width: `${100 - (slide.imageSize || 50)}%`, boxShadow: theme.glow }}>
+                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
+                </div>
               </div>
             ) : slide.layout === 'split-vertical' ? (
                <div className="flex flex-col h-full w-full gap-2 md:gap-6 p-3 md:p-8">
-                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} style={{ height: `${slide.imageSize || 45}%` }}>{slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}</div>
-                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} style={{ height: `${100 - (slide.imageSize || 45)}%`, padding: `${globalSettings.boxPadding}px` }}>
+                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
+                      style={{ height: `${slide.imageSize || 45}%`, boxShadow: theme.glow }}>
+                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
+                 </div>
+                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} 
+                     style={{ height: `${100 - (slide.imageSize || 45)}%`, padding: `${globalSettings.boxPadding}px`, boxShadow: theme.glow }}>
                    {slide.title && (
                     <div className="mb-4 md:mb-6 flex items-center gap-4 shrink-0">
                       <div className="w-2.5 h-8 md:h-10 rounded-full bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.4)]" />
@@ -589,8 +632,16 @@ const App: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <div className={`flex flex-col rounded-[2.5rem] md:rounded-[4.5rem] border-2 transition-all duration-700 relative ${theme.box} shadow-2xl`} 
-                  style={{ padding: `${globalSettings.boxPadding}px`, width: `${globalSettings.boxWidth}%`, height: `${globalSettings.boxHeight}%`, maxWidth: '96%', maxHeight: '94%', overflow: 'hidden' }}>
+              <div className={`flex flex-col rounded-[2.5rem] md:rounded-[4.5rem] border-2 transition-all duration-700 relative ${theme.box}`} 
+                  style={{ 
+                    padding: `${globalSettings.boxPadding}px`, 
+                    width: `${globalSettings.boxWidth}%`, 
+                    height: `${globalSettings.boxHeight}%`, 
+                    maxWidth: '96%', 
+                    maxHeight: '94%', 
+                    overflow: 'hidden',
+                    boxShadow: theme.glow 
+                  }}>
                 {slide.title && (
                   <div className="mb-6 md:mb-10 flex items-center gap-5 md:gap-7 shrink-0">
                     <div className={`w-2.5 md:w-3 h-10 md:h-16 rounded-full shadow-lg ${slide.type === 'section' ? 'bg-emerald-500 shadow-emerald-500/30' : slide.type === 'question' ? 'bg-amber-500 shadow-amber-500/30' : 'bg-blue-500 shadow-blue-500/30'}`} />
@@ -600,11 +651,6 @@ const App: React.FC = () => {
                 <div className="flex-1 flex flex-col justify-start overflow-y-auto custom-scrollbar pr-2 md:pr-8 pb-20 mt-2">{renderContent(slide.content, slide.type, slide.highlights)}</div>
               </div>
             )}
-            
-            {/* CLEAN BRAND TEXT WATERMARK - BOTTOM RIGHT */}
-            <div className="absolute bottom-4 right-10 md:bottom-8 md:right-12 pointer-events-none select-none">
-              <span className="text-[10px] md:text-xs font-black tracking-[0.4em] md:tracking-[0.8em] uppercase opacity-40 hover:opacity-100 transition-opacity duration-500" style={{ color: theme.color }}>{globalSettings.brandText}</span>
-            </div>
         </div>
       </div>
       <div className="fixed bottom-4 left-4 right-4 md:bottom-10 md:left-10 md:right-10 flex flex-col sm:flex-row justify-between items-center gap-4 z-50 pointer-events-none" onClick={(e) => e.stopPropagation()}>

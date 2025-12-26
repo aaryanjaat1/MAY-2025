@@ -2048,7 +2048,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'नई वैश्विक गरीबी रेखा',
     content: [
       "विश्व बैंक ने वैश्विक गरीबी रेखा को $2.15/दिन से बढ़ाकर $3.00/दिन कर दिया है। (World Bank raised the International Poverty Line from $2.15/day to $3.00/day.)",
-      "नई रेखा के तहत 2022-23 में भारत की गरीबी 5.25% रही, जबकि पुरानी $2.15 रेखा के तहत यह 2.35% थी। (Under the new line, India's poverty was 5.25% in 2022-23; under the old line, it was 2.35%.)",
+      "नई रेखा के तहत 2022-23 में भारत की गरीबी 5.25% रही, जबकि पुरानी $2.15 रेखा के तहत यह गिरकर 2.35% थी। (Under the new line, India's poverty was 5.25% in 2022-23; under the old line, it was 2.35%.)",
       "भारत ने अपने नवीनतम घरेलू उपभोग व्यय सर्वेक्षण (HCES) में संशोधित मिश्रित रिकॉल अवधि (MMRP) पद्धति को अपनाया है। (India adopted Modified Mixed Recall Period method for HCES.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1000',
@@ -2191,6 +2191,251 @@ export const SLIDES: SlideData[] = [
       "पहलगाम हमले के बाद भारत ने पाकिस्तानी मूल की वस्तुओं के प्रत्यक्ष या अप्रत्यक्ष आयात पर पूर्ण प्रतिबंध लगा दिया है। (India imposed a ban on Pakistani-origin goods after the Pahalgam attack.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 71: Titans Space Mission 2029 ---
+  {
+    id: 't71-quiz',
+    type: 'quiz',
+    title: 'Titans Space Mission 2029',
+    subtitle: 'टाइटन्स स्पेस मिशन 2029',
+    content: [
+      "अमेरिकी निजी एजेंसी टाइटन्स स्पेस इंडस्ट्रीज (TSI) के 2029 के अंतरिक्ष मिशन के लिए किस भारतीय को अंतरिक्ष यात्री उम्मीदवार के रूप में चुना गया है?",
+      "Which Indian has been selected as an Astronaut Candidate for the 2029 space mission of the U.S. private agency Titans Space Industries (TSI)?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'राजा चारी (Raja Chari)' },
+      { id: 'B', label: 'B', text: 'जाहन्वी डांगेती (Jahnavi Dangeti)' },
+      { id: 'C', label: 'C', text: 'सिरीशा बांदला (Sirisha Bandla)' },
+      { id: 'D', label: 'D', text: 'सुनीता विलियम्स (Sunita Williams)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't71-fact',
+    type: 'fact',
+    title: 'Titans Space Mission 2029',
+    subtitle: 'टाइटन्स स्पेस मिशन 2029',
+    content: [
+      "जाहन्वी डांगेती को टाइटन्स स्पेस इंडस्ट्रीज (TSI) के 2029 के मिशन के लिए अंतरिक्ष यात्री उम्मीदवार (ASCAN) चुना गया है। (Jahnavi Dangeti selected as ASCAN for the 2029 Titan Space Industries mission.)",
+      "यह मिशन पृथ्वी की दो बार परिक्रमा करेगा और लगभग तीन घंटे तक निर्बाध शून्य गुरुत्वाकर्षण (Zero Gravity) प्रदान करेगा। (The mission will orbit Earth twice and witness nearly 3 hours of continuous zero gravity.)",
+      "जाहन्वी पोलैंड में एनालॉग अंतरिक्ष यात्री प्रशिक्षण केंद्र (AATC) से सबसे कम उम्र की एनालॉग अंतरिक्ष यात्री भी बनी थीं। (Jahnavi was the youngest Analog Astronaut from AATC, Poland.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 72: Adamya: Fast Patrol Vessel ---
+  {
+    id: 't72-quiz',
+    type: 'quiz',
+    title: 'Adamya: Fast Patrol Vessel',
+    subtitle: 'अदम्य: फास्ट पेट्रोल वेसल',
+    content: [
+      "भारतीय तटरक्षक बल (ICG) में शामिल किया गया पहला फास्ट पेट्रोल वेसल 'अदम्य' (Adamya) किस शिपयार्ड द्वारा निर्मित है?",
+      "The first Fast Patrol Vessel 'Adamya' inducted into the Indian Coast Guard (ICG) is built by which shipyard?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'कोचीन शिपयार्ड (Cochin Shipyard)' },
+      { id: 'B', label: 'B', text: 'मझगांव डॉक (Mazagon Dock)' },
+      { id: 'C', label: 'C', text: 'गोवा शिपयार्ड लिमिटेड (GSL)' },
+      { id: 'D', label: 'D', text: 'गार्डन रीच शिपबिल्डर्स (GRSE)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't72-fact',
+    type: 'fact',
+    title: 'Adamya: Fast Patrol Vessel',
+    subtitle: 'अदम्य: फास्ट पेट्रोल वेसल',
+    content: [
+      "गोवा में 'अदम्य' को भारतीय तटरक्षक बल (ICG) में शामिल किया गया जो गोवा शिपयार्ड लिमिटेड (GSL) द्वारा निर्मित है। (Adamya was inducted into the ICG in Goa; it is the first of eight FPVs built by Goa Shipyard Limited.)",
+      "इसमें नियंत्रणीय पिच प्रोपेलर (CPPs) और स्वदेशी गियरबॉक्स हैं जो इसे खोज और बचाव मिशनों में मदद करते हैं। (Features Controllable Pitch Propellers and indigenous gearboxes, assisting in search and rescue missions.)",
+      "यह 30mm CRN-91 गन से लैस है और विशेष आर्थिक क्षेत्र (EEZ) की सुरक्षा सुनिश्चित करने में मदद करेगा। (Equipped with a 30mm CRN-91 gun, it will secure India's Exclusive Economic Zone.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1517400473261-f349942a7791?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 73: Adi Karmyogi Programme ---
+  {
+    id: 't73-quiz',
+    type: 'quiz',
+    title: 'Adi Karmyogi Programme',
+    subtitle: 'आदि कर्मयोगी कार्यक्रम',
+    content: [
+      "'आदि कर्मयोगी' कार्यक्रम किस मंत्रालय द्वारा जनजातीय कल्याण वितरण में शामिल हितधारकों की क्षमता बढ़ाने के लिए शुरू किया गया है?",
+      "The 'Adi Karmyogi' programme has been launched by which Ministry to capacitate stakeholders involved in tribal welfare delivery?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'जनजातीय कार्य मंत्रालय (Ministry of Tribal Affairs)' },
+      { id: 'B', label: 'B', text: 'गृह मंत्रालय (Ministry of Home Affairs)' },
+      { id: 'C', label: 'C', text: 'शिक्षा मंत्रालय (Ministry of Education)' },
+      { id: 'D', label: 'D', text: 'ग्रामीण विकास मंत्रालय (Ministry of Rural Development)' }
+    ],
+    correctOptionId: 'A',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't73-fact',
+    type: 'fact',
+    title: 'Adi Karmyogi Programme',
+    subtitle: 'आदि कर्मयोगी कार्यक्रम',
+    content: [
+      "जनजातीय कार्य मंत्रालय ने जनजातीय कल्याण में शामिल लगभग 20 लाख अधिकारियों को प्रशिक्षित करने के लिए 'आदि कर्मयोगी' शुरू किया। (The Ministry of Tribal Affairs launched Adi Karmyogi to train 20 lakh stakeholders in tribal welfare.)",
+      "यह कार्यक्रम स्वास्थ्य (विशेषकर सिकल सेल रोग) और शिक्षा जैसे महत्वपूर्ण क्षेत्रों पर ध्यान केंद्रित करेगा। (The programme focuses on critical sectors like healthcare, especially Sickle Cell Disease, and education.)",
+      "यह व्यापक 'मिशन कर्मयोगी' के अनुरूप है जो सिविल सेवा क्षमता निर्माण का राष्ट्रीय कार्यक्रम है। (Aligns with the national 'Mission Karmayogi' for civil service capacity building.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1532375810709-75b1da00537c?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 74: India’s External Debt ---
+  {
+    id: 't74-quiz',
+    type: 'quiz',
+    title: 'India’s External Debt',
+    subtitle: 'भारत का विदेशी ऋण',
+    content: [
+      "मार्च 2025 के अंत में भारत का विदेशी ऋण (External Debt) बढ़कर कितना हो गया है?",
+      "What was India's external debt at the end of March 2025?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '$668.8 बिलियन ($668.8 billion)' },
+      { id: 'B', label: 'B', text: '$736.3 बिलियन ($736.3 billion)' },
+      { id: 'C', label: 'C', text: '$500 बिलियन ($500 billion)' },
+      { id: 'D', label: 'D', text: '$850 बिलियन ($850 billion)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't74-fact',
+    type: 'fact',
+    title: 'India’s External Debt',
+    subtitle: 'भारत का विदेशी ऋण',
+    content: [
+      "मार्च 2025 के अंत में भारत का विदेशी ऋण बढ़कर $736.3 बिलियन हो गया जो जीडीपी का 19.1% है। (India’s external debt rose to $736.3 billion by March 2025, accounting for 19.1% of GDP.)",
+      "ऋण का सबसे बड़ा घटक 'ऋण' (Loans-34%) है और अमेरिकी डॉलर मूल्यवर्ग का ऋण सबसे बड़ा हिस्सा (54.2%) है। (The largest component is Loans at 34%, with USD-denominated debt holding the biggest share at 54.2%.)",
+      "विदेशी ऋण वह हिस्सा है जो विदेशी लेनदारों (सरकार, संस्थानों या निजी संस्थाओं) से उधार लिया जाता है। (External debt refers to the portion of a country's debt borrowed from foreign lenders.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 75: Bihar: Mobile App Voting ---
+  {
+    id: 't75-quiz',
+    type: 'quiz',
+    title: 'Bihar: Mobile App Voting',
+    subtitle: 'बिहार: मोबाइल ऐप वोटिंग',
+    content: [
+      "बिहार के नगर निकाय चुनावों में ई-वोटिंग के लिए किस मोबाइल एप्लिकेशन का उपयोग किया गया है?",
+      "Which mobile application is used for e-voting in Bihar's municipal body elections?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'ई-बिहार (E-Bihar)' },
+      { id: 'B', label: 'B', text: 'ई-एसईसी बीएचआर (E-SECBHR)' },
+      { id: 'C', label: 'C', text: 'डिजिटल बिहार (Digital Bihar)' },
+      { id: 'D', label: 'D', text: 'वोट बिहार (Vote Bihar)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't75-fact',
+    type: 'fact',
+    title: 'Bihar: Mobile App Voting',
+    subtitle: 'बिहार: मोबाइल ऐप वोटिंग',
+    content: [
+      "बिहार नगर निकायों में मोबाइल ऐप के माध्यम से ई-वोटिंग सुविधा शुरू करने वाला देश का पहला राज्य बन गया है। (Bihar is the first state in India to launch e-voting via mobile apps for municipal elections.)",
+      "वरिष्ठ नागरिक और विकलांग लोग घर बैठे E-SECBHR ऐप के माध्यम से वोट डाल सकते हैं जिसमें ब्लॉकचेन तकनीक का उपयोग किया गया है। (Seniors and disabled citizens can vote from home via the E-SECBHR app, which utilizes blockchain technology.)",
+      "इसमें सुरक्षा सुनिश्चित करने के लिए फेशियल रिकग्निशन (Facial Recognition) तकनीक का भी उपयोग किया गया है। (The system also employs facial recognition technology to ensure secure voting.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1540914124281-3427106e7419?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 76: National Turmeric Board ---
+  {
+    id: 't76-quiz',
+    type: 'quiz',
+    title: 'National Turmeric Board',
+    subtitle: 'राष्ट्रीय हल्दी बोर्ड',
+    content: [
+      "हाल ही में 'राष्ट्रीय हल्दी बोर्ड' का मुख्यालय कहाँ स्थापित किया गया है?",
+      "Where has the headquarters of the 'National Turmeric Board' been recently established?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'सांगली, महाराष्ट्र (Sangli, Maharashtra)' },
+      { id: 'B', label: 'B', text: 'निजामाबाद, तेलंगाना (Nizamabad, Telangana)' },
+      { id: 'C', label: 'C', text: 'गुंटूर, आंध्र प्रदेश (Guntur, AP)' },
+      { id: 'D', label: 'D', text: 'इरोड, तमिलनाडु (Erode, TN)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't76-fact',
+    type: 'fact',
+    title: 'National Turmeric Board',
+    subtitle: 'राष्ट्रीय हल्दी बोर्ड',
+    content: [
+      "केंद्रीय गृह मंत्री ने तेलंगाना के निजामाबाद में राष्ट्रीय हल्दी बोर्ड के मुख्यालय का उद्घाटन किया। (The Home Minister inaugurated the National Turmeric Board headquarters in Nizamabad, Telangana.)",
+      "भारत दुनिया में हल्दी का सबसे बड़ा उत्पादक, उपभोक्ता और निर्यातक है जहाँ हल्दी को 'गोल्डन स्पाइस' भी कहा जाता है। (India is the world's largest producer and exporter of turmeric, also known as the 'Golden Spice'.)",
+      "यह बोर्ड वाणिज्य और उद्योग मंत्रालय के तहत हल्दी की खेती और निर्यात को बढ़ावा देने के लिए समर्पित है। (The board operates under the Ministry of Commerce to boost turmeric production and exports.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1615485290382-441e4d019cb5?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 77: Akash Air Defence System ---
+  {
+    id: 't77-quiz',
+    type: 'quiz',
+    title: 'Akash Air Defence System',
+    subtitle: 'आकाश वायु रक्षा प्रणाली',
+    content: [
+      "किस देश ने भारत से 'आकाश वायु रक्षा प्रणाली' खरीदने में रुचि व्यक्त की है?",
+      "Which country has expressed interest in purchasing the 'Akash Air Defence System' from India?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'रूस (Russia)' },
+      { id: 'B', label: 'B', text: 'ब्राजील (Brazil)' },
+      { id: 'C', label: 'C', text: 'फ्रांस (France)' },
+      { id: 'D', label: 'D', text: 'दक्षिण अफ्रीका (South Africa)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't77-fact',
+    type: 'fact',
+    title: 'Akash Air Defence System',
+    subtitle: 'आकाश वायु रक्षा प्रणाली',
+    content: [
+      "ब्राजील ने भारत की 'आकाश वायु रक्षा प्रणाली' खरीदने में रुचि दिखाई है जो सुपरसोनिक गति से यात्रा कर सकती है। (Brazil has expressed interest in purchasing India’s Akash Air Defence System, which travels at supersonic speeds.)",
+      "यह 'मेक इन इंडिया' के तहत DRDO द्वारा विकसित एक मध्यम दूरी की मोबाइल सतह से हवा में मार करने वाली मिसाइल है। (Developed by DRDO under 'Make in India', it is a medium-range mobile surface-to-air missile system.)",
+      "इसकी मारक क्षमता 25 किमी तक है और यह दुश्मन के विमानों, ड्रोन और मिसाइलों को नष्ट करने में सक्षम है। (With a range of up to 25 km, it is capable of destroying enemy aircraft, drones, and missiles.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1000',
     contentScale: 0.85,
     contentYOffset: 10
   }

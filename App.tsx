@@ -55,11 +55,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (activeProjectId) {
-      fetchSlides(activeProjectId);
+      fetchProjectData(activeProjectId);
     } else if (projects.length === 0) {
        setSlides(INITIAL_DATA);
     }
-  }, [activeProjectId, projects]);
+  }, [activeProjectId]);
 
   const fetchProjects = async () => {
     const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
@@ -69,22 +69,37 @@ const App: React.FC = () => {
     }
   };
 
-  const fetchSlides = async (projectId: string) => {
+  const fetchProjectData = async (projectId: string) => {
     setIsSyncing(true);
-    const { data } = await supabase.from('slides').select('data').eq('project_id', projectId).order('slide_index', { ascending: true });
-    if (data && data.length > 0) {
-      setSlides(data.map(d => d.data as SlideData));
-      setCurrentIdx(0);
-    } else {
-      setSlides(INITIAL_DATA);
+    try {
+      // 1. Fetch settings for this project
+      const { data: project } = await supabase.from('projects').select('settings').eq('id', projectId).single();
+      if (project?.settings) {
+        setSettings(project.settings);
+      } else {
+        setSettings({ titleFontScale: 1, bodyFontScale: 1, factFontScale: 1, boxPadding: 24 });
+      }
+
+      // 2. Fetch slides
+      const { data: slidesData } = await supabase.from('slides').select('data').eq('project_id', projectId).order('slide_index', { ascending: true });
+      if (slidesData && slidesData.length > 0) {
+        setSlides(slidesData.map(d => d.data as SlideData));
+        setCurrentIdx(0);
+      } else {
+        setSlides(INITIAL_DATA);
+      }
+    } catch (err) {
+      console.error("Error loading project data:", err);
+    } finally {
+      setIsSyncing(false);
     }
-    setIsSyncing(false);
   };
 
   const handleCreateProject = async () => {
     const name = prompt("Enter project name:");
     if (!name) return;
-    const { data } = await supabase.from('projects').insert({ name }).select().single();
+    const initialSettings = { titleFontScale: 1, bodyFontScale: 1, factFontScale: 1, boxPadding: 24 };
+    const { data } = await supabase.from('projects').insert({ name, settings: initialSettings }).select().single();
     if (data) {
       setProjects([data, ...projects]);
       setActiveProjectId(data.id);
@@ -95,6 +110,9 @@ const App: React.FC = () => {
     e.stopPropagation();
     if (!confirm("Are you sure you want to delete this project?")) return;
     await supabase.from('projects').delete().eq('id', id);
+    // Cascade delete slides (assumed DB setup or manual here)
+    await supabase.from('slides').delete().eq('project_id', id);
+    
     const updated = projects.filter(p => p.id !== id);
     setProjects(updated);
     if (activeProjectId === id) {
@@ -107,12 +125,23 @@ const App: React.FC = () => {
     setIsSyncing(true);
     setSyncSuccess(false);
     try {
+      // Update Project Settings
+      await supabase.from('projects').update({ settings: settings }).eq('id', activeProjectId);
+      
+      // Update Slides (Delete and Replace for consistency)
       await supabase.from('slides').delete().eq('project_id', activeProjectId);
       const rows = slides.map((s, i) => ({ project_id: activeProjectId, slide_index: i, data: s }));
       await supabase.from('slides').insert(rows);
+      
       setSyncSuccess(true);
       setTimeout(() => setSyncSuccess(false), 3000);
-    } catch (err) { console.error(err); }
+      
+      // Refresh local projects list to keep metadata synced
+      fetchProjects();
+    } catch (err) { 
+      console.error("Sync Error:", err); 
+      alert("Failed to sync data to cloud.");
+    }
     finally { setIsSyncing(false); }
   };
 

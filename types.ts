@@ -43,12 +43,6 @@ export interface TableRow {
   col3?: string;
 }
 
-export interface Project {
-  id: string;
-  name: string;
-  created_at?: string;
-}
-
 export interface GlobalSettings {
   bgImage?: string;
   bgType?: BackgroundType;
@@ -61,4 +55,11 @@ export interface GlobalSettings {
   bodyFontScale?: number;
   titleFontScale?: number;
   factFontScale?: number;
+}
+
+export interface Project {
+  id: string;
+  name: string;
+  settings?: GlobalSettings;
+  created_at?: string;
 }

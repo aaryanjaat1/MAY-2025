@@ -1400,5 +1400,110 @@ export const SLIDES: SlideData[] = [
     imageUrl: 'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?q=80&w=1000',
     contentScale: 0.85,
     contentYOffset: 10
+  },
+
+  // --- TOPIC 48: 51st G7 Summit ---
+  {
+    id: 't48-quiz',
+    type: 'quiz',
+    title: '51st G7 Summit',
+    subtitle: '51वां जी7 शिखर सम्मेलन',
+    content: [
+      "कनाडा द्वारा आयोजित 51वें जी7 (G7) शिखर सम्मेलन 2025 का मुख्य विषय (Theme) क्या है?",
+      "What is the main theme of the 51st G7 Summit 2025 hosted by Canada?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'वैश्विक अर्थव्यवस्था का पुनर्निर्माण (Rebuilding the global economy)' },
+      { id: 'B', label: 'B', text: 'भविष्य की साझेदारी को सुरक्षित करना (Securing the partnerships of the future)' },
+      { id: 'C', label: 'C', text: 'हरित ऊर्जा और डिजिटल परिवर्तन (Green Energy and Digital Transition)' },
+      { id: 'D', label: 'D', text: 'उपरोक्त सभी (All of the above)' }
+    ],
+    correctOptionId: 'D',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't48-fact',
+    type: 'fact',
+    title: '51st G7 Summit',
+    subtitle: '51वां जी7 शिखर सम्मेलन',
+    content: [
+      "प्रधानमंत्री नरेंद्र मोदी ने कनाडा के कनानास्कि (Kananaskis) में आयोजित 51वें जी-7 शिखर सम्मेलन में भाग लिया। (PM Modi participated in the 51st G7 Summit held in Kananaskis, Canada.)",
+      "सम्मेलन के तीन मुख्य स्तंभ समुदायों की रक्षा, ऊर्जा सुरक्षा/डिजिटल परिवर्तन और भविष्य की साझेदारी हैं। (The summit's three pillars are protecting communities, energy security/digital transition, and future partnerships.)",
+      "जी7 सात उन्नत अर्थव्यवस्थाओं (फ्रांस, जर्मनी, इटली, जापान, यूके, यूएस और कनाडा) और यूरोपीय संघ का एक समूह है। (G7 is a group of 7 advanced economies and the European Union.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 49: Strait of Hormuz ---
+  {
+    id: 't49-quiz',
+    type: 'quiz',
+    title: 'Strait of Hormuz',
+    subtitle: 'होर्मुज जलडमरूमध्य',
+    content: [
+      "होर्मुज जलडमरूमध्य (Strait of Hormuz) किन दो जल निकायों को जोड़ता है?",
+      "The Strait of Hormuz connects which two bodies of water?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'लाल सागर और अरब सागर (Red Sea and Arabian Sea)' },
+      { id: 'B', label: 'B', text: 'फारस की खाड़ी और ओमान की खाड़ी (Persian Gulf and Gulf of Oman)' },
+      { id: 'C', label: 'C', text: 'बंगाल की खाड़ी और हिंद महासागर (Bay of Bengal and Indian Ocean)' },
+      { id: 'D', label: 'D', text: 'भूमध्य सागर और अटलांटिक महासागर (Mediterranean Sea and Atlantic Ocean)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't49-fact',
+    type: 'fact',
+    title: 'Strait of Hormuz',
+    subtitle: 'होर्मुज जलडमरूमध्य',
+    content: [
+      "होर्मुज जलडमरूमध्य फारस की खाड़ी और ओमान की खाड़ी को जोड़ने वाला एक रणनीतिक जलमार्ग है। (The Strait of Hormuz is a strategic waterway connecting the Persian Gulf and the Gulf of Oman.)",
+      "दुनिया की तेल आपूर्ति का लगभग 20% और भारत का अधिकांश ऊर्जा आयात इसी मार्ग से गुजरता है। (About 20% of global oil supply and most of India's energy imports pass through this route.)",
+      "यह ईरान और ओमान के बीच स्थित है और वैश्विक व्यापार के लिए एक महत्वपूर्ण 'चोक पॉइंट' माना जाता है। (It is located between Iran and Oman and is considered a vital maritime choke point.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1544933863-4528193b6201?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 50: INS Arnala (ASW-SWC) ---
+  {
+    id: 't50-quiz',
+    type: 'quiz',
+    title: 'INS Arnala (ASW-SWC)',
+    subtitle: 'आईएनएस अरनाला (ASW-SWC)',
+    content: [
+      "भारत के पहले एंटी-सबमरीन वारफेयर शैलो वॉटर क्राफ्ट (ASW-SWC) का नाम क्या है जिसे विशाखापत्तनम में कमीशन किया जाएगा?",
+      "What is the name of India's first Anti-Submarine Warfare Shallow Water Craft (ASW-SWC) to be commissioned in Visakhapatnam?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'आईएनएस विक्रांत (INS Vikrant)' },
+      { id: 'B', label: 'B', text: 'आईएनएस अरनाला (INS Arnala)' },
+      { id: 'C', label: 'C', text: 'आईएनएस नीलगिरी (INS Nilgiri)' },
+      { id: 'D', label: 'D', text: 'आईएनएस तमाल (INS Tamal)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't50-fact',
+    type: 'fact',
+    title: 'INS Arnala (ASW-SWC)',
+    subtitle: 'आईएनएस अरनाला (ASW-SWC)',
+    content: [
+      "भारतीय नौसेना विशाखापत्तनम में देश के पहले एंटी-सबमरीन वारफेयर शैलो वॉटर क्राफ्ट जहाज आईएनएस अरनाला को कमीशन करने के लिए तैयार है। (Indian Navy is set to commission INS Arnala, the country's first ASW-SWC vessel, in Visakhapatnam.)",
+      "इसका नाम महाराष्ट्र के ऐतिहासिक अरनाला किले के नाम पर रखा गया है और इसे जीआरएसई (GRSE) कोलकाता द्वारा बनाया गया है। (Named after Arnala Fort in Maharashtra, it was built by GRSE Kolkata.)",
+      "इसमें 80% से अधिक स्वदेशी सामग्री है और यह जलप्रलय (waterjet) प्रणोदन प्रणाली से संचालित है। (It has over 80% indigenous content and is powered by a waterjet propulsion system.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
   }
 ];

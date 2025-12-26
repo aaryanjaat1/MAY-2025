@@ -2,19 +2,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SlideData, Project, GlobalSettings } from './types';
 import { 
-  ChevronLeft, ChevronRight, Settings, Save, Trash2, 
-  Loader2, CheckCircle2, PlusCircle, RefreshCw, Check, Layers, 
-  Maximize, Minimize, Sliders, Highlighter, Plus, X, Menu, MoveUp, AlertTriangle
+  ChevronLeft, ChevronRight, Settings, Save, 
+  Loader2, CheckCircle2, RefreshCw, Check, Layers, 
+  Maximize, Minimize, Sliders, Highlighter, Plus, X, Menu, Search, FolderOpen, LayoutGrid
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
-import html2canvas from 'html2canvas';
-import pptxgen from 'pptxgenjs';
-import { jsPDF } from 'jspdf';
 import { SLIDES as INITIAL_DATA } from './constants/slidesData';
 
 const SUPABASE_URL = 'https://tvcwdfgvyhkjcfjljcna.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR2Y3dkZmd2eWhramNmamxqY25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1ODY1MzMsImV4cCI6MjA4MjE2MjUzM30.8DxeIeYWCW6EfQ7kPWD041mqjNNDlEx9ax8l2MN0pC4';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const GLOW_SHADOW = "shadow-[0_0_40px_rgba(0,0,0,0.5)]";
 
 const App: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -24,9 +23,11 @@ const App: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [editingIdx, setEditingIdx] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [adminTab, setAdminTab] = useState<'slides' | 'settings'>('slides');
+  const [adminTab, setAdminTab] = useState<'slides' | 'settings' | 'projects'>('slides');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [focusedBoxIdx, setFocusedBoxIdx] = useState<number | null>(null);
+  const [jumpValue, setJumpValue] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [settings, setSettings] = useState<GlobalSettings>({
     titleFontScale: 1.1,
@@ -35,13 +36,12 @@ const App: React.FC = () => {
     boxPadding: 40,
     defaultContentScale: 1,
     defaultContentYOffset: 0,
+    defaultBottomPadding: 240, // Increased to ensure clear overlap protection
+    navScale: 0.9, // Slightly smaller nav
   });
 
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const [exportType, setExportType] = useState<'PPTX' | 'PDF' | null>(null);
-  const [exportProgress, setExportProgress] = useState(0);
 
   const slideRef = useRef<HTMLDivElement>(null);
   const boxRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
@@ -57,6 +57,26 @@ const App: React.FC = () => {
       setSlides(INITIAL_DATA);
     }
   }, [activeProjectId]);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
 
   const fetchProjects = async () => {
     try {
@@ -96,12 +116,12 @@ const App: React.FC = () => {
     }
   };
 
-  const handleCreateMasterProject = async (customName?: string) => {
-    const name = customName || prompt("Enter project name:");
+  const handleCreateNewProject = async () => {
+    const name = prompt("Enter new project name (e.g., June 2025):");
     if (!name) return;
     setIsSyncing(true);
     try {
-      const initialSettings = { titleFontScale: 1.1, bodyFontScale: 1.1, factFontScale: 1.1, boxPadding: 40, defaultContentScale: 1, defaultContentYOffset: 0 };
+      const initialSettings = { ...settings };
       const { data: newProject } = await supabase.from('projects').insert({ name, settings: initialSettings }).select().single();
       if (!newProject) throw new Error("Creation Failed");
       const rows = INITIAL_DATA.map((s, i) => ({ project_id: newProject.id, slide_index: i, data: s }));
@@ -142,14 +162,13 @@ const App: React.FC = () => {
     }
   };
 
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
+  const handleJumpToSlide = (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = parseInt(jumpValue);
+    if (!isNaN(val) && val >= 1 && val <= slides.length) {
+      setCurrentIdx(val - 1);
     }
+    setJumpValue('');
   };
 
   const applyHighlightToBox = (idx: number) => {
@@ -172,7 +191,15 @@ const App: React.FC = () => {
     const parts = text.split(/(\[h\].*?\[\/h\])/g);
     return parts.map((part, i) => {
       if (part.startsWith('[h]') && part.endsWith('[/h]')) {
-        return <span key={i} className="bg-[#f0ff00] text-black px-1.5 py-0.5 rounded-sm mx-0.5 shadow-sm inline-block">{part.slice(3, -4)}</span>;
+        return (
+          <span 
+            key={i} 
+            className="font-black"
+            style={{ color: '#f0ff00' }}
+          >
+            {part.slice(3, -4)}
+          </span>
+        );
       }
       return part;
     });
@@ -181,7 +208,6 @@ const App: React.FC = () => {
   const splitTranslation = (text: string) => {
     const lastOpenBrace = text.lastIndexOf('(');
     const lastCloseBrace = text.lastIndexOf(')');
-    
     if (lastOpenBrace !== -1 && lastCloseBrace === text.length - 1) {
       const main = text.substring(0, lastOpenBrace).trim();
       const translation = text.substring(lastOpenBrace + 1, lastCloseBrace).trim();
@@ -192,138 +218,271 @@ const App: React.FC = () => {
 
   const getScaledSize = (base: number, scale: number = 1) => {
     const desktopSize = base * scale;
-    const mobileSize = Math.max(desktopSize * 0.45, 12);
+    const mobileSize = Math.max(desktopSize * 0.4, 10);
     const vwFactor = (desktopSize / 1920) * 100;
     return `clamp(${mobileSize}px, ${vwFactor}vw, ${desktopSize}px)`;
   };
 
   const slide = slides[currentIdx];
-  const GLOW_SHADOW = "shadow-[0_0_40px_rgba(0,0,0,0.6)]";
+  const filteredSlides = slides.filter(s => 
+    s.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    s.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   if (isAdmin) {
     const activeSlide = slides[editingIdx];
     const contentList = Array.isArray(activeSlide?.content) ? activeSlide.content : [activeSlide?.content as string];
+    
     return (
-      <div className="fixed inset-0 bg-black text-white flex flex-col md:flex-row z-[100] font-sans overflow-hidden">
-        <div className={`${isSidebarOpen ? 'w-full md:w-80' : 'w-0'} border-b md:border-b-0 md:border-r border-white/5 flex flex-col bg-[#050505] transition-all duration-300 overflow-hidden relative`}>
-          <div className="p-4 border-b border-white/5 bg-[#0a0a0d] flex items-center justify-between min-w-[320px]">
-            <h2 className="text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2"><Layers size={14}/> CMS</h2>
-            <div className="flex items-center gap-2">
-              <button onClick={() => handleCreateMasterProject()} className="text-blue-500"><PlusCircle size={18}/></button>
-              <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-gray-500"><X size={18}/></button>
+      <div className="fixed inset-0 bg-[#0a0a0c] text-white flex flex-col md:flex-row z-[200] font-sans overflow-hidden">
+        {/* Advanced Admin Sidebar */}
+        <div className={`${isSidebarOpen ? 'w-full md:w-96' : 'w-0'} border-r border-white/10 flex flex-col bg-[#0d0d0f] transition-all duration-500 overflow-hidden relative`}>
+          <div className="p-5 border-b border-white/5 bg-[#121215] flex items-center justify-between min-w-[384px]">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-600 rounded-lg"><Layers size={18}/></div>
+              <h2 className="text-xs font-black uppercase tracking-widest text-white">Advanced CMS</h2>
             </div>
+            <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-gray-500 hover:text-white"><X size={20}/></button>
           </div>
-          <div className="flex-1 overflow-y-auto custom-scrollbar min-w-[320px]">
-            <div className="flex border-b border-white/5">
-              <button onClick={() => setAdminTab('slides')} className={`flex-1 p-3 text-[10px] font-black uppercase ${adminTab === 'slides' ? 'bg-blue-600/10 text-blue-400' : 'text-gray-500'}`}>Slides</button>
-              <button onClick={() => setAdminTab('settings')} className={`flex-1 p-3 text-[10px] font-black uppercase ${adminTab === 'settings' ? 'bg-blue-600/10 text-blue-400' : 'text-gray-500'}`}>Settings</button>
-            </div>
-            {adminTab === 'slides' ? (
-              <div className="p-2 space-y-1">
-                {slides.map((s, i) => (
-                  <div key={s.id} onClick={() => setEditingIdx(i)} className={`p-3 rounded-lg cursor-pointer transition-all ${editingIdx === i ? 'bg-blue-600/10 border-l-2 border-blue-500' : 'hover:bg-white/5'}`}>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[9px] font-mono text-gray-600">{(i+1).toString().padStart(2, '0')}</span>
-                      <span className="flex-1 text-[11px] font-bold text-gray-300 truncate">{s.title}</span>
-                    </div>
-                  </div>
-                ))}
+          
+          <div className="flex border-b border-white/5 bg-[#0d0d0f] min-w-[384px]">
+            {[
+              { id: 'slides', label: 'Slides', icon: <LayoutGrid size={14}/> },
+              { id: 'settings', label: 'Styling', icon: <Sliders size={14}/> },
+              { id: 'projects', label: 'Projects', icon: <FolderOpen size={14}/> }
+            ].map(tab => (
+              <button 
+                key={tab.id}
+                onClick={() => setAdminTab(tab.id as any)}
+                className={`flex-1 p-4 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all ${adminTab === tab.id ? 'bg-blue-600/10 text-blue-400 border-b-2 border-blue-500' : 'text-gray-500 hover:bg-white/5'}`}
+              >
+                {tab.icon} {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex-1 overflow-y-auto custom-scrollbar min-w-[384px] bg-[#0d0d0f]">
+            {adminTab === 'slides' && (
+              <div className="p-4 space-y-3">
+                <div className="relative">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"/>
+                  <input 
+                    type="text" 
+                    placeholder="Search slides..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full bg-[#121215] border border-white/5 rounded-xl pl-9 pr-4 py-3 text-xs focus:border-blue-500 outline-none transition-all"
+                  />
+                </div>
+                <div className="space-y-1">
+                  {filteredSlides.map((s, i) => {
+                    const globalIdx = slides.findIndex(gs => gs.id === s.id);
+                    return (
+                      <div 
+                        key={s.id} 
+                        onClick={() => setEditingIdx(globalIdx)} 
+                        className={`p-3 rounded-xl cursor-pointer transition-all border flex items-center gap-3 ${editingIdx === globalIdx ? 'bg-blue-600/20 border-blue-500/50' : 'bg-transparent border-transparent hover:bg-white/5'}`}
+                      >
+                        <span className="text-[10px] font-mono text-gray-600">{(globalIdx + 1).toString().padStart(3, '0')}</span>
+                        <div className="flex-1 overflow-hidden">
+                          <p className="text-[11px] font-bold text-gray-200 truncate">{s.title}</p>
+                          <span className="text-[9px] text-gray-500 uppercase font-black">{s.type}</span>
+                        </div>
+                        {editingIdx === globalIdx && <Check size={12} className="text-blue-400"/>}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            ) : (
-              <div className="p-4 space-y-6">
-                 <h3 className="text-[10px] font-black text-blue-500 uppercase flex items-center gap-2"><Sliders size={12}/> Scaling</h3>
-                  {[
-                    { label: 'Title', key: 'titleFontScale' },
-                    { label: 'Body', key: 'bodyFontScale' },
-                    { label: 'Fact', key: 'factFontScale' }
-                  ].map(item => (
-                    <div key={item.key} className="space-y-1">
-                      <label className="text-[9px] font-bold text-gray-500 uppercase">{item.label}</label>
-                      <input type="range" min="0.5" max="2.5" step="0.05" value={(settings as any)[item.key]} onChange={e => setSettings(prev => ({...prev, [item.key]: parseFloat(e.target.value)}))} className="w-full accent-blue-600 h-1.5" />
+            )}
+
+            {adminTab === 'settings' && (
+              <div className="p-6 space-y-8">
+                 <div className="space-y-6">
+                   <h3 className="text-[10px] font-black text-gray-500 uppercase flex items-center gap-2"><LayoutGrid size={12}/> Global Typography</h3>
+                    {[
+                      { label: 'Title Size', key: 'titleFontScale' },
+                      { label: 'Body Content', key: 'bodyFontScale' },
+                      { label: 'Fact Cards', key: 'factFontScale' }
+                    ].map(item => (
+                      <div key={item.key} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <label className="text-[10px] font-bold text-gray-400">{item.label}</label>
+                          <span className="text-[10px] font-mono text-blue-400">{(settings as any)[item.key].toFixed(2)}x</span>
+                        </div>
+                        <input type="range" min="0.5" max="2.0" step="0.01" value={(settings as any)[item.key]} onChange={e => setSettings(prev => ({...prev, [item.key]: parseFloat(e.target.value)}))} className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                      </div>
+                    ))}
+                 </div>
+
+                 <div className="space-y-6 pt-6 border-t border-white/5">
+                   <h3 className="text-[10px] font-black text-orange-500 uppercase flex items-center gap-2"><Maximize size={12}/> Layout Corrections</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <label className="text-[10px] font-bold text-gray-400">Nav Clearance (Bottom Padding)</label>
+                        <span className="text-[10px] font-mono text-orange-400">{settings.defaultBottomPadding}px</span>
+                      </div>
+                      <input type="range" min="100" max="600" step="10" value={settings.defaultBottomPadding} onChange={e => setSettings(prev => ({...prev, defaultBottomPadding: parseInt(e.target.value)}))} className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-orange-500" />
                     </div>
-                  ))}
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <label className="text-[10px] font-bold text-gray-400">Navigation Scale</label>
+                        <span className="text-[10px] font-mono text-blue-400">{(settings.navScale || 1).toFixed(2)}x</span>
+                      </div>
+                      <input type="range" min="0.5" max="1.5" step="0.05" value={settings.navScale || 1} onChange={e => setSettings(prev => ({...prev, navScale: parseFloat(e.target.value)}))} className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                    </div>
+                 </div>
+              </div>
+            )}
+
+            {adminTab === 'projects' && (
+              <div className="p-6 space-y-4">
+                 <button onClick={handleCreateNewProject} className="w-full py-4 bg-blue-600 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20"><Plus size={16}/> New Project</button>
+                 <div className="space-y-2 pt-4">
+                   <h3 className="text-[10px] font-black text-gray-600 uppercase">Available Batches</h3>
+                   {projects.map(p => (
+                     <div key={p.id} onClick={() => setActiveProjectId(p.id)} className={`p-4 rounded-xl border cursor-pointer transition-all ${activeProjectId === p.id ? 'border-blue-500 bg-blue-600/10' : 'border-white/5 bg-[#121215] hover:border-white/10'}`}>
+                        <p className="text-[11px] font-bold">{p.name}</p>
+                        <p className="text-[9px] text-gray-500 mt-1">{new Date(p.created_at || '').toLocaleDateString()}</p>
+                     </div>
+                   ))}
+                 </div>
               </div>
             )}
           </div>
-          <div className="p-4 border-t border-white/5 bg-[#0a0a0d] space-y-2 min-w-[320px]">
-            <button onClick={syncToCloud} className="w-full py-3 bg-blue-600 rounded-lg text-[10px] font-black flex items-center justify-center gap-2">
-              {isSyncing ? <RefreshCw className="animate-spin" size={12}/> : <Save size={12}/>}
-              {syncSuccess ? 'CLOUD SYNCED' : 'SAVE TO CLOUD'}
+
+          <div className="p-5 border-t border-white/5 bg-[#121215] space-y-3 min-w-[384px]">
+            <button onClick={syncToCloud} className="w-full py-4 bg-green-600 rounded-xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-green-500 transition-all shadow-lg shadow-green-600/10">
+              {isSyncing ? <RefreshCw className="animate-spin" size={14}/> : (syncSuccess ? <CheckCircle2 size={14}/> : <Save size={14}/>)}
+              {syncSuccess ? 'UPDATED CLOUD' : 'SYNC TO CLOUD'}
             </button>
-            <button onClick={() => setIsAdmin(false)} className="w-full py-3 bg-gray-800 rounded-lg text-[10px] font-black uppercase">Close Admin</button>
+            <button onClick={() => setIsAdmin(false)} className="w-full py-4 bg-gray-800 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-gray-700 transition-all">Exit Admin</button>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 md:p-10 bg-black custom-scrollbar">
-          <button onClick={() => setIsSidebarOpen(true)} className={`${isSidebarOpen ? 'hidden' : 'block'} mb-4 p-2 bg-gray-900 rounded-lg`}><Menu size={20}/></button>
-          {activeSlide && (
-            <div className="max-w-5xl mx-auto space-y-8 pb-32 animate-in fade-in duration-500">
-               <div className="bg-[#0a0a0a] border border-blue-500/20 rounded-2xl p-6 grid grid-cols-2 gap-8">
-                  <div className="space-y-2">
-                    <label className="text-[9px] font-bold text-gray-500 uppercase">Scale: {(activeSlide.contentScale || 1).toFixed(2)}x</label>
-                    <input type="range" min="0.5" max="1.5" step="0.05" value={activeSlide.contentScale || 1} onChange={e => { const s = [...slides]; s[editingIdx].contentScale = parseFloat(e.target.value); setSlides(s); }} className="w-full accent-blue-600 h-1" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[9px] font-bold text-gray-500 uppercase">Y Offset: {activeSlide.contentYOffset || 0}px</label>
-                    <input type="range" min="-300" max="300" step="10" value={activeSlide.contentYOffset || 0} onChange={e => { const s = [...slides]; s[editingIdx].contentYOffset = parseInt(e.target.value); setSlides(s); }} className="w-full accent-blue-600 h-1" />
+
+        {/* Content Preview & Editor Area */}
+        <div className="flex-1 overflow-y-auto p-6 md:p-12 bg-[#050506] custom-scrollbar flex flex-col">
+          {!isSidebarOpen && <button onClick={() => setIsSidebarOpen(true)} className="fixed top-6 left-6 p-3 bg-blue-600 rounded-xl shadow-xl z-[210]"><Menu size={20}/></button>}
+          
+          <div className="max-w-6xl mx-auto w-full space-y-10 pb-40">
+             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-8">
+               <div className="space-y-1">
+                 <h1 className="text-3xl font-black text-white tracking-tighter">Editing Slide {editingIdx + 1}</h1>
+                 <p className="text-gray-500 text-sm font-bold uppercase tracking-widest">{activeSlide?.type} mode — {activeSlide?.id}</p>
+               </div>
+               <div className="flex gap-4">
+                  <div className="px-4 py-2 bg-[#121215] border border-white/10 rounded-xl flex items-center gap-3">
+                    <span className="text-[10px] font-black text-gray-500 uppercase">Scale Override</span>
+                    <input type="range" min="0.5" max="1.5" step="0.05" value={activeSlide?.contentScale || 1} onChange={e => { const s = [...slides]; s[editingIdx].contentScale = parseFloat(e.target.value); setSlides(s); }} className="w-24 h-1 accent-blue-600" />
                   </div>
                </div>
-               <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <input type="text" value={activeSlide.title || ''} placeholder="English Title" onChange={e => { const s = [...slides]; s[editingIdx].title = e.target.value; setSlides(s); }} className="w-full bg-[#0a0a0a] border border-white/10 p-4 rounded-xl text-sm font-bold" />
-                    <input type="text" value={activeSlide.subtitle || ''} placeholder="Hindi Title" onChange={e => { const s = [...slides]; s[editingIdx].subtitle = e.target.value; setSlides(s); }} className="w-full bg-[#0a0a0a] border border-white/10 p-4 rounded-xl text-sm font-bold" />
-                  </div>
-                  <div className="space-y-4">
-                    {contentList.map((box, bIdx) => (
-                      <div key={bIdx} className="bg-[#0a0a0a] border border-white/10 p-4 rounded-xl relative group">
-                        <textarea ref={el => boxRefs.current[bIdx] = el} value={box} onFocus={() => setFocusedBoxIdx(bIdx)} onChange={e => { const s = [...slides]; const c = Array.isArray(s[editingIdx].content) ? [...s[editingIdx].content as string[]] : [s[editingIdx].content as string]; c[bIdx] = e.target.value; s[editingIdx].content = c; setSlides(s); }} className="w-full h-24 bg-transparent border-none p-0 text-xs font-bold focus:ring-0 outline-none resize-none custom-scrollbar" />
-                        <button onClick={() => applyHighlightToBox(bIdx)} className="absolute top-2 right-2 p-1.5 bg-blue-600/20 text-blue-400 rounded opacity-0 group-hover:opacity-100 transition-all"><Highlighter size={14}/></button>
-                      </div>
-                    ))}
-                  </div>
-               </div>
-            </div>
-          )}
+             </div>
+
+             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div className="lg:col-span-4 space-y-6">
+                   <div className="space-y-2">
+                     <label className="text-[10px] font-black text-gray-500 uppercase">English Header</label>
+                     <input type="text" value={activeSlide?.title || ''} onChange={e => { const s = [...slides]; s[editingIdx].title = e.target.value; setSlides(s); }} className="w-full bg-[#121215] border border-white/10 p-4 rounded-xl text-sm font-bold focus:border-blue-500 outline-none" />
+                   </div>
+                   <div className="space-y-2">
+                     <label className="text-[10px] font-black text-gray-500 uppercase">Hindi Sub-Header</label>
+                     <input type="text" value={activeSlide?.subtitle || ''} onChange={e => { const s = [...slides]; s[editingIdx].subtitle = e.target.value; setSlides(s); }} className="w-full bg-[#121215] border border-white/10 p-4 rounded-xl text-sm font-bold focus:border-blue-500 outline-none" />
+                   </div>
+                   {activeSlide?.type === 'fact' && (
+                     <div className="space-y-2 pt-4">
+                       <label className="text-[10px] font-black text-gray-500 uppercase">Image URL (Thematic)</label>
+                       <input type="text" value={activeSlide?.imageUrl || ''} onChange={e => { const s = [...slides]; s[editingIdx].imageUrl = e.target.value; setSlides(s); }} className="w-full bg-[#121215] border border-white/10 p-4 rounded-xl text-[10px] font-mono focus:border-blue-500 outline-none" />
+                     </div>
+                   )}
+                </div>
+
+                <div className="lg:col-span-8 space-y-4">
+                   <label className="text-[10px] font-black text-gray-500 uppercase block mb-2">Content Blocks</label>
+                   {contentList.map((box, bIdx) => (
+                     <div key={bIdx} className="bg-[#121215] border border-white/10 p-1 rounded-2xl relative group focus-within:border-blue-500/50 transition-all">
+                        <div className="px-4 py-2 border-b border-white/5 flex items-center justify-between">
+                           <button onClick={() => applyHighlightToBox(bIdx)} className="flex items-center gap-2 px-3 py-1.5 bg-[#f0ff00] text-black rounded-lg text-[10px] font-black uppercase hover:scale-105 transition-all shadow-lg active:scale-95"><Highlighter size={12}/> Highlight Text</button>
+                           <span className="text-[9px] font-black text-gray-600 uppercase">Block {bIdx + 1}</span>
+                        </div>
+                       <textarea 
+                         ref={el => boxRefs.current[bIdx] = el}
+                         value={box}
+                         placeholder="Enter text here... use (हिंदी अनुवाद) for bilingual blocks"
+                         onFocus={() => setFocusedBoxIdx(bIdx)}
+                         onChange={e => {
+                           const s = [...slides];
+                           const c = Array.isArray(s[editingIdx].content) ? [...s[editingIdx].content as string[]] : [s[editingIdx].content as string];
+                           c[bIdx] = e.target.value;
+                           s[editingIdx].content = c;
+                           setSlides(s);
+                         }}
+                         className="w-full h-40 bg-transparent border-none p-4 text-sm font-bold focus:ring-0 outline-none resize-none custom-scrollbar leading-relaxed"
+                       />
+                     </div>
+                   ))}
+                </div>
+             </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center overflow-hidden font-sans relative select-none">
+    <div className="min-h-screen bg-[#00040a] text-white flex flex-col items-center justify-center overflow-hidden font-sans relative select-none">
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#0b1a33_0%,_#000000_100%)] opacity-85" />
+      
+      {/* Small Jump Input */}
+      <form onSubmit={handleJumpToSlide} className="fixed bottom-6 left-6 z-[100] group opacity-20 hover:opacity-100 transition-all duration-500">
+        <div className="flex items-center gap-2 bg-gray-900/60 backdrop-blur-3xl px-3 py-1.5 rounded-full border border-white/10 shadow-2xl">
+          <input 
+            type="text" 
+            placeholder={(currentIdx + 1).toString()} 
+            value={jumpValue}
+            onChange={e => setJumpValue(e.target.value)}
+            className="w-10 bg-transparent text-[10px] font-mono text-center border-none focus:ring-0 text-blue-400 placeholder-gray-700"
+          />
+          <span className="text-[9px] text-gray-700 font-black">/ {slides.length}</span>
+        </div>
+      </form>
+
       <div className="fixed top-4 right-4 z-[100] flex gap-3">
-        <button onClick={() => setIsAdmin(true)} className="p-3 bg-gray-900/40 backdrop-blur-xl rounded-xl border border-white/10 text-gray-400 hover:text-blue-400 transition-all"><Settings size={18} /></button>
-        <button onClick={toggleFullscreen} className="p-3 bg-gray-900/40 backdrop-blur-xl rounded-xl border border-white/10 text-gray-400 hover:text-green-400 transition-all">{isFullscreen ? <Minimize size={18}/> : <Maximize size={18}/>}</button>
+        <button onClick={() => setIsAdmin(true)} className="p-3 bg-gray-900/40 backdrop-blur-xl rounded-xl border border-white/10 text-gray-500 hover:text-blue-400 transition-all shadow-xl active:scale-90"><Settings size={18} /></button>
+        <button onClick={toggleFullscreen} className="p-3 bg-gray-900/40 backdrop-blur-xl rounded-xl border border-white/10 text-gray-500 hover:text-green-400 transition-all shadow-xl active:scale-90">{isFullscreen ? <Minimize size={18}/> : <Maximize size={18}/>}</button>
       </div>
       
       <div ref={slideRef} className="relative z-10 w-full h-full md:max-w-[1920px] md:aspect-[16/9] bg-[#00040d] overflow-hidden flex flex-col shadow-2xl">
         {slide ? (
-          <div key={currentIdx} className="w-full h-full flex flex-col pt-32 md:pt-40 pb-96 md:pb-[400px] px-6 md:px-16 relative overflow-y-auto custom-scrollbar scroll-smooth">
+          <div 
+            key={currentIdx} 
+            className="w-full h-full flex flex-col pt-24 md:pt-32 px-6 md:px-16 relative overflow-y-auto custom-scrollbar scroll-smooth"
+            style={{ paddingBottom: `${settings.defaultBottomPadding}px` }}
+          >
             {/* Header */}
-            <div className={`absolute top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 min-h-[70px] md:h-28 bg-[#0d1c3a]/60 backdrop-blur-3xl flex items-center px-6 md:px-12 border border-white/10 z-20 rounded-2xl ${GLOW_SHADOW}`}>
-              <div className="w-1.5 md:w-2.5 h-10 md:h-16 bg-[#ea580c] mr-4 md:mr-8 rounded-full shadow-[0_0_25px_rgba(234,88,12,0.8)] shrink-0" />
+            <div className={`absolute top-4 md:top-6 left-4 md:left-6 right-4 md:right-6 min-h-[60px] md:h-24 bg-[#0d1c3a]/70 backdrop-blur-3xl flex items-center px-6 md:px-10 border border-white/10 z-20 rounded-2xl ${GLOW_SHADOW}`}>
+              <div className="w-1.5 md:w-2 h-8 md:h-12 bg-[#ea580c] mr-4 md:mr-6 rounded-full shadow-[0_0_20px_rgba(234,88,12,0.8)] shrink-0" />
               <div className="animate-in slide-in-from-left duration-700 w-full overflow-hidden">
-                <h1 className="font-black text-white uppercase truncate tracking-tight leading-none" style={{ fontSize: getScaledSize(28, settings.titleFontScale) }}>{slide.title}</h1>
-                <p className="text-[14px] md:text-xl font-bold text-gray-300 opacity-90 truncate mt-1">{slide.subtitle}</p>
+                <h1 className="font-black text-white uppercase truncate tracking-tight leading-none" style={{ fontSize: getScaledSize(24, settings.titleFontScale) }}>{slide.title}</h1>
+                <p className="text-[12px] md:text-lg font-bold text-gray-300 opacity-90 truncate mt-1">{slide.subtitle}</p>
               </div>
             </div>
 
-            {/* Scalable Content */}
+            {/* Content Area */}
             <div className="flex-1 flex flex-col items-center transition-all duration-700 w-full" style={{ transform: `scale(${slide.contentScale || 1}) translateY(${slide.contentYOffset || 0}px)`, transformOrigin: 'top center' }}>
               {slide.type === 'quiz' && (
-                <div className="flex-1 flex flex-col items-center justify-start pt-8 space-y-8 md:space-y-12 animate-in slide-in-from-bottom duration-1000 w-full">
-                  <div className={`w-full max-w-full border border-white/10 rounded-[2rem] md:rounded-[4rem] text-center shadow-2xl bg-[#0d1c3a]/40 backdrop-blur-2xl ${GLOW_SHADOW}`} style={{ padding: `${settings.boxPadding}px` }}>
-                    <h3 className="font-black leading-tight text-white break-words" style={{ fontSize: getScaledSize(30, settings.bodyFontScale) }}>{Array.isArray(slide.content) ? renderHighlightedText(slide.content[0]) : renderHighlightedText(slide.content as string)}</h3>
-                    {Array.isArray(slide.content) && slide.content[1] && <p className="text-gray-400 font-bold opacity-70 mt-8 break-words" style={{ fontSize: getScaledSize(20, settings.bodyFontScale) }}>{renderHighlightedText(slide.content[1])}</p>}
+                <div className="flex-1 flex flex-col items-center justify-start pt-6 space-y-6 md:space-y-10 animate-in slide-in-from-bottom duration-1000 w-full">
+                  <div className={`w-full max-w-full border border-white/10 rounded-[1.5rem] md:rounded-[3rem] text-center shadow-2xl bg-[#0d1c3a]/40 backdrop-blur-2xl ${GLOW_SHADOW}`} style={{ padding: `${settings.boxPadding}px` }}>
+                    <h3 className="font-black leading-tight text-white break-words" style={{ fontSize: getScaledSize(28, settings.bodyFontScale) }}>{Array.isArray(slide.content) ? renderHighlightedText(slide.content[0]) : renderHighlightedText(slide.content as string)}</h3>
+                    {Array.isArray(slide.content) && slide.content[1] && <p className="text-gray-400 font-bold opacity-70 mt-6 break-words" style={{ fontSize: getScaledSize(18, settings.bodyFontScale) }}>{renderHighlightedText(slide.content[1])}</p>}
                   </div>
-                  <div className="w-full max-w-full flex flex-col gap-4 md:gap-6">
+                  <div className="w-full max-w-full flex flex-col gap-3 md:gap-5">
                     {slide.options?.map((opt) => {
                       const isCorrect = slide.correctOptionId === opt.id && slide.isRevealed;
                       return (
-                        <div key={opt.id} className={`p-5 md:p-7 rounded-2xl border transition-all duration-700 flex items-center gap-6 md:gap-12 shadow-xl ${isCorrect ? `bg-[#2563eb]/70 border-yellow-400/70 shadow-[0_0_60px_rgba(250,204,21,0.3)] scale-[1.01]` : 'bg-[#1e40af]/15 border-white/5 hover:bg-[#1e40af]/25'}`}>
-                          <div className={`text-lg md:text-2xl font-black w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-xl shrink-0 ${isCorrect ? 'text-yellow-400 bg-black/50' : 'text-gray-500 bg-white/5'}`}>{opt.label}</div>
-                          <span className={`font-black flex-1 break-words leading-tight ${isCorrect ? 'text-yellow-400' : 'text-gray-200'}`} style={{ fontSize: getScaledSize(24, settings.bodyFontScale) }}>{renderHighlightedText(opt.text)}</span>
-                          {isCorrect && <Check size={28} className="text-yellow-400 animate-in zoom-in shrink-0"/>}
+                        <div key={opt.id} className={`p-4 md:p-6 rounded-xl border transition-all duration-700 flex items-center gap-4 md:gap-10 shadow-xl ${isCorrect ? `bg-[#2563eb]/70 border-yellow-400/70 shadow-[0_0_60px_rgba(250,204,21,0.3)] scale-[1.01]` : 'bg-[#1e40af]/15 border-white/5 hover:bg-[#1e40af]/25'}`}>
+                          <div className={`text-base md:text-xl font-black w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-xl shrink-0 ${isCorrect ? 'text-yellow-400 bg-black/50' : 'text-gray-500 bg-white/5'}`}>{opt.label}</div>
+                          <span className={`font-black flex-1 break-words leading-tight ${isCorrect ? 'text-yellow-400' : 'text-gray-200'}`} style={{ fontSize: getScaledSize(22, settings.bodyFontScale) }}>{renderHighlightedText(opt.text)}</span>
+                          {isCorrect && <Check size={24} className="text-yellow-400 animate-in zoom-in shrink-0"/>}
                         </div>
                       );
                     })}
@@ -332,18 +491,18 @@ const App: React.FC = () => {
               )}
               
               {slide.type === 'fact' && (
-                <div className="flex-1 flex flex-col lg:flex-row gap-8 items-center justify-center animate-in slide-in-from-right duration-1000 w-full pt-12">
-                  <div className="flex-1 w-full space-y-6">
+                <div className="flex-1 flex flex-col lg:flex-row gap-6 items-center justify-center animate-in slide-in-from-right duration-1000 w-full pt-8">
+                  <div className="flex-1 w-full space-y-4">
                     {Array.isArray(slide.content) && (slide.content as string[]).map((line, lIdx) => {
                       const { main, translation } = splitTranslation(line);
                       return (
-                        <div key={lIdx} className={`bg-[#1e40af]/20 border-l-[12px] border-[#ea580c] p-6 md:p-10 rounded-2xl border border-white/10 shadow-2xl transition-all hover:bg-[#1e40af]/30 flex flex-col ${GLOW_SHADOW}`}>
+                        <div key={lIdx} className={`bg-[#1e40af]/20 border-l-[10px] border-[#ea580c] p-5 md:p-8 rounded-xl border border-white/10 shadow-2xl transition-all hover:bg-[#1e40af]/30 flex flex-col ${GLOW_SHADOW}`}>
                           <div className="overflow-hidden">
-                            <p className="font-black text-white leading-snug break-words" style={{ fontSize: getScaledSize(24, settings.factFontScale) }}>
+                            <p className="font-black text-white leading-snug break-words" style={{ fontSize: getScaledSize(22, settings.factFontScale) }}>
                               {renderHighlightedText(main)}
                             </p>
                             {translation && (
-                              <p className="font-bold text-gray-400 mt-5 opacity-80 leading-relaxed break-words" style={{ fontSize: getScaledSize(18, settings.factFontScale) }}>
+                              <p className="font-bold text-gray-400 mt-4 opacity-80 leading-relaxed break-words" style={{ fontSize: getScaledSize(16, settings.factFontScale) }}>
                                 {renderHighlightedText(translation)}
                               </p>
                             )}
@@ -353,20 +512,20 @@ const App: React.FC = () => {
                     })}
                   </div>
                   {slide.imageUrl && (
-                    <div className="w-full lg:w-[45%] flex items-center justify-center p-4">
-                      <img src={slide.imageUrl} className="max-w-full rounded-[2.5rem] shadow-2xl border border-white/10 object-cover aspect-video lg:aspect-auto" />
+                    <div className="w-full lg:w-[45%] flex items-center justify-center p-2">
+                      <img src={slide.imageUrl} alt="topic" className="max-w-full rounded-[2rem] shadow-2xl border border-white/10 object-cover aspect-video lg:aspect-auto" />
                     </div>
                   )}
                 </div>
               )}
               
               {slide.type === 'title' && (
-                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-8 md:space-y-16 animate-in zoom-in duration-1000 w-full">
-                  <div className={`bg-[#ea580c] px-10 py-4 rounded-full text-sm md:text-2xl font-black uppercase tracking-widest shadow-2xl border border-white/30 ${GLOW_SHADOW}`}>Current Affairs</div>
-                  <h1 className="font-black text-white px-6 leading-tight break-words" style={{ fontSize: getScaledSize(72, settings.titleFontScale) }}>{renderHighlightedText(slide.title || '')}</h1>
-                  <div className="space-y-6 px-6">
+                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6 md:space-y-12 animate-in zoom-in duration-1000 w-full">
+                  <div className={`bg-[#ea580c] px-8 py-3 rounded-full text-sm md:text-xl font-black uppercase tracking-widest shadow-2xl border border-white/30 ${GLOW_SHADOW}`}>Current Affairs</div>
+                  <h1 className="font-black text-white px-6 leading-tight break-words" style={{ fontSize: getScaledSize(64, settings.titleFontScale) }}>{renderHighlightedText(slide.title || '')}</h1>
+                  <div className="space-y-4 px-6">
                     {Array.isArray(slide.content) && (slide.content as string[]).map((c, i) => (
-                      <p key={i} className="font-black text-blue-500 uppercase tracking-[0.2em] shadow-sm break-words" style={{ fontSize: getScaledSize(34, settings.bodyFontScale) }}>{renderHighlightedText(c)}</p>
+                      <p key={i} className="font-black text-blue-500 uppercase tracking-[0.2em] shadow-sm break-words" style={{ fontSize: getScaledSize(30, settings.bodyFontScale) }}>{renderHighlightedText(c)}</p>
                     ))}
                   </div>
                 </div>
@@ -381,62 +540,54 @@ const App: React.FC = () => {
         )}
       </div>
 
-      {/* Persistent Nav Bar */}
-      <div className="fixed bottom-6 md:bottom-12 left-0 right-0 z-50 pointer-events-none px-6 flex flex-col items-center">
-        <div className="w-full max-w-[1920px] relative flex items-center justify-center">
-          <div className="flex gap-4 md:gap-10 pointer-events-auto bg-black/70 backdrop-blur-3xl p-2 rounded-full border border-white/10 shadow-[0_0_60px_rgba(0,0,0,0.9)]">
-            <button onClick={() => setCurrentIdx(p => Math.max(0, p - 1))} className="px-10 md:px-20 py-4 md:py-6 bg-gray-900/90 border border-white/10 rounded-full font-black text-xs md:text-lg hover:bg-blue-600 hover:text-white transition-all disabled:opacity-20 flex items-center gap-3 uppercase" disabled={currentIdx === 0}><ChevronLeft size={24}/> Prev</button>
-            <button onClick={() => setCurrentIdx(p => Math.min(slides.length - 1, p + 1))} className="px-10 md:px-20 py-4 md:py-6 bg-gray-900/90 border border-white/10 rounded-full font-black text-xs md:text-lg hover:bg-blue-600 hover:text-white transition-all disabled:opacity-20 flex items-center gap-3 uppercase" disabled={currentIdx === slides.length - 1}>Next <ChevronRight size={24}/></button>
+      {/* Navigation Buttons */}
+      <div className="fixed bottom-4 md:bottom-8 left-0 right-0 z-50 pointer-events-none px-6 flex flex-col items-center">
+        <div className="w-full max-w-[1920px] relative flex items-center justify-center gap-6">
+          <div 
+            className="flex gap-4 pointer-events-auto bg-black/80 backdrop-blur-3xl p-1.5 rounded-full border border-white/10 shadow-[0_0_80px_rgba(0,0,0,1)]"
+            style={{ transform: `scale(${settings.navScale || 1})` }}
+          >
+            <button 
+              onClick={() => setCurrentIdx(p => Math.max(0, p - 1))} 
+              className="px-6 md:px-10 py-3 md:py-4 bg-[#121215] border border-white/5 rounded-full font-black text-[10px] md:text-xs hover:bg-blue-600 hover:text-white transition-all disabled:opacity-10 flex items-center gap-2 uppercase tracking-widest" 
+              disabled={currentIdx === 0}
+            >
+              <ChevronLeft size={16}/> Prev
+            </button>
+            <div className="px-4 flex items-center border-x border-white/10">
+              <span className="text-[10px] font-mono font-bold text-blue-400">{(currentIdx + 1).toString().padStart(3, '0')}</span>
+              <span className="mx-2 text-[9px] text-gray-600 font-black">/</span>
+              <span className="text-[10px] font-mono text-gray-600">{slides.length.toString().padStart(3, '0')}</span>
+            </div>
+            <button 
+              onClick={() => setCurrentIdx(p => Math.min(slides.length - 1, p + 1))} 
+              className="px-6 md:px-10 py-3 md:py-4 bg-[#121215] border border-white/5 rounded-full font-black text-[10px] md:text-xs hover:bg-blue-600 hover:text-white transition-all disabled:opacity-10 flex items-center gap-2 uppercase tracking-widest" 
+              disabled={currentIdx === slides.length - 1}
+            >
+              Next <ChevronRight size={16}/>
+            </button>
           </div>
+          
           {slide?.type === 'quiz' && (
-            <div className="absolute right-0 md:right-8 top-0 bottom-0 flex items-center pointer-events-auto">
-              <button onClick={toggleReveal} className={`p-5 md:p-8 bg-yellow-400 text-black rounded-full shadow-[0_0_50px_rgba(250,204,21,0.6)] hover:scale-110 active:scale-95 transition-all animate-bounce-subtle`}><CheckCircle2 size={36}/></button>
+            <div className="pointer-events-auto">
+              <button 
+                onClick={toggleReveal} 
+                className={`p-3 md:p-4 bg-yellow-400 text-black rounded-full shadow-[0_0_40px_rgba(250,204,21,0.5)] hover:scale-110 active:scale-95 transition-all animate-bounce-subtle flex items-center justify-center`}
+              >
+                <CheckCircle2 size={24}/>
+              </button>
             </div>
           )}
         </div>
       </div>
 
-      {isExporting && (
-        <div className="fixed inset-0 z-[300] bg-black/99 backdrop-blur-3xl flex flex-col items-center justify-center gap-10 p-12">
-           <Loader2 className="animate-spin text-blue-500" size={70}/>
-           <div className="text-center space-y-3"><h2 className="text-2xl md:text-5xl font-black uppercase text-white tracking-tighter">Exporting {exportType}</h2><p className="text-gray-500 font-bold text-lg animate-pulse">Processing Frame {currentIdx + 1} of {slides.length}</p></div>
-           <div className="w-full max-w-xl h-3 bg-white/5 rounded-full overflow-hidden"><div className="h-full bg-blue-600 transition-all duration-300" style={{ width: `${exportProgress}%` }} /></div>
-        </div>
-      )}
-      
       <style>{`
-        @keyframes bounce-subtle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes bounce-subtle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
         .animate-bounce-subtle { animation: bounce-subtle 2.5s infinite ease-in-out; }
-        
-        .custom-scrollbar {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(234, 88, 12, 0.4) transparent;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar { 
-          width: 8px; 
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-track { 
-          background: transparent; 
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb { 
-          background: rgba(234, 88, 12, 0.3); 
-          border-radius: 10px;
-          border: 2px solid transparent;
-          background-clip: content-box;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(234, 88, 12, 0.5);
-          background-clip: content-box;
-        }
-
-        .scroll-smooth {
-          scroll-behavior: smooth;
-        }
-
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(234, 88, 12, 0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(234, 88, 12, 0.4); }
         * { overflow-wrap: anywhere; }
       `}</style>
     </div>

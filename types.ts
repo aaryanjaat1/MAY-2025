@@ -31,11 +31,11 @@ export interface SlideData {
   isRevealed?: boolean; // For showing the checkmark
   imageUrl?: string;
   imageSize?: number;
-  imageWidth?: number;  // New: Custom width for image box
-  imageHeight?: number; // New: Custom height for image box
+  imageWidth?: number;
+  imageHeight?: number;
   boxPadding?: number;
-  contentScale?: number;   // New: Shrink/Grow content area
-  contentYOffset?: number; // New: Move content up/down
+  contentScale?: number;
+  contentYOffset?: number;
   highlights?: Highlight[];
 }
 
@@ -59,6 +59,8 @@ export interface GlobalSettings {
   factFontScale?: number;
   defaultContentScale?: number;
   defaultContentYOffset?: number;
+  defaultBottomPadding?: number; // Space to clear nav buttons
+  navScale?: number; // Size of prev/next buttons
 }
 
 export interface Project {

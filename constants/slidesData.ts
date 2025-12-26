@@ -1,4 +1,3 @@
-
 import { SlideData } from '../types';
 
 export const SLIDES: SlideData[] = [
@@ -1113,9 +1112,9 @@ export const SLIDES: SlideData[] = [
     title: 'UNFPA State of World Population 2025',
     subtitle: 'विश्व जनसंख्या रिपोर्ट 2025',
     content: [
-      "संयुक्त राष्ट्र (UNFPA) की रिपोर्ट के अनुसार, अप्रैल 2025 तक भारत की जनसंख्या 146.39 करोड़ पहुँच गई है। (India’s population reached 146.39 crore by April 2025 per UNFPA.)",
-      "भारत ने चीन (141.61 करोड़) को पीछे छोड़ दिया है। भारत की कुल प्रजनन दर (TFR) गिरकर 1.9 हो गई है, जो प्रतिस्थापन स्तर (2.1) से नीचे है। (India surpassed China. India’s TFR is 1.9, below replacement level of 2.1.)",
-      "भारत की 68% जनसंख्या कार्यशील आयु वर्ग (15-64 वर्ष) में है। जनसंख्या के 40 वर्षों में गिरावट शुरू होने से पहले 170 करोड़ तक पहुँचने की उम्मीद है। (68% of India's population is in the working-age group. Expected to peak at 170 crore.)"
+      "संयुक्त राष्ट्र (UNFPA) की रिपोर्ट के अनुसार, अप्रैल 2025 तक भारत की जनसंख्या 146.39 crore पहुँच गई है। (India’s population reached 146.39 crore by April 2025 per UNFPA.)",
+      "भारत ने चीन (141.61 crore) को पीछे छोड़ दिया है। भारत की कुल प्रजनन दर (TFR) गिरकर 1.9 हो गई है, जो प्रतिस्थापन स्तर (2.1) से नीचे है। (India surpassed China. India’s TFR is 1.9, below replacement level of 2.1.)",
+      "भारत की 68% जनसंख्या कार्यशील आयु वर्ग (15-64 वर्ष) में है। जनसंख्या के 40 वर्षों में गिरावट शुरू होने से पहले 170 crore तक पहुँचने की उम्मीद है। (68% of India's population is in the working-age group. Expected to peak at 170 crore.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1542362567-b054ec4f2175?q=80&w=1000',
     contentScale: 0.85,
@@ -1184,7 +1183,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'सामाजिक सुरक्षा पर ILO की रिपोर्ट',
     content: [
       "भारत की सामाजिक सुरक्षा कवरेज 2025 में बढ़कर 64.3% हो गई है, जो एक दशक पहले 19% थी। (According to ILO data, India’s social security coverage rose to 64.3% in 2025 from 19% a decade ago.)",
-      "भारत अब सामाजिक सुरक्षा कवरेज में दुनिया में दूसरे स्थान पर है, जो अपने 94 करोड़ से अधिक नागरिकों को सुरक्षा प्रदान कर रहा है। (India ranks 2nd globally, covering over 94 crore citizens.)",
+      "भारत अब सामाजिक सुरक्षा कवरेज में दुनिया में दूसरे स्थान पर है, जो अपने 94 crore से अधिक नागरिकों को सुरक्षा प्रदान कर रहा है। (India ranks 2nd globally, covering over 94 crore citizens.)",
       "प्रमुख पहलों में पीएम श्रम योगी मान-धन (PMSYM), अटल पेंशन योजना (APY) और आयुष्मान भारत (PM-JAY) शामिल हैं। (Key initiatives include PMSYM, APY, and Ayushman Bharat.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1000',
@@ -1806,7 +1805,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म',
     content: [
       "धोखाधड़ी रोकने के लिए भारतीय रिजर्व बैंक (RBI) के मार्गदर्शन में बैंक DPIP विकसित कर रहे हैं। (Major banks are developing DPIP under RBI guidance to strengthen fraud risk management through real-time data sharing.)",
-      "वित्त वर्ष 2025 की रिपोर्ट के अनुसार, बैंक धोखाधड़ी तीन गुना बढ़कर ₹36,014 करोड़ हो गई है जिसमें सार्वजनिक क्षेत्र के बैंक ऋण श्रेणी में सबसे आगे हैं। (Bank frauds rose significantly to ₹36,014 crore in FY25, with PSBs reporting the highest cases in loans/advances.)"
+      "वित्त वर्ष 2025 की रिपोर्ट के अनुसार, बैंक धोखाधड़ी तीन गुना बढ़कर ₹36,014 crore हो गई है जिसमें सार्वजनिक क्षेत्र के बैंक ऋण श्रेणी में सबसे आगे हैं। (Bank frauds rose significantly to ₹36,014 crore in FY25, with PSBs reporting the highest cases in loans/advances.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000',
     contentScale: 0.85,
@@ -1843,6 +1842,355 @@ export const SLIDES: SlideData[] = [
       "SCO की स्थापना 2001 में हुई थी और भारत 2017 में इसका पूर्ण सदस्य बना; इसका मुख्यालय बीजिंग में स्थित है। (SCO was established in 2001, and India joined as a full member in 2017; its headquarters are in Beijing.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 61: Bihar’s First Nuclear Power Plant ---
+  {
+    id: 't61-quiz',
+    type: 'quiz',
+    title: 'Bihar’s First Nuclear Power Plant',
+    subtitle: 'बिहार का पहला परमाणु ऊर्जा संयंत्र',
+    content: [
+      "बिहार के पहले परमाणु ऊर्जा संयंत्र में किस उन्नत तकनीक का उपयोग किए जाने की योजना है?",
+      "Which advanced technology is planned to be used in Bihar's first nuclear power plant?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'प्रेशराइज्ड हैवी वॉटर रिएक्टर (PHWR)' },
+      { id: 'B', label: 'B', text: 'स्मॉल मॉड्यूलर रिएक्टर (SMRs)' },
+      { id: 'C', label: 'C', text: 'फास्ट ब्रीडर रिएक्टर (FBR)' },
+      { id: 'D', label: 'D', text: 'लिक्विड मेटल रिएक्टर (LMR)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't61-fact',
+    type: 'fact',
+    title: 'Bihar’s First Nuclear Power Plant',
+    subtitle: 'बिहार का पहला परमाणु ऊर्जा संयंत्र',
+    content: [
+      "बिहार अपना पहला परमाणु ऊर्जा संयंत्र स्थापित करने जा रहा है, जो केंद्र सरकार के राष्ट्रीय परमाणु ऊर्जा मिशन का हिस्सा है। (Bihar is set to host its first nuclear power plant under the National Nuclear Energy Mission.)",
+      "इसमें स्मॉल मॉड्यूलर रिएक्टर (SMRs) जैसी उन्नत तकनीकों का उपयोग किया जाएगा और 1,000 मेगावाट की बैटरी स्टोरेज परियोजना को भी मंजूरी दी गई है। (Will use Small Modular Reactors; a 1,000 MW battery storage project also approved in Bihar.)",
+      "SMRs की क्षमता प्रति यूनिट 300 MW तक होती है और भारत का लक्ष्य 2047 तक परमाणु क्षमता 100 GW करना है। (SMR capacity up to 300 MW per unit. India's target: 100 GW nuclear capacity by 2047.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1517420822317-a371c2463795?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 62: NITI Aayog’s Future Front Report ---
+  {
+    id: 't62-quiz',
+    type: 'quiz',
+    title: 'NITI Aayog’s Future Front Report',
+    subtitle: 'नीति आयोग की फ्यूचर फ्रंट रिपोर्ट',
+    content: [
+      "नीति आयोग द्वारा जारी 'फ्यूचर फ्रंट' श्रृंखला के तीसरे संस्करण का शीर्षक क्या है?",
+      "What is the title of the third edition of the 'Future Front' series released by NITI Aayog?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'डिजिटल इंडिया 2.0 (Digital India 2.0)' },
+      { id: 'B', label: 'B', text: 'इंडियाज़ डेटा इम्परेटिव: द पिवट टुवर्ड्स क्वालिटी (India’s Data Imperative: The Pivot Towards Quality)' },
+      { id: 'C', label: 'C', text: 'सस्टेनेबल डेटा ग्रोथ (Sustainable Data Growth)' },
+      { id: 'D', label: 'D', text: 'एआई फॉर गवर्नेंस (AI for Governance)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't62-fact',
+    type: 'fact',
+    title: 'NITI Aayog’s Future Front Report',
+    subtitle: 'नीति आयोग की फ्यूचर फ्रंट रिपोर्ट',
+    content: [
+      "नीति आयोग ने अपनी त्रैमासिक अंतर्दृष्टि श्रृंखला 'फ्यूचर फ्रंट' का तीसरा संस्करण जारी किया। (NITI Aayog released the 3rd edition of its quarterly insights series 'Future Front'.)",
+      "यह रिपोर्ट डिजिटल गवर्नेंस को मजबूत करने के लिए डेटा गुणवत्ता (Data Quality) की तत्काल आवश्यकता पर जोर देती है। (Underscores the need for robust data quality; poor data leads to 4–7% welfare overspending.)",
+      "रिपोर्ट डेटा अखंडता के लिए राष्ट्रीय/राज्य/जिला स्तर पर 'डेटा कस्टोडियन' नामित करने का सुझाव देती है। (Report suggests designating 'data custodians' for data integrity at national/state/district levels.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1551288049-bbbda536639a?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 63: India’s First Quantum Computing Valley ---
+  {
+    id: 't63-quiz',
+    type: 'quiz',
+    title: 'India’s First Quantum Computing Valley',
+    subtitle: 'भारत की पहली क्वांटम कंप्यूटिंग वैली',
+    content: [
+      "भारत की पहली 'क्वांटम कंप्यूटिंग वैली' (Quantum Computing Valley) कहाँ लॉन्च की जाएगी?",
+      "Where will the first 'Quantum Computing Valley' of India be launched?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'बेंगलुरु, कर्नाटक (Bengaluru, Karnataka)' },
+      { id: 'B', label: 'B', text: 'अमरावती, आंध्र प्रदेश (Amaravati, Andhra Pradesh)' },
+      { id: 'C', label: 'C', text: 'हैदराबाद, तेलंगाना (Hyderabad, Telangana)' },
+      { id: 'D', label: 'D', text: 'पुणे, महाराष्ट्र (Pune, Maharashtra)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't63-fact',
+    type: 'fact',
+    title: 'India’s First Quantum Computing Valley',
+    subtitle: 'भारत की पहली क्वांटम कंप्यूटिंग वैली',
+    content: [
+      "जनवरी 2026 तक आंध्र प्रदेश के अमरावती में भारत की पहली क्वांटम कंप्यूटिंग वैली लॉन्च की जाएगी। (The first Quantum Computing Valley of India will be launched in Amaravati, Andhra Pradesh by Jan 2026.)",
+      "यह पार्क अनुसंधान, नवाचार और औद्योगिक विकास का समर्थन करेगा और लाखों पेशेवरों को रोजगार देगा। (Park supports R&D and innovation; aligns with National Quantum Mission.)",
+      "इसका उद्देश्य 8 वर्षों में 50-1000 भौतिक क्विबिट वाले इंटरमीडिएट-स्केल क्वांटम कंप्यूटर विकसित करना है। (NQM aims to develop 50-1000 qubit computers in 8 years.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 64: The United Nations at 80 & UN80 ---
+  {
+    id: 't64-quiz',
+    type: 'quiz',
+    title: 'The United Nations at 80 & UN80',
+    subtitle: 'संयुक्त राष्ट्र की 80वीं वर्षगांठ',
+    content: [
+      "संयुक्त राष्ट्र चार्टर (UN Charter) पर 26 जून, 1945 को किस शहर में हस्ताक्षर किए गए थे?",
+      "In which city was the UN Charter signed on June 26, 1945?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'न्यूयॉर्क (New York)' },
+      { id: 'B', label: 'B', text: 'लंदन (London)' },
+      { id: 'C', label: 'C', text: 'सैन फ्रांसिस्को (San Francisco)' },
+      { id: 'D', label: 'D', text: 'जिनेवा (Geneva)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't64-fact',
+    type: 'fact',
+    title: 'The United Nations at 80 & UN80',
+    subtitle: 'संयुक्त राष्ट्र की 80वीं वर्षगांठ',
+    content: [
+      "26 जून, 2025 को संयुक्त राष्ट्र चार्टर पर हस्ताक्षर के 80 वर्ष पूरे हुए। (June 26, 2025 marks 80 years of signing the UN Charter.)",
+      "संयुक्त राष्ट्र महासचिव ने संगठन को आधुनिक बनाने के लिए 'UN80 पहल' शुरू की है जिसमें एआई टूल्स का उपयोग किया जाएगा। (UN80 Initiative launched to modernize the UN, including AI-based mandate reviews.)",
+      "संयुक्त राष्ट्र के 6 मुख्य अंग हैं और भारत 'G4' देशों का हिस्सा है जो सुरक्षा परिषद विस्तार की वकालत करते हैं। (6 principal organs of UN; India is part of G4 nations advocating SC reform.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1590247813693-5541d1c609fd?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 65: South Asia Unit of International Potato Centre ---
+  {
+    id: 't65-quiz',
+    type: 'quiz',
+    title: 'South Asia Unit of International Potato Centre',
+    subtitle: 'अंतर्राष्ट्रीय आलू केंद्र की दक्षिण एशिया इकाई',
+    content: [
+      "अंतर्राष्ट्रीय आलू केंद्र (CIP) का दक्षिण एशिया क्षेत्रीय केंद्र भारत के किस शहर में स्थापित किया जाएगा?",
+      "In which Indian city will the South Asia regional centre of the International Potato Center (CIP) be established?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'शिमला, हिमाचल प्रदेश (Shimla, HP)' },
+      { id: 'B', label: 'B', text: 'आगरा, उत्तर प्रदेश (Agra, UP)' },
+      { id: 'C', label: 'C', text: 'कोलकाता, पश्चिम बंगाल (Kolkata, WB)' },
+      { id: 'D', label: 'D', text: 'पटना, बिहार (Patna, Bihar)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't65-fact',
+    type: 'fact',
+    title: 'South Asia Unit of International Potato Centre',
+    subtitle: 'अंतर्राष्ट्रीय आलू केंद्र की दक्षिण एशिया इकाई',
+    content: [
+      "केंद्र सरकार ने उत्तर प्रदेश के आगरा में अंतर्राष्ट्रीय आलू केंद्र (CIP) के दक्षिण एशिया क्षेत्रीय केंद्र की स्थापना को मंजूरी दे दी है। (Govt cleared a proposal for the CIP South Asia regional centre in Agra, UP.)",
+      "यह केंद्र आलू और शकरकंद की उत्पादकता में सुधार करके खाद्य सुरक्षा और किसानों की आय बढ़ाने का काम करेगा। (Aims to improve potato/sweet potato productivity to boost food security and income.)",
+      "भारत दुनिया का दूसरा सबसे बड़ा आलू उत्पादक है और उत्तर प्रदेश उत्पादन में अग्रणी है। (India is 2nd largest producer after China. UP leads production in India.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f02ac6d31?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 66: New Global Poverty Line ---
+  {
+    id: 't66-quiz',
+    type: 'quiz',
+    title: 'New Global Poverty Line',
+    subtitle: 'नई वैश्विक गरीबी रेखा',
+    content: [
+      "विश्व बैंक द्वारा संशोधित नई अंतर्राष्ट्रीय गरीबी रेखा (IPL) क्या है?",
+      "What is the new International Poverty Line (IPL) revised by the World Bank?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '$2.15/दिन (2017 PPP)' },
+      { id: 'B', label: 'B', text: '$1.90/दिन (2011 PPP)' },
+      { id: 'C', label: 'C', text: '$3.00/दिन (2021 PPP)' },
+      { id: 'D', label: 'D', text: '$5.50/दिन (2021 PPP)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't66-fact',
+    type: 'fact',
+    title: 'New Global Poverty Line',
+    subtitle: 'नई वैश्विक गरीबी रेखा',
+    content: [
+      "विश्व बैंक ने वैश्विक गरीबी रेखा को $2.15/दिन से बढ़ाकर $3.00/दिन कर दिया है। (World Bank raised the International Poverty Line from $2.15/day to $3.00/day.)",
+      "नई रेखा के तहत 2022-23 में भारत की गरीबी 5.25% रही, जबकि पुरानी $2.15 रेखा के तहत यह 2.35% थी। (Under the new line, India's poverty was 5.25% in 2022-23; under the old line, it was 2.35%.)",
+      "भारत ने अपने नवीनतम घरेलू उपभोग व्यय सर्वेक्षण (HCES) में संशोधित मिश्रित रिकॉल अवधि (MMRP) पद्धति को अपनाया है। (India adopted Modified Mixed Recall Period method for HCES.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 67: Jiyo Parsi Scheme ---
+  {
+    id: 't67-quiz',
+    type: 'quiz',
+    title: 'Jiyo Parsi Scheme',
+    subtitle: 'जियो पारसी योजना',
+    content: [
+      "'जियो पारसी' योजना मुख्य रूप से किस उद्देश्य के लिए शुरू की गई है?",
+      "What is the primary objective of the 'Jiyo Parsi' scheme?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'पारसी स्मारकों का संरक्षण (Preserving Parsi monuments)' },
+      { id: 'B', label: 'B', text: 'पारसी समुदाय की जनसांख्यिकीय गिरावट को रोकना (Addressing the demographic decline)' },
+      { id: 'C', label: 'C', text: 'पारसी उद्यमियों को ऋण (Loans to Parsi entrepreneurs)' },
+      { id: 'D', label: 'D', text: 'उच्च शिक्षा के लिए छात्रवृत्ति (Scholarships for higher education)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't67-fact',
+    type: 'fact',
+    title: 'Jiyo Parsi Scheme',
+    subtitle: 'जियो पारसी योजना',
+    content: [
+      "यह 2013-14 में शुरू की गई एक केंद्रीय क्षेत्र की योजना है जो पारसी समुदाय की जनसांख्यिकीय गिरावट को रोकने के लिए है। (Central Sector Scheme launched in 2013-14 to address demographic decline.)",
+      "यह आईवीएफ (IVF) जैसे बांझपन उपचार के लिए वित्तीय सहायता और पारसी जोड़ों को मासिक सहायता प्रदान करती है। (Provides financial aid for IVF and monthly support to Parsi couples.)",
+      "महाराष्ट्र में पारसियों की संख्या सबसे अधिक (44,854) है, उसके बाद गुजरात है। (Maharashtra has the highest Parsi population, followed by Gujarat.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1589182397057-b82d5199131b?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 68: India’s First Maritime NBFC: SMFCL ---
+  {
+    id: 't68-quiz',
+    type: 'quiz',
+    title: 'India’s First Maritime NBFC: SMFCL',
+    subtitle: 'भारत की पहली समुद्री एनबीएफसी',
+    content: [
+      "भारत की पहली समुद्री क्षेत्र की एनबीएफसी (NBFC) का नाम क्या है?",
+      "What is the name of India's first NBFC in the maritime sector?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'पोर्ट्स फाइनेंस लिमिटेड (Ports Finance Ltd)' },
+      { id: 'B', label: 'B', text: 'सागरमाला फाइनेंस कॉर्पोरेशन लिमिटेड (SMFCL)' },
+      { id: 'C', label: 'C', text: 'मेरीटाइम इन्वेस्टमेंट बैंक (Maritime Investment Bank)' },
+      { id: 'D', label: 'D', text: 'शिपिंग डेवलपमेंट कंपनी (Shipping Development Company)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't68-fact',
+    type: 'fact',
+    title: 'India’s First Maritime NBFC: SMFCL',
+    subtitle: 'भारत की पहली समुद्री एनबीएफसी',
+    content: [
+      "केंद्रीय पत्तन, पोत परिवहन और जलमार्ग मंत्री ने सागरमाला फाइनेंस कॉर्पोरेशन लिमिटेड (SMFCL) का उद्घाटन किया। (Union Shipping Minister inaugurated Sagarmala Finance Corporation Limited.)",
+      "यह भारत की पहली समुद्री क्षेत्र की एनबीएफसी (NBFC) है जो जहाजों के निर्माण और समुद्री शिक्षा के लिए वित्तीय समाधान प्रदान करेगी। (India’s first maritime NBFC offering financial solutions for shipbuilding, cruise tourism, etc.)",
+      "यह आरबीआई (RBI) के पास एनबीएफसी के रूप में पंजीकृत है और बैंक की तरह मांग जमा स्वीकार नहीं कर सकती। (Registered as NBFC with RBI; cannot accept demand deposits or issue cheques.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1494412519320-aa613dfb7738?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 69: Current Account Surplus ---
+  {
+    id: 't69-quiz',
+    type: 'quiz',
+    title: 'Current Account Surplus',
+    subtitle: 'चालू खाता अधिशेष',
+    content: [
+      "वित्त वर्ष 2025 की चौथी तिमाही (जनवरी-मार्च) में भारत का चालू खाता अधिशेष (Surplus) कितना दर्ज किया गया?",
+      "How much was India’s current account surplus recorded in Q4 (January-March) of FY25?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '$7 बिलियन ($7 billion)' },
+      { id: 'B', label: 'B', text: '$13.5 बिलियन ($13.5 billion)' },
+      { id: 'C', label: 'C', text: '$10 बिलियन ($10 billion)' },
+      { id: 'D', label: 'D', text: '$20 बिलियन ($20 billion)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't69-fact',
+    type: 'fact',
+    title: 'Current Account Surplus',
+    subtitle: 'चालू खाता अधिशेष',
+    content: [
+      "भारतीय रिजर्व बैंक (RBI) के अनुसार, वित्त वर्ष 2025 की चौथी तिमाही में भारत का चालू खाता अधिशेष उम्मीद से अधिक $13.5 बिलियन रहा। (RBI reported a higher-than-expected current account surplus of $13.5 billion in Q4 FY25.)",
+      "चालू खाता अधिशेष तब होता है जब अंतर्वाह (Inflows) बहिर्वाह (Outflows) से अधिक हो जाते हैं। (Surplus occurs when inflows exceed outflows, indicating a strong external position.)",
+      "चालू खाते में वस्तुओं का व्यापार, सेवाओं का व्यापार और प्रेषण/रेमिटेंस (secondary income) शामिल होते हैं। (Current Account comprises trade in goods, services, income, and remittances.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1518186239717-25d2d56dc95c?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 70: Operation Deep Manifest ---
+  {
+    id: 't70-quiz',
+    type: 'quiz',
+    title: 'Operation Deep Manifest',
+    subtitle: 'ऑपरेशन डीप मैनिफेस्ट',
+    content: [
+      "'ऑपरेशन डीप मैनिफेस्ट' (Operation Deep Manifest) के तहत किस देश के मूल की वस्तुओं को अवैध रूप से दुबई के रास्ते लाने पर जब्त किया गया?",
+      "Under 'Operation Deep Manifest', goods from which country's origin were seized for being illicitly routed via Dubai?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'चीन (China)' },
+      { id: 'B', label: 'B', text: 'पाकिस्तान (Pakistan)' },
+      { id: 'C', label: 'C', text: 'ईरान (Iran)' },
+      { id: 'D', label: 'D', text: 'तुर्की (Turkey)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't70-fact',
+    type: 'fact',
+    title: 'Operation Deep Manifest',
+    subtitle: 'ऑपरेशन डीप मैनिफेस्ट',
+    content: [
+      "राजस्व खुफिया निदेशालय (DRI) ने दुबई के रास्ते अवैध रूप से लाई जा रही 1,115 मीट्रिक टन पाकिस्तानी मूल की वस्तुओं को जब्त किया। (DRI seized 1,115 metric tonnes of Pakistani-origin goods routed via Dubai.)",
+      "पहलगाम हमले के बाद भारत ने पाकिस्तानी मूल की वस्तुओं के प्रत्यक्ष या अप्रत्यक्ष आयात पर पूर्ण प्रतिबंध लगा दिया है। (India imposed a ban on Pakistani-origin goods after the Pahalgam attack.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=1000',
     contentScale: 0.85,
     contentYOffset: 10
   }

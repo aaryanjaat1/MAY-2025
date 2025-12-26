@@ -1,3 +1,4 @@
+
 import { SlideData } from '../types';
 
 export const SLIDES: SlideData[] = [
@@ -802,7 +803,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'अरावली ग्रीन वॉल प्रोजेक्ट',
     content: [
       'मरुस्थलीकरण (Desertification) को रोकने के लिए \'अरावली ग्रीन वॉल प्रोजेक्ट\' शुरू किया गया है। (Aravalli Green Wall project launched to combat desertification.)',
-      'इस परियोजना का लक्ष्य 700 किमी लंबी अरावली श्रृंखला के साथ 5 किमी चौड़ा ग्रीन बफर जोन बनाना है। यह गुजरात, राजस्थान, हरियाणा और दिल्ली में फैला है। (Aim: 5 km wide green buffer along 700 km Aravalli stretch covering Gujarat, Rajasthan, Haryana, and Delhi.)',
+      'इस परियोजना का लक्ष्य 700 किमी लंबी अरावली श्रृंखला के साथ 5 किमी चौड़ा ग्रीन बफर जोन बनाना है। यह गुजरात, राजस्थान, Haryana और दिल्ली में फैला है। (Aim: 5 km wide green buffer along 700 km Aravalli stretch covering Gujarat, Rajasthan, Haryana, and Delhi.)',
       'यह प्रोजेक्ट मरुस्थलीकरण से निपटने के लिए संयुक्त राष्ट्र सम्मेलन (UNCCD) के प्रति भारत की प्रतिबद्धता में योगदान देता है। अरावली दुनिया की सबसे पुरानी पर्वत श्रृंखलाओं में से एक है। (Contributes to India’s commitments under the UNCCD; Aravalli is one of the world\'s oldest ranges.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?q=80&w=1000'
@@ -1049,9 +1050,9 @@ export const SLIDES: SlideData[] = [
     title: 'ILOSTAT: INDIA’S SOCIAL SECURITY',
     subtitle: 'सामाजिक सुरक्षा पर ILO की रिपोर्ट',
     content: [
-      'अंतर्राष्ट्रीय श्रम संगठन (ILO) के ILOSTAT डेटा के अनुसार, भारत की सामाजिक सुरक्षा कवरेज 2025 में बढ़कर 64.3% हो गई है, जो एक दशक पहले 19% थी। (According to ILO data, India’s social security coverage rose to 64.3% in 2025 from 19% a decade ago.)',
-      'भारत अब सामाजिक सुरक्षा कवरेज में दुनिया में दूसरे स्थान पर है, जो अपने 94 करोड़ से अधिक नागरिकों को सुरक्षा प्रदान कर रहा है। भारत 2025 का डेटा अपडेट करने वाला वैश्विक स्तर पर पहला देश बना। (India ranks 2nd globally, covering over 94 crore citizens. It is the first country to update 2025 social protection data in ILOSTAT.)',
-      'प्रमुख पहलों में पीएम श्रम योगी मान-धन (PMSYM), अटल पेंशन योजना (APY) और आयुष्मान भारत (PM-JAY) शामिल हैं। सामाजिक सुरक्षा का अर्थ स्वास्थ्य देखभाल और वृद्धावस्था या बेरोजगारी में आय सुरक्षा सुनिश्चित करना है। (Key initiatives include PMSYM, APY, and Ayushman Bharat. Social security ensures healthcare and income security during old age or unemployment.)'
+      'अंतर्राष्ट्रीय श्रम संगठन (ILO) के ILOSTAT डेटा के अनुसार, भारत की सामाजिक सुरक्षा कवरेज 2025 in बढ़कर 64.3% हो गई है, जो एक दशक पहले 19% थी। (According to ILO data, India’s social security coverage rose to 64.3% in 2025 from 19% a decade ago.)',
+      'भारत अब सामाजिक सुरक्षा कवरेज in दुनिया in दूसरे स्थान पर है, जो अपने 94 करोड़ से अधिक नागरिकों को सुरक्षा प्रदान कर रहा है। भारत 2025 का डेटा अपडेट करने वाला वैश्विक स्तर पर पहला देश बना। (India ranks 2nd globally, covering over 94 crore citizens. It is the first country to update 2025 social protection data in ILOSTAT.)',
+      'प्रमुख पहलों in पीएम श्रम योगी मान-धन (PMSYM), अटल पेंशन योजना (APY) और आयुष्मान भारत (PM-JAY) शामिल हैं। सामाजिक सुरक्षा का अर्थ स्वास्थ्य देखभाल और वृद्धावस्था या बेरोजगारी in आय सुरक्षा सुनिश्चित करना है। (Key initiatives include PMSYM, APY, and Ayushman Bharat. Social security ensures healthcare and income security during old age or unemployment.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1000'
   },
@@ -1081,8 +1082,8 @@ export const SLIDES: SlideData[] = [
     subtitle: 'लोकपाल: नया आदर्श वाक्य',
     content: [
       'भारत के लोकपाल की पूर्ण पीठ ने "नागरिकों को सशक्त बनाएं, भ्रष्टाचार को उजागर करें" (Empower Citizens, Expose Corruption) नामक एक नया आदर्श वाक्य अपनाया है। (The Full Bench of Lokpal adopted the new motto “Empower Citizens, Expose Corruption”.)',
-      'लोकपाल सार्वजनिक कार्यालयों में भ्रष्टाचार की शिकायतों के समाधान के लिए एक वैधानिक निकाय (Statutory Body) है, जिसे 2013 के अधिनियम के तहत बनाया गया था। (Lokpal is a statutory anti-corruption body created via the 2013 Act.)',
-      'लोकपाल का अध्यक्ष सेवानिवृत्त CJI या सुप्रीम कोर्ट का न्यायाधीश होता है। इसकी नियुक्ति चयन समिति (पीएम, CJI, लोकसभा में LoP और एक प्रतिष्ठित न्यायविद) की सिफारिश पर की जाती है। इसका कार्यकाल 5 वर्ष या 70 वर्ष की आयु तक होता है। (Chairperson is a retired CJI/SC judge. Appointed by a committee of PM, CJI, LoP, and a Jurist. Tenure is 5 years or up to 70 years.)'
+      'लोकपाल सार्वजनिक कार्यालयों in भ्रष्टाचार की शिकायतों के समाधान के लिए एक वैधानिक निकाय (Statutory Body) है, जिसे 2013 के अधिनियम के तहत बनाया गया था। (Lokpal is a statutory anti-corruption body created via the 2013 Act.)',
+      'लोकपाल का अध्यक्ष सेवानिवृत्त CJI या सुप्रीम कोर्ट का न्यायाधीश होता है। इसकी नियुक्ति चयन समिति (पीएम, CJI, लोकसभा in LoP और एक प्रतिष्ठित न्यायविद) की सिफारिश पर की जाती है। इसका कार्यकाल 5 वर्ष या 70 वर्ष की आयु तक होता है। (Chairperson is a retired CJI/SC judge. Appointed by a committee of PM, CJI, LoP, and a Jurist. Tenure is 5 years or up to 70 years.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=1000'
   },
@@ -1094,7 +1095,7 @@ export const SLIDES: SlideData[] = [
     title: 'UNESCO CREATIVE CITY: LUCKNOW',
     subtitle: 'यूनेस्को क्रिएटिव सिटी: लखनऊ',
     content: [
-      'यूनेस्को (UNESCO) के क्रिएटिव सिटीज नेटवर्क (UCCN) में लखनऊ को किस श्रेणी के लिए प्रस्तावित किया गया है?',
+      'यूनेस्को (UNESCO) के क्रिएटिव सिटीज नेटवर्क (UCCN) in लखनऊ को किस श्रेणी के लिए प्रस्तावित किया गया है?',
       'Under which category has Lucknow been proposed for the UNESCO Creative Cities Network (UCCN)?'
     ],
     options: [
@@ -1112,7 +1113,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'यूनेस्को क्रिएटिव सिटी: लखनऊ',
     content: [
       'हाल ही में अवधी व्यंजन के लिए \'गैस्ट्रोनॉमी\' श्रेणी के तहत लखनऊ को यूनेस्को क्रिएटिव सिटी बनाने का प्रस्ताव विश्व विरासत केंद्र को भेजा गया है। (A proposal for Lucknow under \'Gastronomy\' for Awadhi Cuisine was submitted to the World Heritage Centre.)',
-      'UCCN की स्थापना 2004 में हुई थी और यह सात क्षेत्रों (शिल्प, डिजाइन, फिल्म, गैस्ट्रोनॉमी, साहित्य, मीडिया आर्ट्स और संगीत) पर ध्यान केंद्रित करता है। (UCCN was created in 2004 focusing on seven fields like Crafts, Film, Gastronomy, etc.)',
+      'UCCN की स्थापना 2004 in हुई थी और यह सात क्षेत्रों (शिल्प, डिजाइन, फिल्म, गैस्ट्रोनॉमी, साहित्य, मीडिया आर्ट्स और संगीत) पर ध्यान केंद्रित करता है। (UCCN was created in 2004 focusing on seven fields like Crafts, Film, Gastronomy, etc.)',
       'भारत के अन्य यूनेस्को क्रिएटिव शहर: जयपुर और श्रीनगर (शिल्प), वाराणसी, चेन्नई और ग्वालियर (संगीत), मुंबई (फिल्म), हैदराबाद (गैस्ट्रोनॉमी) और कोझिकोड (साहित्य)। (Other Indian cities: Jaipur/Srinagar-Crafts, Varanasi/Chennai/Gwalior-Music, Mumbai-Film, Hyderabad-Gastronomy, Kozhikode-Literature.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000'
@@ -1125,7 +1126,7 @@ export const SLIDES: SlideData[] = [
     title: 'EXERCISE ‘KHAAN QUEST’',
     subtitle: 'अभ्यास ‘खान क्वेस्ट’',
     content: [
-      'बहुराष्ट्रीय सैन्य अभ्यास \'खान क्वेस्ट\' (Khaan Quest) का आयोजन किस देश में किया जा रहा है?',
+      'बहुराष्ट्रीय सैन्य अभ्यास \'खान क्वेस्ट\' (Khaan Quest) का आयोजन किस देश in किया जा रहा है?',
       'In which country is the multinational military exercise ‘Khaan Quest’ being organized?'
     ],
     options: [
@@ -1142,9 +1143,9 @@ export const SLIDES: SlideData[] = [
     title: 'EXERCISE ‘KHAAN QUEST’',
     subtitle: 'अभ्यास ‘खान क्वेस्ट’',
     content: [
-      'भारतीय सेना का दल बहुराष्ट्रीय सैन्य अभ्यास \'खान क्वेस्ट\' में भाग लेने के लिए उलानबटोर, मंगोलिया पहुँचा। (Indian Army reached Ulaanbaatar, Mongolia for the multinational Exercise Khaan Quest.)',
+      'भारतीय सेना का दल बहुराष्ट्रीय सैन्य अभ्यास \'खान क्वेस्ट\' in भाग लेने के लिए उलानबटोर, मंगोलिया पहुँचा। (Indian Army reached Ulaanbaatar, Mongolia for the multinational Exercise Khaan Quest.)',
       'यह एक वार्षिक अभ्यास है जो शांति सेना की क्षमताओं (Peacekeeping capabilities) को बढ़ाने के लिए दुनिया भर की सेनाओं को एक साथ लाता है। (Annual exercise to enhance peacekeeping capabilities of global forces.)',
-      'यह 2003 में अमेरिका और मंगोलिया के बीच द्विपक्षीय अभ्यास के रूप में शुरू हुआ था और 2006 से बहुराष्ट्रीय बन गया। यह संयुक्त राष्ट्र चार्टर के अध्याय VII के तहत शांति अभियानों के लिए है। (Started in 2003 as US-Mongolia bilateral; multinational since 2006. Aligns with UN Charter Chapter VII.)'
+      'यह 2003 in अमेरिका और मंगोलिया के बीच द्विपक्षीय अभ्यास के रूप में शुरू हुआ था और 2006 से बहुराष्ट्रीय बन गया। यह संयुक्त राष्ट्र चार्टर के अध्याय VII के तहत शांति अभियानों के लिए है। (Started in 2003 as US-Mongolia bilateral; multinational since 2006. Aligns with UN Charter Chapter VII.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=1000'
   },
@@ -1156,7 +1157,7 @@ export const SLIDES: SlideData[] = [
     title: 'AAIB AND AIR INDIA CRASH',
     subtitle: 'एएआईबी और एयर इंडिया विमान दुर्घटना',
     content: [
-      'विमान में \'ब्लैक बॉक्स\' (Black Box) का क्या कार्य होता है?',
+      'विमान in \'ब्लैक बॉक्स\' (Black Box) का क्या कार्य होता है?',
       'What is the function of a \'Black Box\' in an aircraft?'
     ],
     options: [
@@ -1173,9 +1174,9 @@ export const SLIDES: SlideData[] = [
     title: 'AAIB AND AIR INDIA CRASH',
     subtitle: 'एएआईबी और एयर इंडिया विमान दुर्घटना',
     content: [
-      'विमान दुर्घटना जांच ब्यूरो (AAIB) ने अहमदाबाद में एयर इंडिया विमान दुर्घटना की औपचारिक जांच शुरू की है। (AAIB initiated investigation into the Air India crash in Ahmedabad.)',
-      '\'ब्लैक बॉक्स\' (चमकीला नारंगी रंग) के दो घटक होते हैं: कॉकपिट वॉयस रिकॉर्डर (CVR) और फ्लाइट डेटा रिकॉर्डर (FDR)। यह दुर्घटना के कारणों का पता लगाने में मदद करता है। (Black Box has CVR for audio and FDR for data.30 It helps discover crash causes.)',
-      'AAIB की स्थापना 2012 में नागरिक उड्डयन मंत्रालय के तहत हुई थी। ICAO (अंतर्राष्ट्रीय नागरिक उड्डयन संगठन) एक संयुक्त राष्ट्र एजेंसी है जिसका मुख्यालय मॉन्ट्रियल, कनाडा में है। (AAIB established in 2012 under Ministry of Civil Aviation. ICAO HQ is in Montreal, Canada; India is a member.)'
+      'विमान दुर्घटना जांच ब्यूरो (AAIB) ने अहमदाबाद in एयर इंडिया विमान दुर्घटना की औपचारिक जांच शुरू की है। (AAIB initiated investigation into the Air India crash in Ahmedabad.)',
+      '\'ब्लैक बॉक्स\' (चमकीला नारंगी रंग) के दो घटक होते हैं: कॉकपिट वॉयस रिकॉर्डर (CVR) और फ्लाइट डेटा रिकॉर्डर (FDR)। यह दुर्घटना के कारणों का पता लगाने in मदद करता है। (Black Box has CVR for audio and FDR for data.30 It helps discover crash causes.)',
+      'AAIB की स्थापना 2012 in नागरिक उड्डयन मंत्रालय के तहत हुई थी। ICAO (अंतर्राष्ट्रीय नागरिक उड्डयन संगठन) एक संयुक्त राष्ट्र एजेंसी है जिसका मुख्यालय मॉन्ट्रियल, कनाडा in है। (AAIB established in 2012 under Ministry of Civil Aviation. ICAO HQ is in Montreal, Canada; India is a member.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=1000'
   },
@@ -1187,7 +1188,7 @@ export const SLIDES: SlideData[] = [
     title: 'GLOBAL GENDER GAP INDEX 2025',
     subtitle: 'ग्लोबल जेंडर गैप इंडेक्स 2025',
     content: [
-      '\'ग्लोबल जेंडर गैप रिपोर्ट 2025\' में भारत का कौन सा स्थान है?',
+      '\'ग्लोबल जेंडर गैप रिपोर्ट 2025\' in भारत का कौन सा स्थान है?',
       'What is India’s rank in the \'Global Gender Gap Report 2025\'?'
     ],
     options: [
@@ -1205,8 +1206,8 @@ export const SLIDES: SlideData[] = [
     subtitle: 'ग्लोबल जेंडर गैप इंडेक्स 2025',
     content: [
       'विश्व आर्थिक मंच (WEF) ने ग्लोबल जेंडर गैप रिपोर्ट 2025 का 19वां संस्करण जारी किया है। (World Economic Forum released the 19th edition of the Global Gender Gap Report 2025.)',
-      'भारत 148 देशों में से 131वें स्थान पर खिसक गया है। राजनीतिक सशक्तिकरण (प्रतिनिधित्व में गिरावट) भारत की रैंकिंग गिरने का मुख्य कारण रहा। (India slipped to 131st out of 148. Decline in political empowerment caused the rank drop.)',
-      'आइसलैंड लगातार 16वें वर्ष सबसे अधिक लिंग-समान (Gender-equal) देश रहा। पूर्ण लैंगिक समानता प्राप्त करने में अभी भी 123 वर्ष लगेंगे। (Iceland remains 1st for 16 years. It will take 123 years to close the global gender gap at the current pace.)'
+      'भारत 148 देशों in से 131वें स्थान पर खिसक गया है। राजनीतिक सशक्तिकरण (प्रतिनिधित्व in गिरावट) भारत की रैंकिंग गिरने का मुख्य कारण रहा। (India slipped to 131st out of 148. Decline in political empowerment caused the rank drop.)',
+      'आइसलैंड लगातार 16वें वर्ष सबसे अधिक लिंग-समान (Gender-equal) देश रहा। पूर्ण लैंगिक समानता प्राप्त करने in अभी भी 123 वर्ष लगेंगे। (Iceland remains 1st for 16 years. It will take 123 years to close the global gender gap at the current pace.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1540206351-d6465b3ac5c1?q=80&w=1000'
   },
@@ -1236,7 +1237,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'इंटरपोल सिल्वर नोटिस और भारतपोल',
     content: [
       'CBI ने फ्रांस दूतावास वीजा धोखाधड़ी मामले से संबंधित अपराध की आय का पता लगाने के लिए भारत का पहला \'सिल्वर नोटिस\' जारी कराया है। (CBI got India’s first ‘silver notice’ to trace proceeds of crime in a visa fraud case.)',
-      'इंटरपोल (Interpol) का मुख्यालय ल्योन, फ्रांस में है। भारत में इसकी नेशनल सेंट्रल ब्यूरो (NCB) सीबीआई (CBI) है। (Interpol HQ is in Lyon, France. India’s NCB is the CBI.)',
+      'इंटरपोल (Interpol) का मुख्यालय ल्योन, फ्रांस in है। भारत in इसकी नेशनल सेंट्रल ब्यूरो (NCB) सीबीआई (CBI) है। (Interpol HQ is in Lyon, France. India’s NCB is the CBI.)',
       '\'भारतपोल\' (Bharatpol) पोर्टल सीबीआई द्वारा विकसित किया गया है जो भारतीय कानून प्रवर्तन एजेंसियों और इंटरपोल के बीच सहयोग की सुविधा देता है। अन्य नोटिस: रेड (गिरफ्तारी), येलो (लापता व्यक्ति), ब्लू (जानकारी)। (Bharatpol facilitates cooperation with Interpol. Other notices: Red-arrest, Yellow-missing, Blue-information.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000'
@@ -1266,9 +1267,9 @@ export const SLIDES: SlideData[] = [
     title: '51ST G7 SUMMIT',
     subtitle: '51वां जी7 शिखर सम्मेलन',
     content: [
-      'प्रधानमंत्री नरेंद्र मोदी ने कनाडा के कनानास्कि (Kananaskis) में आयोजित जी-7 आउटरीच शिखर सम्मेलन में भाग लिया। (PM Modi participated in the G-7 Outreach Summit held in Kananaskis, Canada.)',
+      'प्रधानमंत्री नरेंद्र मोदी ने कनाडा के कनानास्कि (Kananaskis) in आयोजित जी-7 आउटरीच शिखर सम्मेलन in भाग लिया। (PM Modi participated in the G-7 Outreach Summit held in Kananaskis, Canada.)',
       'इस वर्ष का सम्मेलन तीन स्तंभों पर आधारित है: समुदायों की रक्षा, ऊर्जा सुरक्षा और डिजिटल परिवर्तन, तथा भविष्य की साझेदारी। पीएम मोदी ने \'ऊर्जा सुरक्षा\' पर एक सत्र को संबोधित किया। (The summit focuses on three pillars: protecting communities, energy security/digital transition, and future partnerships. PM addressed a session on \'Energy Security\'.)',
-      'जी7 (Group of Seven) दुनिया की 7 उन्नत अर्थव्यवस्थाओं (फ्रांस, जर्मनी, इटली, जापान, यूके, यूएस और कनाडा) और यूरोपीय संघ का एक अनौपचारिक समूह है। इसकी स्थापना 1975 में तेल संकट के जवाब में की गई थी। भारत इसका सदस्य नहीं है लेकिन नियमित रूप से आमंत्रित किया जाता है। (G7 is an informal group of 7 advanced economies + EU, founded in 1975. India is not a member but a frequent invitee.)'
+      'जी7 (Group of Seven) दुनिया की 7 उन्नत अर्थव्यवस्थाओं (फ्रांस, जर्मनी, इटली, जापान, यूके, यूएस और कनाडा) और यूरोपीय संघ का एक अनौपचारिक समूह है। इसकी स्थापना 1975 in तेल संकट के जवाब in की गई थी। भारत इसका सदस्य नहीं है लेकिन नियमित रूप से आमंत्रित किया जाता है। (G7 is an informal group of 7 advanced economies + EU, founded in 1975. India is not a member but a frequent invitee.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1000'
   },
@@ -1297,7 +1298,7 @@ export const SLIDES: SlideData[] = [
     title: 'STRAIT OF HORMUZ',
     subtitle: 'होर्मुज जलडमरूमध्य',
     content: [
-      'ईरान ने संघर्ष के बीच होर्मुज जलडमरूमध्य को बंद करने की धमकी दी है, जिससे वैश्विक चिंता बढ़ गई है। (Iran threatened to close the Strait of Hormuz, raising global energy security concerns.)',
+      'ईरान in संघर्ष के बीच होर्मुज जलडमरूमध्य को बंद करने की धमकी दी है, जिससे वैश्विक चिंता बढ़ गई है। (Iran threatened to close the Strait of Hormuz, raising global energy security concerns.)',
       'यह ईरान और ओमान के बीच एक रणनीतिक जलमार्ग है। दुनिया की तेल आपूर्ति का लगभग 20% और भारत का अधिकांश तेल और एलएनजी (LNG) आयात इसी मार्ग से गुजरता है। (Strategic waterway between Iran and Oman.5 Handles 20% of global oil supply and most of India\'s energy imports.)',
       'प्रमुख बंदरगाह: ईरान का \'बंदर अब्बास\', यूएई का \'फुजैरा\' और कतर का \'रास लफ्फान\' (LNG के लिए)। यह वैश्विक व्यापार के लिए एक महत्वपूर्ण \'चोक पॉइंट\' (Choke point) है। (Key ports: Bandar Abbas, Fujairah, and Ras Laffan. It is a vital maritime choke point.)'
     ],
@@ -1311,7 +1312,7 @@ export const SLIDES: SlideData[] = [
     title: 'INS ARNALA (ASW-SWC)',
     subtitle: 'आईएनएस अरनाला (ASW-SWC)',
     content: [
-      'भारत के पहले एंटी-सबमरीन वारफेयर शैलो वॉटर क्राफ्ट (ASW-SWC) का नाम क्या है जिसे विशाखापत्तनम में कमीशन किया जाएगा?',
+      'भारत के पहले एंटी-सबमरीन वारफेयर शैलो वॉटर क्राफ्ट (ASW-SWC) का नाम क्या है जिसे विशाखापत्तनम in कमीशन किया जाएगा?',
       'What is the name of India\'s first Anti-Submarine Warfare Shallow Water Craft (ASW-SWC) to be commissioned in Visakhapatnam?'
     ],
     options: [
@@ -1328,7 +1329,7 @@ export const SLIDES: SlideData[] = [
     title: 'INS ARNALA (ASW-SWC)',
     subtitle: 'आईएनएस अरनाला (ASW-SWC)',
     content: [
-      'भारतीय नौसेना विशाखापत्तनम में देश के पहले एंटी-सबमरीन वारफेयर शैलो वॉटर क्राफ्ट (ASW-SWC), आईएनएस अरनाला को कमीशन करने के लिए तैयार है। (Indian Navy is set to commission INS Arnala, the first ASW-SWC vessel.)',
+      'भारतीय नौसेना विशाखापत्तनम in देश के पहले एंटी-सबमरीन वारफेयर शैलो वॉटर क्राफ्ट (ASW-SWC), आईएनएस अरनाला को कमीशन करने के लिए तैयार है। (Indian Navy is set to commission INS Arnala, the first ASW-SWC vessel.)',
       'इसका नाम महाराष्ट्र के ऐतिहासिक अरनाला किले के नाम पर रखा गया है। इसे गार्डन रीच शिपबिल्डर्स एंड इंजीनियर्स (GRSE), कोलकाता द्वारा डिजाइन और निर्मित किया गया है। (Named after Arnala Fort, Maharashtra. Designed and built by GRSE, Kolkata.)',
       'यह डीजल इंजन-वॉटरजेट प्रणोदन प्रणाली द्वारा संचालित होने वाला सबसे बड़ा भारतीय नौसैनिक जहाज है। इसमें 80% से अधिक स्वदेशी सामग्री है। (Largest Indian naval vessel with waterjet propulsion; over 80% indigenous content.)'
     ],
@@ -1359,9 +1360,9 @@ export const SLIDES: SlideData[] = [
     title: 'THIRD UN OCEANS CONFERENCE (UNOC)',
     subtitle: 'तीसरा संयुक्त राष्ट्र महासागर सम्मेलन',
     content: [
-      'फ्रांस के नीस में आयोजित तीसरा संयुक्त राष्ट्र महासागर सम्मेलन समुद्री पारिस्थितिक तंत्र की रक्षा के वादों के साथ संपन्न हुआ। (The third UNOC held in Nice, France, concluded with marine conservation commitments.)',
-      'इस दौरान 170 से अधिक देशों ने \'नीस ओशन एक्शन प्लान\' को अपनाया। भारत ने हाई सीज़ ट्रीटी (BBNJ Agreement) की पुष्टि करने का वादा किया। (Nice Ocean Action Plan adopted by 170+ nations. India pledged to ratify the High Seas Treaty.)',
-      'फ्रेंच पोलिनेशिया ने दुनिया का सबसे बड़ा समुद्री संरक्षित क्षेत्र (MPA) बनाने की घोषणा की। कई देशों ने गहरे समुद्र में खनन (Deep-sea mining) पर रोक लगाने का आह्वान किया। (French Polynesia to create the world\'s largest MPA. Coalition called for a pause on deep-sea mining.)'
+      'फ्रांस के नीस in आयोजित तीसरा संयुक्त राष्ट्र महासागर सम्मेलन समुद्री पारिस्थितिक तंत्र की रक्षा के वादों के साथ संपन्न हुआ। (The third UNOC held in Nice, France, concluded with marine conservation commitments.)',
+      'इस दौरान 170 in अधिक देशों in \'नीस ओशन एक्शन प्लान\' को अपनाया। भारत in हाई सीज़ ट्रीटी (BBNJ Agreement) की पुष्टि करने का वादा किया। (Nice Ocean Action Plan adopted by 170+ nations. India pledged to ratify the High Seas Treaty.)',
+      'फ्रेंच पोलिनेशिया in दुनिया का सबसे बड़ा समुद्री संरक्षित क्षेत्र (MPA) बनाने की घोषणा की। कई देशों in गहरे समुद्र in खनन (Deep-sea mining) पर रोक लगाने का आह्वान किया। (French Polynesia to create the world\'s largest MPA. Coalition called for a pause on deep-sea mining.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=80&w=1000'
   },
@@ -1373,7 +1374,7 @@ export const SLIDES: SlideData[] = [
     title: 'INDIA POST PAYMENTS BANK (IPPB)',
     subtitle: 'इंडिया पोस्ट पेमेंट्स बैंक',
     content: [
-      'डिजिटल भुगतान को बढ़ावा देने के लिए किस भुगतान बैंक को \'डिजिटल पेMENTS अवार्ड 2024-25\' से सम्मानित किया गया है?',
+      'डिजिटल भुगतान को बढ़ावा देने के लिए किस भुगतान बैंक को \'डिजिटल पेMENTS अवार्ड 2024-25\' in सम्मानित किया गया है?',
       'Which payments bank was honored with the \'Digital Payments Award 2024–25\' for promoting digital payments?'
     ],
     options: [
@@ -1390,9 +1391,9 @@ export const SLIDES: SlideData[] = [
     title: 'INDIA POST PAYMENTS BANK (IPPB)',
     subtitle: 'इंडिया पोस्ट पेमेंट्स बैंक',
     content: [
-      'वित्त मंत्रालय ने इंडिया पोस्ट पेमेंट्स बैंक (IPPB) को डिजिटल भुगतान और वित्तीय समावेशन को बढ़ावा देने के लिए डिजिटल पेमेंट्स अवार्ड 2024-25 प्रदान किया। (Ministry of Finance awarded IPPB for promoting digital payments and financial inclusion.)',
-      'IPPB की स्थापना 2018 में हुई थी और यह पूरी तरह से भारत सरकार के स्वामित्व वाली इकाई है। यह 1.65 लाख डाकघरों के नेटवर्क का उपयोग करता है। (Launched in 2018; 100% Govt-owned. Leverages 1.65 lakh post offices.)',
-      'यह बायोमेट्रिक-सक्षम स्मार्टफोन के माध्यम से पेपरलेस और कैशलेस बैंकिंग प्रदान करता है। वित्तीय वर्ष 2024-25 के प्रदर्शन सूचकांक में इसने पहला स्थान हासिल किया। (Provides paperless banking; ranked 1st in FY 2024-25 Performance Index.)'
+      'वित्त मंत्रालय in इंडिया पोस्ट पेमेंट्स बैंक (IPPB) को डिजिटल भुगतान और वित्तीय समावेशन को बढ़ावा देने के लिए डिजिटल पेमेंट्स अवार्ड 2024-25 प्रदान किया। (Ministry of Finance awarded IPPB for promoting digital payments and financial inclusion.)',
+      'IPPB की स्थापना 2018 in हुई थी और यह पूरी तरह in भारत सरकार के स्वामित्व वाली इकाई है। यह 1.65 लाख डाकघरों के नेटवर्क का उपयोग करता है। (Launched in 2018; 100% Govt-owned. Leverages 1.65 lakh post offices.)',
+      'यह बायोमेट्रिक-सक्षम स्मार्टफोन के माध्यम in पेपरलेस और कैशलेस बैंकिंग प्रदान करता है। वित्तीय वर्ष 2024-25 के प्रदर्शन सूचकांक in इसने पहला स्थान हासिल किया। (Provides paperless banking; ranked 1st in FY 2024-25 Performance Index.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1566438480900-0609be27a4be?q=80&w=1000'
   },
@@ -1404,7 +1405,7 @@ export const SLIDES: SlideData[] = [
     title: 'GHARIAL SPECIES CONSERVATION',
     subtitle: 'घड़ियाल प्रजाति संरक्षण कार्यक्रम',
     content: [
-      'हाल ही में उत्तर प्रदेश के किस वन्यजीव अभयारण्य में \'घड़ियाल प्रजाति संरक्षण कार्यक्रम\' शुरू किया गया है?',
+      'हाल ही in उत्तर प्रदेश के किस वन्यजीव अभयारण्य in \'घड़ियाल प्रजाति संरक्षण कार्यक्रम\' शुरू किया गया है?',
       'In which wildlife sanctuary of Uttar Pradesh was the \'Gharial Species Conservation Programme\' recently launched?'
     ],
     options: [
@@ -1421,9 +1422,9 @@ export const SLIDES: SlideData[] = [
     title: 'GHARIAL SPECIES CONSERVATION',
     subtitle: 'घड़ियाल प्रजाति संरक्षण कार्यक्रम',
     content: [
-      'केंद्रीय पर्यावरण मंत्री ने कतर्नियाघाट वन्यजीव अभयारण्य की गेरुआ नदी में घड़ियाल के बच्चों को छोड़कर इस कार्यक्रम की शुरुआत की। (Environment Minister launched the programme by releasing Gharials into the Gerua River, Katarniaghat.)',
+      'केंद्रीय पर्यावरण मंत्री in कतर्नियाघाट वन्यजीव अभयारण्य की गेरुआ नदी in घड़ियाल के बच्चों को छोड़कर इस कार्यक्रम की शुरुआत की। (Environment Minister launched the programme by releasing Gharials into the Gerua River, Katarniaghat.)',
       'घड़ियाल (Gavialis Gangeticus) केवल मछलियाँ खाते हैं और नर-भक्षी नहीं होते। नर घड़ियाल की थूथन पर घड़े जैसा उभार होता है। (Gharials feed on fish and are not man-eaters. Males have a bulbous knob on the snout.)',
-      'घड़ियाल का IUCN स्टेटस \'गंभीर रूप से लुप्तप्राय\' (Critically Endangered) है। यह वन्यजीव (संरक्षण) अधिनियम, 1972 की अनुसूची 1 के तहत सूचीबद्ध है। \'प्रोजेक्ट क्रोकोडाइल\' 1975 में शुरू किया गया था। (Gharials are Critically Endangered; listed under Schedule 1. Project Crocodile started in 1975.)'
+      'घड़ियाल का IUCN स्टेटस \'गंभीर रूप in लुप्तप्राय\' (Critically Endangered) है। यह वन्यजीव (संरक्षण) अधिनियम, 1972 की अनुसूची 1 के तहत सूचीबद्ध है। \'प्रोजेक्ट क्रोकोडाइल\' 1975 in शुरू किया गया था। (Gharials are Critically Endangered; listed under Schedule 1. Project Crocodile started in 1975.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1595113316349-9fa4eb24f884?q=80&w=1000'
   },
@@ -1452,9 +1453,9 @@ export const SLIDES: SlideData[] = [
     title: 'OPERATION MIDNIGHT HAMMER',
     subtitle: 'ऑपरेशन मिडनाइट हैमर',
     content: [
-      'अमेरिका ने ईरान के तीन प्रमुख परमाणु ठिकानों—नतांज, फोर्डो और इस्फहान—पर हवाई हमले किए, जिन्हें \'ऑपरेशन मिडनाइट हैमर\' नाम दिया गया। (US attacked Iranian nuclear sites in Natanz, Fordow, and Isfahan under \'Operation Midnight Hammer\'.)',
+      'अमेरिका in ईरान के तीन प्रमुख परमाणु ठिकानों—नतांज, फोर्डो और इस्फहान—पर हवाई हमले किए, जिन्हें \'ऑपरेशन मिडनाइट हैमर\' नाम दिया गया। (US attacked Iranian nuclear sites in Natanz, Fordow, and Isfahan under \'Operation Midnight Hammer\'.)',
       'यह हमला इजरायल के साथ चल रहे युद्ध के बीच ईरान के परमाणु बुनियादी ढांचे को लक्षित करने वाला पहला प्रत्यक्ष अमेरिकी सैन्य हस्तक्षेप है। (First direct US military intervention targeting Iran\'s nuclear infrastructure during its conflict with Israel.)',
-      'फोर्डो (Fordow) एक पहाड़ के 300 फीट नीचे स्थित है, जहाँ ईरान पर हथियार बनाने के उद्देश्य से यूरेनियम को समृद्ध (enrich) करने का आरोप है। (Fordow is 300ft underground, allegedly used for uranium enrichment for weapons.)'
+      'फोर्डो (Fordow) एक पहाड़ के 300 फीट नीचे स्थित है, जहाँ ईरान पर हथियार बनाने के उद्देश्य in यूरेनियम को समृद्ध (enrich) करने का आरोप है। (Fordow is 300ft underground, allegedly used for uranium enrichment for weapons.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1527977966376-1c841de9d21a?q=80&w=1000'
   },
@@ -1466,7 +1467,7 @@ export const SLIDES: SlideData[] = [
     title: 'PROJECT 17A: INS NILGIRI',
     subtitle: 'प्रोजेक्ट 17A स्टील्थ फ्रिगेट: आईएनएस नीलगिरी',
     content: [
-      'प्रोजेक्ट 17A के तहत निर्मित पहला स्वदेशी स्टील्थ फ्रिगेट कौन सा है जो पूर्वी नौसेना कमान में शामिल हुआ है?',
+      'प्रोजेक्ट 17A के तहत निर्मित पहला स्वदेशी स्टील्थ फ्रिगेट कौन सा है जो पूर्वी नौसेना कमान in शामिल हुआ है?',
       'Which is the first indigenously built Project 17A stealth frigate to join the Eastern Naval Command?'
     ],
     options: [
@@ -1483,9 +1484,9 @@ export const SLIDES: SlideData[] = [
     title: 'PROJECT 17A: INS NILGIRI',
     subtitle: 'प्रोजेक्ट 17A स्टील्थ फ्रिगेट: आईएनएस नीलगिरी',
     content: [
-      'आईएनएस नीलगिरी विशाखापत्तनम बंदरगाह पर पूर्वी नौसेना कमान के \'सनराइज फ्लीट\' में शामिल होने के लिए पहुँचा। (INS Nilgiri arrived to join Eastern Naval Command’s Sunrise Fleet.)',
+      'आईएनएस नीलगिरी विशाखापत्तनम बंदरगाह पर पूर्वी नौसेना कमान के \'सनराइज फ्लीट\' in शामिल होने के लिए पहुँचा। (INS Nilgiri arrived to join Eastern Naval Command’s Sunrise Fleet.)',
       'यह मझगांव डॉक शिपबिल्डर्स लिमिटेड (MDL) द्वारा निर्मित प्रोजेक्ट 17A का पहला स्टील्थ फ्रिगेट है। यह शिवालिक श्रेणी का उन्नत संस्करण है। (First Project 17A stealth frigate built by MDL; follow-on to Shivalik class.)',
-      'इसे एंटी-एयर, एंटी-सरफेस और एंटी-सबमरीन युद्ध के लिए डिज़ाइन किया गया है। इस श्रेणी के अन्य जहाजों में हिमगिरी, तारागिरी, उदयगिरी और विंध्यगिरी शामिल हैं। (Equipped for anti-air, anti-surface, and anti-submarine warfare. Other ships in class: Himgiri, Taragiri, etc.)'
+      'इसे एंटी-एयर, एंटी-सरफेस और एंटी-सबमरीन युद्ध के लिए डिज़ाइन किया गया है। इस श्रेणी के अन्य जहाजों in हिमगिरी, तारागिरी, उदयगिरी और विंध्यगिरी शामिल हैं। (Equipped for anti-air, anti-surface, and anti-submarine warfare. Other ships in class: Himgiri, Taragiri, etc.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=1000'
   },
@@ -1497,7 +1498,7 @@ export const SLIDES: SlideData[] = [
     title: 'INS TAMAL: MULTI-ROLE FRIGATE',
     subtitle: 'आईएनएस तमाल: मल्टी-रोल फ्रिगेट',
     content: [
-      'भारतीय नौसेना का वह अंतिम युद्धपोत कौन सा है जिसे भारत के बाहर (रूस में) निर्मित किया गया है?',
+      'भारतीय नौसेना का वह अंतिम युद्धपोत कौन सा है जिसे भारत के बाहर (रूस in) निर्मित किया गया है?',
       'Which is the last warship of the Indian Navy to have been built outside India (in Russia)?'
     ],
     options: [
@@ -1514,7 +1515,7 @@ export const SLIDES: SlideData[] = [
     title: 'INS TAMAL: MULTI-ROLE FRIGATE',
     subtitle: 'आईएनएस तमाल: मल्टी-रोल फ्रिगेट',
     content: [
-      'भारतीय नौसेना रूस के कलिनिनग्राद में अपने नवीनतम स्टील्थ मल्टी-रोल फ्रिगेट \'आईएनएस तमाल\' को कमीशन करने के लिए तैयार है। (Navy to commission stealth frigate INS Tamal in Kaliningrad, Russia.)',
+      'भारतीय नौसेना रूस के कलिनिनग्राद in अपने नवीनतम स्टील्थ मल्टी-रोल फ्रिगेट \'आईएनएस तमाल\' को कमीशन करने के लिए तैयार है। (Navy to commission stealth frigate INS Tamal in Kaliningrad, Russia.)',
       'यह भारत के बाहर निर्मित होने वाला अंतिम युद्धपोत है। यह \'तुशील\' श्रेणी का दूसरा जहाज है, जो तलवार और तेग श्रेणियों का उन्नत संस्करण है। (Last warship built outside India; 2nd of Tushil class.)',
       'इसमें 26% स्वदेशी घटक हैं, जिनमें ब्रह्मोस क्रूज मिसाइल भी शामिल है। इसका नया डिज़ाइन बेहतर स्टील्थ सुविधाएँ प्रदान करता है। (Contains 26% indigenous parts including BrahMos missile; features enhanced stealth.)'
     ],
@@ -1528,7 +1529,7 @@ export const SLIDES: SlideData[] = [
     title: 'NAVYA INITIATIVE',
     subtitle: 'नव्या (NAVYA) पहल',
     content: [
-      '\'नव्या\' (NAVYA) पहल का मुख्य उद्देश्य किशोरियों (16-18 वर्ष) को किस क्षेत्र में कौशल प्रदान करना है?',
+      '\'नव्या\' (NAVYA) पहल का मुख्य उद्देश्य किशोरियों (16-18 वर्ष) को किस क्षेत्र in कौशल प्रदान करना है?',
       'What is the primary objective of the \'NAVYA\' initiative for adolescent girls (16-18 years)?'
     ],
     options: [
@@ -1545,9 +1546,9 @@ export const SLIDES: SlideData[] = [
     title: 'NAVYA INITIATIVE',
     subtitle: 'नव्या (NAVYA) पहल',
     content: [
-      'महिला एवं बाल विकास मंत्रालय और कौशल विकास मंत्रालय ने संयुक्त रूप से \'नव्या\' पहल शुरू की। (MWCD and MSDE launched the NAVYA initiative.)',
-      '\'नव्या\' का अर्थ है - \'नर्चरिंग एस्पिरेशंस थ्रू वोकेशनल ट्रेनिंग फॉर यंग एडोलसेंट गर्ल्स\'। यह 16-18 वर्ष की लड़कियों को गैर-पारंपरिक भूमिकाओं में कौशल प्रदान करने के लिए एक पायलट प्रोजेक्ट है। (NAVYA aims to skill girls aged 16-18 in non-traditional job roles.)',
-      'इसे देश के 27 जिलों में लागू किया जा रहा है। यह प्रधानमंत्री कौशल विकास योजना (PMKVY) जैसी मौजूदा योजनाओं का लाभ उठाएगा। (Implemented in 27 districts; leverages schemes like PMKVY.)'
+      'महिला एवं बाल विकास मंत्रालय और कौशल विकास मंत्रालय in संयुक्त रूप in \'नव्या\' पहल शुरू की। (MWCD and MSDE launched the NAVYA initiative.)',
+      '\'नव्या\' का अर्थ है - \'नर्चरिंग एस्पिरेशंस थ्रू वोकेशनल ट्रेनिंग फॉर यंग एडोलसेंट गर्ल्स\'। यह 16-18 वर्ष की लड़कियों को गैर-पारंपरिक भूमिकाओं in कौशल प्रदान करने के लिए एक पायलट प्रोजेक्ट है। (NAVYA aims to skill girls aged 16-18 in non-traditional job roles.)',
+      'इसे देश के 27 जिलों in लागू किया जा रहा है। यह प्रधानमंत्री कौशल विकास योजना (PMKVY) जैसी मौजूदा योजनाओं का लाभ उठाएगा। (Implemented in 27 districts; leverages schemes like PMKVY.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000'
   },
@@ -1559,7 +1560,7 @@ export const SLIDES: SlideData[] = [
     title: 'SDG INDEX 2025',
     subtitle: 'सतत विकास लक्ष्य (SDG) सूचकांक 2025',
     content: [
-      '\'सतत विकास लक्ष्य (SDG) सूचकांक 2025\' में भारत की रैंकिंग क्या है?',
+      '\'सतत विकास लक्ष्य (SDG) सूचकांक 2025\' in भारत की रैंकिंग क्या है?',
       'What is India\'s rank in the \'Sustainable Development Goals (SDG) Index 2025\'?'
     ],
     options: [
@@ -1576,9 +1577,9 @@ export const SLIDES: SlideData[] = [
     title: 'SDG INDEX 2025',
     subtitle: 'सतत विकास लक्ष्य (SDG) सूचकांक 2025',
     content: [
-      'भारत ने पहली बार सतत विकास लक्ष्य (SDG) सूचकांक में शीर्ष 100 देशों में जगह बनाई है। (India has, for the first time, secured a position among the top 100 countries in the SDG Index.)',
-      'भारत 167 देशों में 99वें स्थान पर है, जिसका स्कोर 67 है। फिनलैंड, स्वीडन और डेनमार्क शीर्ष तीन स्थानों पर हैं। पूर्वी और दक्षिण एशिया 2015 के बाद से सबसे तेजी से प्रगति करने वाला क्षेत्र है। (India ranked 99th out of 167 with a score of 67. Finland, Sweden, and Denmark hold the top spots. East and South Asia is the fastest progressing region.)',
-      'SDGs को 2015 में संयुक्त राष्ट्र द्वारा \'एजेंडा 2030\' के तहत अपनाया गया था। इसमें 17 लक्ष्य और 169 संबद्ध लक्ष्य शामिल हैं, जो 1 जनवरी 2016 से लागू हुए। (SDGs adopted in 2015 under Agenda 2030; includes 17 goals and 169 targets effective from Jan 1, 2016.)'
+      'भारत in पहली बार सतत विकास लक्ष्य (SDG) सूचकांक in शीर्ष 100 देशों in जगह बनाई है। (India has, for the first time, secured a position among the top 100 countries in the SDG Index.)',
+      'भारत 167 देशों in 99वें स्थान पर है, जिसका स्कोर 67 है। फिनलैंड, स्वीडन और डेनमार्क शीर्ष तीन स्थानों पर हैं। पूर्वी और दक्षिण एशिया 2015 के बाद in सबसे तेजी in प्रगति करने वाला क्षेत्र है। (India ranked 99th out of 167 with a score of 67. Finland, Sweden, and Denmark hold the top spots. East and South Asia is the fastest progressing region.)',
+      'SDGs को 2015 in संयुक्त राष्ट्र द्वारा \'एजेंडा 2030\' के तहत अपनाया गया था। इसमें 17 लक्ष्य और 169 संबद्ध लक्ष्य शामिल हैं, जो 1 जनवरी 2016 in लागू हुए। (SDGs adopted in 2015 under Agenda 2030; includes 17 goals and 169 targets effective from Jan 1, 2016.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1557426482-28855efc6210?q=80&w=1000'
   },
@@ -1590,7 +1591,7 @@ export const SLIDES: SlideData[] = [
     title: 'DIGITAL PAYMENT INTELLIGENCE (DPIP)',
     subtitle: 'डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म',
     content: [
-      'डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म (DPIP) को मुख्य रूप से किस संस्था के मार्गदर्शन में विकसित किया जा रहा है?',
+      'डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म (DPIP) को मुख्य रूप in किस संस्था के मार्गदर्शन in विकसित किया जा रहा है?',
       'Under the guidance of which institution is the Digital Payment Intelligence Platform (DPIP) primarily being developed?'
     ],
     options: [
@@ -1607,9 +1608,9 @@ export const SLIDES: SlideData[] = [
     title: 'DIGITAL PAYMENT INTELLIGENCE (DPIP)',
     subtitle: 'डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म',
     content: [
-      'सार्वजनिक और निजी क्षेत्र के बैंक धोखाधड़ी रोकने के लिए भारतीय रिजर्व बैंक (RBI) के मार्गदर्शन में DPII विकसित कर रहे हैं। (Major banks are developing DPIP under RBI guidance to strengthen fraud risk management.)',
-      'रिजर्व बैंक इनोवेशन हब (RBIH) 5-10 बैंकों के सहयोग से एक प्रोटोटाइप बना रहा है। यह रीयल-टाइम डेटा शेयरिंग के माध्यम से डिजिटल वित्तीय धोखाधड़ी का पता लगाएगा। (RBI Innovation Hub is building a prototype with banks. It detects digital fraud via real-time data sharing.)',
-      'वित्त वर्ष 2025 की रिपोर्ट के अनुसार, बैंक धोखाधड़ी तीन गुना बढ़कर ₹36,014 करोड़ हो गई है। सार्वजनिक क्षेत्र के बैंकों ने ऋण/अग्रिम में सबसे अधिक धोखाधड़ी की सूचना दी। (Bank frauds rose threefold to ₹36,014 crore in FY25; PSBs reported major frauds in loans/advances.)'
+      'सार्वजनिक और निजी क्षेत्र के बैंक धोखाधड़ी रोकने के लिए भारतीय रिजर्व बैंक (RBI) के मार्गदर्शन in DPII विकसित कर रहे हैं। (Major banks are developing DPIP under RBI guidance to strengthen fraud risk management.)',
+      'रिजर्व बैंक इनोवेशन हब (RBIH) 5-10 बैंकों के सहयोग in एक प्रोटोटाइप बना रहा है। यह रीयल-टाइम डेटा शेयरिंग के माध्यम in डिजिटल वित्तीय धोखाधड़ी का पता लगाएगा। (RBI Innovation Hub is building a prototype with banks. It detects digital fraud via real-time data sharing.)',
+      'वित्त वर्ष 2025 की रिपोर्ट के अनुसार, बैंक धोखाधड़ी तीन गुना बढ़कर ₹36,014 करोड़ हो गई है। सार्वजनिक क्षेत्र के बैंकों in ऋण/अग्रिम in सबसे अधिक धोखाधड़ी की सूचना दी। (Bank frauds rose threefold to ₹36,014 crore in FY25; PSBs reported major frauds in loans/advances.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1611974717482-58434749f7e5?q=80&w=1000'
   },
@@ -1621,7 +1622,7 @@ export const SLIDES: SlideData[] = [
     title: 'SCO DEFENCE MINISTERS’ MEETING',
     subtitle: 'एससीओ रक्षा मंत्रियों की बैठक',
     content: [
-      'भारत ने किस शहर में आयोजित शंघाई सहयोग संगठन (SCO) के रक्षा मंत्रियों की बैठक में संयुक्त घोषणापत्र पर हस्ताक्षर करने से इनकार कर दिया?',
+      'भारत in किस शहर in आयोजित शंघाई सहयोग संगठन (SCO) के रक्षा मंत्रियों की बैठक in संयुक्त घोषणापत्र पर हस्ताक्षर करने in इनकार कर दिया?',
       'In which city did India refuse to sign the joint declaration at the SCO Defence Ministers’ meeting?'
     ],
     options: [
@@ -1638,9 +1639,9 @@ export const SLIDES: SlideData[] = [
     title: 'SCO DEFENCE MINISTERS’ MEETING',
     subtitle: 'एससीओ रक्षा मंत्रियों की बैठक',
     content: [
-      'भारत ने किंगदाओ, चीन में आयोजित SCO रक्षा मंत्रियों की बैठक में संयुक्त घोषणापत्र पर हस्ताक्षर करने से इनकार कर दिया। (India refused to sign the joint declaration at the SCO Defence Ministers’ meeting in Qingdao.)',
-      'भारत दस्तावेज़ की भाषा से असंतुष्ट था क्योंकि इसमें सीमा पार आतंकवादी गतिविधियों (विशेष रूप से पहलगाम हमले) का कोई उल्लेख नहीं था। (India was dissatisfied as there was no mention of cross-border terrorism, especially the Pahalgam attack.)',
-      'SCO की स्थापना 2001 में हुई थी (शंघाई फाइव से विकसित)। भारत 2017 में पूर्ण सदस्य बना। इसका मुख्यालय बीजिंग (सचिवालय) और ताशकंद (RATS) में है। (SCO established in 2001; India joined in 2017. HQs in Beijing and Tashkent.)'
+      'भारत in किंगदाओ, चीन in आयोजित SCO रक्षा मंत्रियों की बैठक in संयुक्त घोषणापत्र पर हस्ताक्षर करने in इनकार कर दिया। (India refused to sign the joint declaration at the SCO Defence Ministers’ meeting in Qingdao.)',
+      'भारत दस्तावेज़ की भाषा in असंतुष्ट था क्योंकि इसमें सीमा पार आतंकवादी गतिविधियों (विशेष रूप in पहलगाम हमले) का कोई उल्लेख नहीं था। (India was dissatisfied as there was no mention of cross-border terrorism, especially the Pahalgam attack.)',
+      'SCO की स्थापना 2001 in हुई थी (शंघाई फाइव in विकसित)। भारत 2017 in पूर्ण सदस्य बना। इसका मुख्यालय बीजिंग (सचिवालय) और ताशकंद (RATS) in है। (SCO established in 2001; India joined in 2017. HQs in Beijing and Tashkent.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1000'
   },
@@ -1652,7 +1653,7 @@ export const SLIDES: SlideData[] = [
     title: 'BIHAR’S FIRST NUCLEAR PLANT',
     subtitle: 'बिहार का पहला परमाणु ऊर्जा संयंत्र',
     content: [
-      'बिहार के पहले परमाणु ऊर्जा संयंत्र में किस उन्नत तकनीक का उपयोग किए जाने की योजना है?',
+      'बिहार के पहले परमाणु ऊर्जा संयंत्र in किस उन्नत तकनीक का उपयोग किए जाने की योजना है?',
       'Which advanced technology is planned to be used in Bihar\'s first nuclear power plant?'
     ],
     options: [
@@ -1670,8 +1671,8 @@ export const SLIDES: SlideData[] = [
     subtitle: 'बिहार का पहला परमाणु ऊर्जा संयंत्र',
     content: [
       'बिहार अपना पहला परमाणु ऊर्जा संयंत्र स्थापित करने जा रहा है, जो केंद्र सरकार के राष्ट्रीय परमाणु ऊर्जा मिशन का हिस्सा है। (Bihar is set to host its first nuclear power plant under the National Nuclear Energy Mission.)',
-      'इसमें स्मॉल मॉड्यूलर रिएक्टर (SMRs) जैसी उन्नत तकनीकों का उपयोग किया जाएगा। बिहार में 1,000 मेगावाट की बैटरी स्टोरेज परियोजना को भी मंजूरी दी गई है। (Will use Small Modular Reactors; a 1,000 MW battery storage project also approved in Bihar.)',
-      'SMRs की क्षमता प्रति यूनिट 300 MW तक होती है। भारत का लक्ष्य 2047 तक परमाणु क्षमता 100 GW करना है (वर्तमान में 8 GW)। परमाणु ऊर्जा मिशन के लिए ₹20,000 करोड़ का आवंटन किया गया है। (SMR capacity up to 300 MW per unit. India\'s target: 100 GW nuclear capacity by 2047.)'
+      'इसमें स्मॉल मॉड्यूलर रिएक्टर (SMRs) जैसी उन्नत तकनीकों का उपयोग किया जाएगा। बिहार in 1,000 मेगावाट की बैटरी स्टोरेज परियोजना को भी मंजूरी दी गई है। (Will use Small Modular Reactors; a 1,000 MW battery storage project also approved in Bihar.)',
+      'SMRs की क्षमता प्रति यूनिट 300 MW तक होती है। भारत का लक्ष्य 2047 तक परमाणु क्षमता 100 GW करना है (वर्तमान in 8 GW)। परमाणु ऊर्जा मिशन के लिए ₹20,000 करोड़ का आवंटन किया गया है। (SMR capacity up to 300 MW per unit. India\'s target: 100 GW nuclear capacity by 2047.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000'
   },
@@ -1700,8 +1701,8 @@ export const SLIDES: SlideData[] = [
     title: 'FUTURE FRONT REPORT',
     subtitle: 'नीति आयोग की फ्यूचर फ्रंट रिपोर्ट',
     content: [
-      'नीति आयोग ने अपनी त्रैमासिक अंतर्दृष्टि श्रृंखला \'फ्यूचर फ्रंट\' का तीसरा संस्करण जारी किया। (NITI Aayog released the 3rd edition of its quarterly insights series \'Future Front\'.)',
-      'यह रिपोर्ट डिजिटल गवर्नेंस को मजबूत करने के लिए डेटा गुणवत्ता (Data Quality) की तत्काल आवश्यकता पर जोर देती है। खराब डेटा के कारण कल्याणकारी खर्च में 4-7% की वृद्धि हो सकती है। (Underscores the need for robust data quality; poor data leads to 4–7% welfare overspending.)',
+      'नीति आयोग in अपनी त्रैमासिक अंतर्दृष्टि श्रृंखला \'फ्यूचर फ्रंट\' का तीसरा संस्करण जारी किया। (NITI Aayog released the 3rd edition of its quarterly insights series \'Future Front\'.)',
+      'यह रिपोर्ट डिजिटल गवर्नेंस को मजबूत करने के लिए डेटा गुणवत्ता (Data Quality) की तत्काल आवश्यकता पर जोर देती है। खराब डेटा के कारण कल्याणकारी खर्च in 4-7% की वृद्धि हो सकती है। (Underscores the need for robust data quality; poor data leads to 4–7% welfare overspending.)',
       'भारत का डिजिटल बुनियादी ढांचा (UPI, आधार) बड़े पैमाने पर विकसित हुआ है। रिपोर्ट डेटा अखंडता के लिए राष्ट्रीय/राज्य/जिला स्तर पर \'डेटा कस्टोडियन\' नामित करने का सुझाव देती है। (India\'s digital infrastructure is massive; report suggests designating \'data custodians\' for data integrity.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1551288049-bbbda53666cf?q=80&w=1000'
@@ -1731,9 +1732,9 @@ export const SLIDES: SlideData[] = [
     title: 'QUANTUM COMPUTING VALLEY',
     subtitle: 'भारत की पहली क्वांटम कंप्यूटिंग वैली',
     content: [
-      'जनवरी 2026 तक आंध्र प्रदेश के अमरावती में भारत की पहली क्वांटम कंप्यूटिंग वैली लॉन्च की जाएगी। (The first Quantum Computing Valley of India will be launched in Amaravati, Andhra Pradesh by Jan 2026.)',
+      'जनवरी 2026 तक आंध्र प्रदेश के अमरावती in भारत की पहली क्वांटम कंप्यूटिंग वैली लॉन्च की जाएगी। (The first Quantum Computing Valley of India will be launched in Amaravati, Andhra Pradesh by Jan 2026.)',
       'यह पार्क अनुसंधान, नवाचार और औद्योगिक विकास का समर्थन करेगा और लाखों पेशेवरों को रोजगार देगा। यह राष्ट्रीय क्वांटम मिशन (NQM) के अनुरूप है। (Park supports R&D and innovation; aligns with National Quantum Mission.)',
-      'भारत सरकार ने 2023 में 2030-31 तक के लिए NQM को मंजूरी दी थी। इसका उद्देश्य 8 वर्षों में 50-1000 भौतिक क्विबिट वाले इंटरमीडिएट-स्केल क्वांटम कंप्यूटर विकसित करना है। (NQM approved in 2023 for period till 2030-31; aims to develop 50-1000 qubit computers in 8 years.)'
+      'भारत सरकार in 2023 in 2030-31 तक के लिए NQM को मंजूरी दी थी। इसका उद्देश्य 8 वर्षों in 50-1000 भौतिक क्विबिट वाले इंटरमीडिएट-स्केल क्वांटम कंप्यूटर विकसित करना है। (NQM approved in 2023 for period till 2030-31; aims to develop 50-1000 qubit computers in 8 years.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000'
   },
@@ -1745,7 +1746,7 @@ export const SLIDES: SlideData[] = [
     title: 'THE UNITED NATIONS AT 80',
     subtitle: 'संयुक्त राष्ट्र की 80वीं वर्षगांठ',
     content: [
-      'संयुक्त राष्ट्र चार्टर (UN Charter) पर 26 जून, 1945 को किस शहर में हस्ताक्षर किए गए थे?',
+      'संयुक्त राष्ट्र चार्टर (UN Charter) पर 26 जून, 1945 को किस शहर in हस्ताक्षर किए गए थे?',
       'In which city was the UN Charter signed on June 26, 1945?'
     ],
     options: [
@@ -1763,7 +1764,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'संयुक्त राष्ट्र की 80वीं वर्षगांठ',
     content: [
       '26 जून, 2025 को संयुक्त राष्ट्र चार्टर पर हस्ताक्षर के 80 वर्ष पूरे हुए। (June 26, 2025 marks 80 years of signing the UN Charter.)',
-      'संयुक्त राष्ट्र महासचिव ने संगठन को आधुनिक बनाने के लिए \'UN80 पहल\' शुरू की है। इसमें एआई टूल्स का उपयोग करके पुराने शासनादेशों (mandates) की समीक्षा करना शामिल है। (UN80 Initiative launched to modernize the UN, including AI-based mandate reviews.)',
+      'संयुक्त राष्ट्र महासचिव in संगठन को आधुनिक बनाने के लिए \'UN80 पहल\' शुरू की है। इसमें एआई टूल्स का उपयोग करके पुराने शासनादेशों (mandates) की समीक्षा करना शामिल है। (UN80 Initiative launched to modernize the UN, including AI-based mandate reviews.)',
       'संयुक्त राष्ट्र के 6 मुख्य अंग हैं: महासभा, सुरक्षा परिषद, ECOSOC, न्यास परिषद, ICJ और सचिवालय। भारत \'G4\' देशों का हिस्सा है जो सुरक्षा परिषद विस्तार की वकालत करते हैं। (6 principal organs of UN; India is part of G4 nations advocating SC reform.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1557426482-28855efc6210?q=80&w=1000'
@@ -1776,7 +1777,7 @@ export const SLIDES: SlideData[] = [
     title: 'SOUTH ASIA POTATO CENTRE',
     subtitle: 'अंतर्राष्ट्रीय आलू केंद्र की दक्षिण एशिया इकाई',
     content: [
-      'अंतर्राष्ट्रीय आलू केंद्र (CIP) का दक्षिण एशिया क्षेत्रीय केंद्र भारत के किस शहर में स्थापित किया जाएगा?',
+      'अंतर्राष्ट्रीय आलू केंद्र (CIP) का दक्षिण एशिया क्षेत्रीय केंद्र भारत के किस शहर in स्थापित किया जाएगा?',
       'In which Indian city will the South Asia regional centre of the International Potato Center (CIP) be established?'
     ],
     options: [
@@ -1793,9 +1794,9 @@ export const SLIDES: SlideData[] = [
     title: 'SOUTH ASIA POTATO CENTRE',
     subtitle: 'अंतर्राष्ट्रीय आलू केंद्र की दक्षिण एशिया इकाई',
     content: [
-      'केंद्र सरकार ने उत्तर प्रदेश के आगरा में अंतर्राष्ट्रीय आलू केंद्र (CIP) के दक्षिण एशिया क्षेत्रीय केंद्र की स्थापना को मंजूरी दे दी है। (Govt cleared a proposal for the CIP South Asia regional centre in Agra, UP.)',
-      'यह केंद्र आलू और शकरकंद की उत्पादकता में सुधार करके खाद्य सुरक्षा और किसानों की आय बढ़ाने का काम करेगा। (Aims to improve potato/sweet potato productivity to boost food security and income.)',
-      'भारत दुनिया का दूसरा सबसे बड़ा आलू उत्पादक और उपभोक्ता है (शीर्ष पर चीन है)। उत्तर प्रदेश और पश्चिम बंगाल भारत में आलू उत्पादन में अग्रणी हैं। (India is 2nd largest producer after China. UP and WB lead production in India.)'
+      'केंद्र सरकार in उत्तर प्रदेश के आगरा in अंतर्राष्ट्रीय आलू केंद्र (CIP) के दक्षिण एशिया क्षेत्रीय केंद्र की स्थापना को मंजूरी दे दी है। (Govt cleared a proposal for the CIP South Asia regional centre in Agra, UP.)',
+      'यह केंद्र आलू और शकरकंद की उत्पादकता in सुधार करके खाद्य सुरक्षा और किसानों की आय बढ़ाने का काम करेगा। (Aims to improve potato/sweet potato productivity to boost food security and income.)',
+      'भारत दुनिया का दूसरा सबसे बड़ा आलू उत्पादक और उपभोक्ता है (शीर्ष पर चीन है)। उत्तर प्रदेश और पश्चिम बंगाल भारत in आलू उत्पादन in अग्रणी हैं। (India is 2nd largest producer after China. UP and WB lead production in India.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=1000'
   },
@@ -1824,9 +1825,9 @@ export const SLIDES: SlideData[] = [
     title: 'NEW GLOBAL POVERTY LINE',
     subtitle: 'नई वैश्विक गरीबी रेखा',
     content: [
-      'विश्व बैंक ने वैश्विक गरीबी रेखा को $2.15/दिन से बढ़ाकर $3.00/दिन कर दिया है। (World Bank raised the International Poverty Line from $2.15/day to $3.00/day.)',
-      'नई रेखा के तहत 2022-23 में भारत की गरीबी 5.25% रही, जबकि पुरानी $2.15 रेखा के तहत यह गिरकर 2.35% रह गई। (Under the new line, India\'s poverty was 5.25% in 2022-23; under the old line, it dropped to 2.35%.)',
-      'भारत ने अपने नवीनतम घरेलू उपभोग व्यय सर्वेक्षण (HCES) में संशोधित मिश्रित रिकॉल अवधि (MMRP) पद्धति को अपनाया है। (India adopted Modified Mixed Recall Period method for HCES.)'
+      'विश्व बैंक in वैश्विक गरीबी रेखा को $2.15/दिन in बढ़ाकर $3.00/दिन कर दिया है। (World Bank raised the International Poverty Line from $2.15/day to $3.00/day.)',
+      'नई रेखा के तहत 2022-23 in भारत की गरीबी 5.25% रही, जबकि पुरानी $2.15 रेखा के तहत यह गिरकर 2.35% रह गई। (Under the new line, India\'s poverty was 5.25% in 2022-23; under the old line, it dropped to 2.35%.)',
+      'भारत in अपने नवीनतम घरेलू उपभोग व्यय सर्वेक्षण (HCES) in संशोधित मिश्रित रिकॉल अवधि (MMRP) पद्धति को अपनाया है। (India adopted Modified Mixed Recall Period method for HCES.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1611974717482-58434749f7e5?q=80&w=1000'
   },
@@ -1838,7 +1839,7 @@ export const SLIDES: SlideData[] = [
     title: 'JIYO PARSI SCHEME',
     subtitle: 'जियो पारसी योजना',
     content: [
-      '\'जियो पारसी\' योजना मुख्य रूप से किस उद्देश्य के लिए शुरू की गई है?',
+      '\'जियो पारसी\' योजना मुख्य रूप in किस उद्देश्य के लिए शुरू की गई है?',
       'What is the primary objective of the \'Jiyo Parsi\' scheme?'
     ],
     options: [
@@ -1855,9 +1856,9 @@ export const SLIDES: SlideData[] = [
     title: 'JIYO PARSI SCHEME',
     subtitle: 'जियो पारसी योजना',
     content: [
-      'अल्पसंख्यक कार्य मंत्रालय ने मुंबई में जियो पारसी योजना के लाभार्थियों के लिए बायोमेट्रिक प्रमाणीकरण अभियान चलाया। (Ministry of Minority Affairs conducted a biometric drive for Jiyo Parsi beneficiaries.)',
-      'यह 2013-14 में शुरू की गई एक केंद्रीय क्षेत्र की योजना है। यह आईवीएफ (IVF) जैसे बांझपन उपचार के लिए वित्तीय सहायता और पारसी जोड़ों को मासिक सहायता प्रदान करती है। (Central Sector Scheme launched in 2013-14. Provides financial aid for IVF and monthly support to couples.)',
-      '2011 की जनगणना के अनुसार पारसी जनसंख्या 57,264 थी। महाराष्ट्र में पारसियों की संख्या सबसे अधिक (44,854) है, उसके बाद गुजरात है। (Parsi population was 57,264 in 2011. Maharashtra has the highest population.)'
+      'अल्पसंख्यक कार्य मंत्रालय in मुंबई in जियो पारसी योजना के लाभार्थियों के लिए बायोमेट्रिक प्रमाणीकरण अभियान चलाया। (Ministry of Minority Affairs conducted a biometric drive for Jiyo Parsi beneficiaries.)',
+      'यह 2013-14 in शुरू की गई एक केंद्रीय क्षेत्र की योजना है। यह आईवीएफ (IVF) जैसे बांझपन उपचार के लिए वित्तीय सहायता और पारसी जोड़ों को मासिक सहायता प्रदान करती है। (Central Sector Scheme launched in 2013-14. Provides financial aid for IVF and monthly support to couples.)',
+      '2011 की जनगणना के अनुसार पारसी जनसंख्या 57,264 थी। महाराष्ट्र in पारसियों की संख्या सबसे अधिक (44,854) है, उसके बाद गुजरात है। (Parsi population was 57,264 in 2011. Maharashtra has the highest population.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000'
   },
@@ -1886,9 +1887,9 @@ export const SLIDES: SlideData[] = [
     title: 'MARITIME NBFC: SMFCL',
     subtitle: 'भारत की पहली समुद्री एनबीएफसी',
     content: [
-      'केंद्रीय पत्तन, पोत परिवहन और जलमार्ग मंत्री ने सागरमाला फाइनेंस कॉर्पोरेशन लिमिटेड (SMFCL) का उद्घाटन किया। (Union Shipping Minister inaugurated Sagarmala Finance Corporation Limited.)',
+      'केंद्रीय पत्तन, पोत परिवहन और जलमार्ग मंत्री in सागरमाला फाइनेंस कॉर्पोरेशन लिमिटेड (SMFCL) का उद्घाटन किया। (Union Shipping Minister inaugurated Sagarmala Finance Corporation Limited.)',
       'यह भारत की पहली समुद्री क्षेत्र की एनबीएफसी (NBFC) है जो जहाजों के निर्माण, क्रूज पर्यटन और समुद्री शिक्षा के लिए वित्तीय समाधान प्रदान करेगी। (India’s first maritime NBFC offering financial solutions for shipbuilding, cruise tourism, etc.)',
-      'यह आरबीआई (RBI) के पास एनबीएफसी के रूप में पंजीकृत है। एनबीएफसी बैंक की तरह मांग जमा (Demand Deposits) स्वीकार नहीं कर सकते और चेक जारी नहीं कर सकते। (Registered as NBFC with RBI. NBFCs cannot accept demand deposits or issue cheques.)'
+      'यह आरबीआई (RBI) के पास एनबीएफसी के रूप in पंजीकृत है। एनबीएफसी बैंक की तरह मांग जमा (Demand Deposits) स्वीकार नहीं कर सकते और चेक जारी नहीं कर सकते। (Registered as NBFC with RBI. NBFCs cannot accept demand deposits or issue cheques.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1494412519320-aa613dfb7738?q=80&w=1000'
   },
@@ -1900,7 +1901,7 @@ export const SLIDES: SlideData[] = [
     title: 'CURRENT ACCOUNT SURPLUS',
     subtitle: 'चालू खाता अधिशेष',
     content: [
-      'वित्त वर्ष 2025 की चौथी तिमाही (जनवरी-मार्च) में भारत का चालू खाता अधिशेष (Surplus) कितना दर्ज किया गया?',
+      'वित्त वर्ष 2025 की चौथी तिमाही (जनवरी-मार्च) in भारत का चालू खाता अधिशेष (Surplus) कितना दर्ज किया गया?',
       'How much was India’s current account surplus recorded in Q4 (January-March) of FY25?'
     ],
     options: [
@@ -1917,9 +1918,9 @@ export const SLIDES: SlideData[] = [
     title: 'CURRENT ACCOUNT SURPLUS',
     subtitle: 'चालू खाता अधिशेष',
     content: [
-      'भारतीय रिजर्व बैंक (RBI) के अनुसार, वित्त वर्ष 2025 की चौथी तिमाही में भारत का चालू खाता अधिशेष उम्मीद से अधिक $13.5 बिलियन रहा। (RBI reported a higher-than-expected current account surplus of $13.5 billion in Q4 FY25.)',
-      'चालू खाता अधिशेष तब होता है जब अंतर्वाह (Inflows) बहिर्वाह (Outflows) से अधिक हो जाते हैं। यह एक मजबूत बाहरी स्थिति और विदेशी मुद्रा भंडार की मजबूती का संकेत देता है। (Surplus occurs when inflows exceed outflows. Indicates strong external position and strengthens forex reserves.)',
-      'चालू खाते में वस्तुओं का व्यापार, सेवाओं का व्यापार, प्राथमिक आय (निवेश आय) और द्वितीयक आय (प्रेषण/रेमिटेंस) शामिल होते हैं। (Current Account comprises trade in goods, services, income, and remittances.)'
+      'भारतीय रिजर्व बैंक (RBI) के अनुसार, वित्त वर्ष 2025 की चौथी तिमाही in भारत का चालू खाता अधिशेष उम्मीद in अधिक $13.5 बिलियन रहा। (RBI reported a higher-than-expected current account surplus of $13.5 billion in Q4 FY25.)',
+      'चालू खाता अधिशेष तब होता है जब अंतर्वाह (Inflows) बहिर्वाह (Outflows) in अधिक हो जाते हैं। यह एक मजबूत बाहरी स्थिति और विदेशी मुद्रा भंडार की मजबूती का संकेत देता है। (Surplus occurs when inflows exceed outflows. Indicates strong external position and strengthens forex reserves.)',
+      'चालू खाते in वस्तुओं का व्यापार, सेवाओं का व्यापार, प्राथमिक आय (निवेश आय) और द्वितीयक आय (प्रेषण/रेमिटेंस) शामिल होते हैं। (Current Account comprises trade in goods, services, income, and remittances.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1611974717482-58434749f7e5?q=80&w=1000'
   },
@@ -1931,7 +1932,7 @@ export const SLIDES: SlideData[] = [
     title: 'OPERATION DEEP MANIFEST',
     subtitle: 'ऑपरेशन डीप मैनिफेस्ट',
     content: [
-      '\'ऑपरेशन डीप मैनिफेस्ट\' (Operation Deep Manifest) के तहत किस देश के मूल की वस्तुओं को अवैध रूप से दुबई के रास्ते लाने पर जब्त किया गया?',
+      '\'ऑपरेशन डीप मैनिफेस्ट\' (Operation Deep Manifest) के तहत किस देश के मूल की वस्तुओं को अवैध रूप in दुबई के रास्ते लाने पर जब्त किया गया?',
       'Under \'Operation Deep Manifest\', goods from which country\'s origin were seized for being illicitly routed via Dubai?'
     ],
     options: [
@@ -1948,8 +1949,8 @@ export const SLIDES: SlideData[] = [
     title: 'OPERATION DEEP MANIFEST',
     subtitle: 'ऑपरेशन डीप मैनिफेस्ट',
     content: [
-      'भारत के राजस्व खुफिया निदेशालय (DRI) ने दुबई के रास्ते अवैध रूप से लाई जा रही 1,115 मीट्रिक टन पाकिस्तानी मूल की वस्तुओं को जब्त किया। (DRI seized 1,115 metric tonnes of Pakistani-origin goods routed via Dubai.)',
-      'पहलगाम हमले के बाद भारत ने पाकिस्तानी मूल की वस्तुओं के प्रत्यक्ष या अप्रत्यक्ष आयात पर पूर्ण प्रतिबंध लगा दिया है। (India imposed a ban on Pakistani-origin goods after the Pahalgam attack.)'
+      'भारत के राजस्व खुफिया निदेशालय (DRI) in दुबई के रास्ते अवैध रूप in लाई जा रही 1,115 मीट्रिक टन पाकिस्तानी मूल की वस्तुओं को जब्त किया। (DRI seized 1,115 metric tonnes of Pakistani-origin goods routed via Dubai.)',
+      'पहलगाम हमले के बाद भारत in पाकिस्तानी मूल की वस्तुओं के प्रत्यक्ष या अप्रत्यक्ष आयात पर पूर्ण प्रतिबंध लगा दिया है। (India imposed a ban on Pakistani-origin goods after the Pahalgam attack.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1000'
   },
@@ -1961,7 +1962,7 @@ export const SLIDES: SlideData[] = [
     title: 'TITANS SPACE MISSION 2029',
     subtitle: 'टाइटन्स स्पेस मिशन 2029',
     content: [
-      'अमेरिकी निजी एजेंसी टाइटन्स स्पेस इंडस्ट्रीज (TSI) के 2029 के अंतरिक्ष मिशन के लिए किस भारतीय को अंतरिक्ष यात्री उम्मीदवार के रूप में चुना गया है?',
+      'अमेरिकी निजी एजेंसी टाइटन्स स्पेस इंडस्ट्रीज (TSI) के 2029 के अंतरिक्ष मिशन के लिए किस भारतीय को अंतरिक्ष यात्री उम्मीदवार के रूप in चुना गया है?',
       'Which Indian has been selected as an Astronaut Candidate for the 2029 space mission of the U.S. private agency Titans Space Industries (TSI)?'
     ],
     options: [
@@ -1980,7 +1981,7 @@ export const SLIDES: SlideData[] = [
     content: [
       'जाहन्वी डांगेती को टाइटन्स स्पेस इंडस्ट्रीज (TSI) के 2029 के मिशन के लिए अंतरिक्ष यात्री उम्मीदवार (ASCAN) चुना गया है। (Jahnavi Dangeti selected as ASCAN for the 2029 Titan Space Industries mission.)',
       'यह मिशन पृथ्वी की दो बार परिक्रमा करेगा और लगभग तीन घंटे तक निर्बाध शून्य गुरुत्वाकर्षण (Zero Gravity) प्रदान करेगा। (Crew will orbit Earth twice and witness nearly 3 hours of zero gravity.)',
-      'जाहन्वी डांगेती पोलैंड में एनालॉग अंतरिक्ष यात्री प्रशिक्षण केंद्र (AATC) से सबसे कम उम्र की एनालॉग अंतरिक्ष यात्री भी बनी थीं। (Jahnavi became the youngest Analog Astronaut from AATC, Poland.)'
+      'जाहन्वी डांगेती पोलैंड in एनालॉग अंतरिक्ष यात्री प्रशिक्षण केंद्र (AATC) in सबसे कम उम्र की एनालॉग अंतरिक्ष यात्री भी बनी थीं। (Jahnavi became the youngest Analog Astronaut from AATC, Poland.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=1000'
   },
@@ -1992,7 +1993,7 @@ export const SLIDES: SlideData[] = [
     title: 'ADAMYA: FAST PATROL VESSEL',
     subtitle: 'अदम्य: फास्ट पेट्रोल वेसल',
     content: [
-      'भारतीय तटरक्षक बल (ICG) में शामिल किया गया पहला फास्ट पेट्रोल वेसल \'अदम्य\' (Adamya) किस शिपयार्ड द्वारा निर्मित है?',
+      'भारतीय तटरक्षक बल (ICG) in शामिल किया गया पहला फास्ट पेट्रोल वेसल \'अदम्य\' (Adamya) किस शिपयार्ड द्वारा निर्मित है?',
       'The first Fast Patrol Vessel \'Adamya\' inducted into the Indian Coast Guard (ICG) is built by which shipyard?'
     ],
     options: [
@@ -2009,9 +2010,9 @@ export const SLIDES: SlideData[] = [
     title: 'ADAMYA: FAST PATROL VESSEL',
     subtitle: 'अदम्य: फास्ट पेट्रोल वेसल',
     content: [
-      'गोवा में \'अदम्य\' को भारतीय तटरक्षक बल (ICG) में शामिल किया गया। (Adamya was inducted into the Indian Coast Guard in Goa.)',
+      'गोवा in \'अदम्य\' को भारतीय तटरक्षक बल (ICG) in शामिल किया गया। (Adamya was inducted into the Indian Coast Guard in Goa.)',
       'यह गोवा शिपयार्ड लिमिटेड (GSL) के आठ फास्ट पेट्रोल वेसल (FPV) प्रोजेक्ट का पहला जहाज है। इसमें नियंत्रणीय पिच प्रोपेलर (CPPs) और स्वदेशी गियरबॉक्स हैं। (First FPV of the GSL project; features Controllable Pitch Propellers and indigenous gearboxes.)',
-      'यह 30mm CRN-91 गन और रिमोट-कंट्रोल गन से लैस है। यह खोज और बचाव मिशन तथा विशेष आर्थिक क्षेत्र (EEZ) की सुरक्षा में मदद करेगा। (Equipped with CRN-91 gun; helps in search and rescue and EEZ protection.)'
+      'यह 30mm CRN-91 गन और रिमोट-कंट्रोल गन in लैस है। यह खोज और बचाव मिशन तथा विशेष आर्थिक क्षेत्र (EEZ) की सुरक्षा in मदद करेगा। (Equipped with CRN-91 gun; helps in search and rescue and EEZ protection.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=1000'
   },
@@ -2023,7 +2024,7 @@ export const SLIDES: SlideData[] = [
     title: 'ADI KARMYOGI PROGRAMME',
     subtitle: 'आदि कर्मयोगी कार्यक्रम',
     content: [
-      '\'आदि कर्मयोगी\' कार्यक्रम किस मंत्रालय द्वारा जनजातीय कल्याण वितरण में शामिल हितधारकों की क्षमता बढ़ाने के लिए शुरू किया गया है?',
+      '\'आदि कर्मयोगी\' कार्यक्रम किस मंत्रालय द्वारा जनजातीय कल्याण वितरण in शामिल हितधारकों की क्षमता बढ़ाने के लिए शुरू किया गया है?',
       'The \'Adi Karmyogi\' programme has been launched by which Ministry to capacitate stakeholders involved in tribal welfare delivery?'
     ],
     options: [
@@ -2040,9 +2041,9 @@ export const SLIDES: SlideData[] = [
     title: 'ADI KARMYOGI PROGRAMME',
     subtitle: 'आदि कर्मयोगी कार्यक्रम',
     content: [
-      'जनजातीय कार्य मंत्रालय ने \'आदि कर्मयोगी\' कार्यक्रम शुरू किया। (The Ministry of Tribal Affairs launched the Adi Karmyogi Programme.)',
-      'इसका लक्ष्य जनजातीय कल्याण में शामिल लगभग 20 लाख अधिकारियों और फ्रंटलाइन कार्यकर्ताओं को प्रशिक्षित करना है। यह स्वास्थ्य (विशेषकर सिकल सेल रोग) और शिक्षा जैसे क्षेत्रों पर ध्यान केंद्रित करेगा। (Aims to capacitate 20 lakh stakeholders; focuses on healthcare like Sickle Cell Disease and education.)',
-      'यह व्यापक "मिशन कर्मयोगी" (2020 में लॉन्च) के अनुरूप है, जो सिविल सेवा क्षमता निर्माण का राष्ट्रीय कार्यक्रम है। (Aligns with Mission Karmayogi launched in 2020.)'
+      'जनजातीय कार्य मंत्रालय in \'आदि कर्मयोगी\' कार्यक्रम शुरू किया। (The Ministry of Tribal Affairs launched the Adi Karmyogi Programme.)',
+      'इसका लक्ष्य जनजातीय कल्याण in शामिल लगभग 20 लाख अधिकारियों और फ्रंटलाइन कार्यकर्ताओं को प्रशिक्षित करना है। यह स्वास्थ्य (विशेषकर सिकल सेल रोग) और शिक्षा जैसे क्षेत्रों पर ध्यान केंद्रित करेगा। (Aims to capacitate 20 lakh stakeholders; focuses on healthcare like Sickle Cell Disease and education.)',
+      'यह व्यापक "मिशन कर्मयोगी" (2020 in लॉन्च) के अनुरूप है, जो सिविल सेवा क्षमता निर्माण का राष्ट्रीय कार्यक्रम है। (Aligns with Mission Karmayogi launched in 2020.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1000'
   },
@@ -2054,7 +2055,7 @@ export const SLIDES: SlideData[] = [
     title: "INDIA’S EXTERNAL DEBT",
     subtitle: 'भारत का विदेशी ऋण',
     content: [
-      'मार्च 2025 के अंत में भारत का विदेशी ऋण (External Debt) बढ़कर कितना हो गया है?',
+      'मार्च 2025 के अंत in भारत का विदेशी ऋण (External Debt) बढ़कर कितना हो गया है?',
       'What was India\'s external debt at the end of March 2025?'
     ],
     options: [
@@ -2071,9 +2072,9 @@ export const SLIDES: SlideData[] = [
     title: "INDIA’S EXTERNAL DEBT",
     subtitle: 'भारत का विदेशी ऋण',
     content: [
-      'मार्च 2025 के अंत में भारत का विदेशी ऋण बढ़कर $736.3 बिलियन हो गया, जो जीडीपी का 19.1% है। (India’s external debt rose to $736.3 billion, or 19.1% of GDP.)',
+      'मार्च 2025 के अंत in भारत का विदेशी ऋण बढ़कर $736.3 बिलियन हो गया, जो जीडीपी का 19.1% है। (India’s external debt rose to $736.3 billion, or 19.1% of GDP.)',
       'ऋण का सबसे बड़ा घटक \'ऋण\' (Loans-34%) है, उसके बाद मुद्रा और जमा (22.8%) हैं। अमेरिकी डॉलर मूल्यवर्ग का ऋण सबसे बड़ा हिस्सा (54.2%) है। (Largest component is Loans; USD-denominated debt remains the largest share at 54.2%.)',
-      'विदेशी ऋण वह हिस्सा है जो विदेशी लेनदारों (सरकार, अंतरराष्ट्रीय संस्थानों या निजी संस्थाओं) से उधार लिया जाता है। (External debt is borrowed from foreign lenders like governments or institutions.)'
+      'विदेशी ऋण वह हिस्सा है जो विदेशी लेनदारों (सरकार, अंतरराष्ट्रीय संस्थानों या निजी संस्थाओं) in उधार लिया जाता है। (External debt is borrowed from foreign lenders like governments or institutions.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1611974717482-58434749f7e5?q=80&w=1000'
   },
@@ -2085,7 +2086,7 @@ export const SLIDES: SlideData[] = [
     title: 'BIHAR: MOBILE APP VOTING',
     subtitle: 'बिहार: मोबाइल ऐप वोटिंग',
     content: [
-      'बिहार के नगर निकाय चुनावों में ई-वोटिंग के लिए किस मोबाइल एप्लिकेशन का उपयोग किया गया है?',
+      'बिहार के नगर निकाय चुनावों in ई-वोटिंग के लिए किस मोबाइल एप्लिकेशन का उपयोग किया गया है?',
       'Which mobile application is used for e-voting in Bihar\'s municipal body elections?'
     ],
     options: [
@@ -2102,8 +2103,8 @@ export const SLIDES: SlideData[] = [
     title: 'BIHAR: MOBILE APP VOTING',
     subtitle: 'बिहार: मोबाइल ऐप वोटिंग',
     content: [
-      'बिहार नगर निकायों और उपचुनावों में मोबाइल एप्लिकेशन का उपयोग करके ई-वोटिंग सुविधा शुरू करने वाला देश का पहला राज्य बन गया है। (Bihar is the first state to launch e-voting via mobile apps in municipal elections.)',
-      'वरिष्ठ नागरिक, विकलांग लोग और गर्भवती महिलाएं घर बैठे E-SECBHR ऐप के माध्यम से वोट डाल सकते हैं। इसमें ब्लॉकचेन तकनीक और फेशियल रिकग्निशन का उपयोग किया गया है। (Seniors/disabled/pregnant women can vote via app; uses blockchain and facial recognition for security.)'
+      'बिहार नगर निकायों और उपचुनावों in मोबाइल एप्लिकेशन का उपयोग करके ई-वोटिंग सुविधा शुरू करने वाला देश का पहला राज्य बन गया है। (Bihar is the first state to launch e-voting via mobile apps in municipal elections.)',
+      'वरिष्ठ नागरिक, विकलांग लोग और गर्भवती महिलाएं घर बैठे E-SECBHR ऐप के माध्यम in वोट डाल सकते हैं। इसमें ब्लॉकचेन तकनीक और फेशियल रिकग्निशन का उपयोग किया गया है। (Seniors/disabled/pregnant women can vote via app; uses blockchain and facial recognition for security.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?q=80&w=1000'
   },
@@ -2115,7 +2116,7 @@ export const SLIDES: SlideData[] = [
     title: 'NATIONAL TURMERIC BOARD',
     subtitle: 'राष्ट्रीय हल्दी बोर्ड',
     content: [
-      'हाल ही में \'राष्ट्रीय हल्दी बोर्ड\' का मुख्यालय कहाँ स्थापित किया गया है?',
+      'हाल ही in \'राष्ट्रीय हल्दी बोर्ड\' का मुख्यालय कहाँ स्थापित किया गया है?',
       'Where has the headquarters of the \'National Turmeric Board\' been recently established?'
     ],
     options: [
@@ -2132,9 +2133,9 @@ export const SLIDES: SlideData[] = [
     title: 'NATIONAL TURMERIC BOARD',
     subtitle: 'राष्ट्रीय हल्दी बोर्ड',
     content: [
-      'केंद्रीय गृह मंत्री ने तेलंगाना के निजामाबाद में राष्ट्रीय हल्दी बोर्ड के मुख्यालय का उद्घाटन किया। (Home Minister inaugurated National Turmeric Board headquarters in Nizamabad, Telangana.)',
+      'केंद्रीय गृह मंत्री in तेलंगाना के निजामाबाद in राष्ट्रीय हल्दी बोर्ड के मुख्यालय का उद्घाटन किया। (Home Minister inaugurated National Turmeric Board headquarters in Nizamabad, Telangana.)',
       'यह बोर्ड वाणिज्य और उद्योग मंत्रालय के तहत काम करता है और हल्दी की खेती, अनुसंधान और निर्यात को बढ़ावा देने के लिए समर्पित है। (Operates under Ministry of Commerce; aims to boost turmeric production and global exports.)',
-      'भारत दुनिया में हल्दी का सबसे बड़ा उत्पादक, उपभोक्ता और निर्यातक है (70% वैश्विक उत्पादन)। हल्दी को \'गोल्डन स्पाइस\' भी कहा जाता है। (India is the largest producer/consumer/exporter of turmeric; known as \'Golden Spice\'.)'
+      'भारत दुनिया in हल्दी का सबसे बड़ा उत्पादक, उपभोक्ता और निर्यातक है (70% वैश्विक उत्पादन)। हल्दी को \'गोल्डन स्पाइस\' भी कहा जाता है। (India is the largest producer/consumer/exporter of turmeric; known as \'Golden Spice\'.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1615485245834-4bc6ca39d678?q=80&w=1000'
   },
@@ -2146,7 +2147,7 @@ export const SLIDES: SlideData[] = [
     title: 'AKASH AIR DEFENCE SYSTEM',
     subtitle: 'आकाश वायु रक्षा प्रणाली',
     content: [
-      'किस देश ने भारत से \'आकाश वायु रक्षा प्रणाली\' खरीदने में रुचि व्यक्त की है?',
+      'किस देश in भारत in \'आकाश वायु रक्षा प्रणाली\' खरीदने in रुचि व्यक्त की है?',
       'Which country has expressed interest in purchasing the \'Akash Air Defence System\' from India?'
     ],
     options: [
@@ -2163,9 +2164,9 @@ export const SLIDES: SlideData[] = [
     title: 'AKASH AIR DEFENCE SYSTEM',
     subtitle: 'आकाश वायु रक्षा प्रणाली',
     content: [
-      'ब्राजील ने भारत की \'आकाश\' वायु रक्षा प्रणाली खरीदने में रुचि दिखाई है। (Brazil has expressed interest in purchasing India’s Akash Air Defence System.)',
-      'आकाश एक मध्यम दूरी की मोबाइल सतह से हवा में मार करने वाली मिसाइल (SAM) प्रणाली है। यह सुपरसोनिक गति (Mach 1.8 से 2.5) से यात्रा कर सकती है। (Akash is a mobile surface-to-air missile system; travels at supersonic speed.)',
-      'यह \'मेक इन इंडिया\' के तहत DRDO द्वारा विकसित की गई है। इसकी मारक क्षमता 4.5 किमी से 25 किमी तक है और यह दुश्मन के विमानों, ड्रोन और मिसाइलों को नष्ट कर सकती है। (Developed by DRDO; range 4.5 km to 25 km; bridge gap between short and long-range interceptors.)'
+      'ब्राजील in भारत की \'आकाश\' वायु रक्षा प्रणाली खरीदने in रुचि दिखाई है। (Brazil has expressed interest in purchasing India’s Akash Air Defence System.)',
+      'आकाश एक मध्यम दूरी की मोबाइल सतह in हवा in मार करने वाली मिसाइल (SAM) प्रणाली है। यह सुपरसोनिक गति (Mach 1.8 in 2.5) in यात्रा कर सकती है। (Akash is a mobile surface-to-air missile system; travels at supersonic speed.)',
+      'यह \'मेक in इंडिया\' के तहत DRDO द्वारा विकसित की गई है। इसकी मारक क्षमता 4.5 किमी in 25 किमी तक है और यह दुश्मन के विमानों, ड्रोन और मिसाइलों को नष्ट कर सकती है। (Developed by DRDO; range 4.5 km to 25 km; bridge gap between short and long-range interceptors.)'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?q=80&w=1000'
   }

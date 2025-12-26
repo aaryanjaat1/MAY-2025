@@ -15,8 +15,8 @@ export interface Highlight {
 
 export interface QuizOption {
   id: string;
-  label: string; // A, B, C, D
-  text: string;  // e.g. "Gujarat (गुजरात)"
+  label: string;
+  text: string;
 }
 
 export interface SlideData {
@@ -24,11 +24,11 @@ export interface SlideData {
   type: SlideType;
   layout?: SlideLayout;
   title?: string;
-  subtitle?: string; // For Hindi translation in header
+  subtitle?: string;
   content: string | string[] | TableRow[];
   options?: QuizOption[];
   correctOptionId?: string;
-  isRevealed?: boolean; // For showing the checkmark
+  isRevealed?: boolean;
   imageUrl?: string;
   imageSize?: number;
   imageWidth?: number;
@@ -57,10 +57,12 @@ export interface GlobalSettings {
   bodyFontScale?: number;
   titleFontScale?: number;
   factFontScale?: number;
+  quizScale?: number; // Global override for quiz slides
+  factScale?: number; // Global override for fact slides
   defaultContentScale?: number;
   defaultContentYOffset?: number;
-  defaultBottomPadding?: number; // Space to clear nav buttons
-  navScale?: number; // Size of prev/next buttons
+  defaultBottomPadding?: number;
+  navScale?: number;
 }
 
 export interface Project {

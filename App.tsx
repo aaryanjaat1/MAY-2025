@@ -33,11 +33,13 @@ const App: React.FC = () => {
     titleFontScale: 1.1,
     bodyFontScale: 1.1,
     factFontScale: 1.1,
+    quizScale: 1.0,
+    factScale: 1.0,
     boxPadding: 40,
     defaultContentScale: 1,
     defaultContentYOffset: 0,
-    defaultBottomPadding: 240, // Increased to ensure clear overlap protection
-    navScale: 0.9, // Slightly smaller nav
+    defaultBottomPadding: 260,
+    navScale: 0.85,
   });
 
   const [isSyncing, setIsSyncing] = useState(false);
@@ -46,36 +48,22 @@ const App: React.FC = () => {
   const slideRef = useRef<HTMLDivElement>(null);
   const boxRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  useEffect(() => { fetchProjects(); }, []);
 
   useEffect(() => {
-    if (activeProjectId) {
-      fetchProjectData(activeProjectId);
-    } else {
-      setSlides(INITIAL_DATA);
-    }
+    if (activeProjectId) { fetchProjectData(activeProjectId); } 
+    else { setSlides(INITIAL_DATA); }
   }, [activeProjectId]);
 
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
+    const handleFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
-      });
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    }
+    if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } 
+    else { document.exitFullscreen(); }
   };
 
   const fetchProjects = async () => {
@@ -88,9 +76,7 @@ const App: React.FC = () => {
         setSlides(INITIAL_DATA);
         setProjects([]);
       }
-    } catch (e) {
-      setSlides(INITIAL_DATA);
-    }
+    } catch (e) { setSlides(INITIAL_DATA); }
   };
 
   const fetchProjectData = async (projectId: string) => {
@@ -100,7 +86,6 @@ const App: React.FC = () => {
       if (project?.settings) {
         setSettings(prev => ({ ...prev, ...project.settings }));
       }
-
       const { data: slidesData } = await supabase.from('slides').select('data').eq('project_id', projectId).order('slide_index', { ascending: true });
       if (slidesData && slidesData.length > 0) {
         setSlides(slidesData.map(d => d.data as SlideData));
@@ -109,30 +94,8 @@ const App: React.FC = () => {
       }
       setCurrentIdx(0);
       setEditingIdx(0);
-    } catch (err) {
-      setSlides(INITIAL_DATA);
-    } finally {
-      setIsSyncing(false);
-    }
-  };
-
-  const handleCreateNewProject = async () => {
-    const name = prompt("Enter new project name (e.g., June 2025):");
-    if (!name) return;
-    setIsSyncing(true);
-    try {
-      const initialSettings = { ...settings };
-      const { data: newProject } = await supabase.from('projects').insert({ name, settings: initialSettings }).select().single();
-      if (!newProject) throw new Error("Creation Failed");
-      const rows = INITIAL_DATA.map((s, i) => ({ project_id: newProject.id, slide_index: i, data: s }));
-      await supabase.from('slides').insert(rows);
-      setProjects(prev => [newProject, ...prev]);
-      setActiveProjectId(newProject.id);
-    } catch (err) {
-      alert("❌ Error creating project.");
-    } finally {
-      setIsSyncing(false);
-    }
+    } catch (err) { setSlides(INITIAL_DATA); } 
+    finally { setIsSyncing(false); }
   };
 
   const syncToCloud = async () => {
@@ -147,9 +110,34 @@ const App: React.FC = () => {
       setSyncSuccess(true);
       setTimeout(() => setSyncSuccess(false), 3000);
       fetchProjects();
-    } catch (err) { 
-      alert("Failed to sync.");
-    } finally { setIsSyncing(false); }
+    } catch (err) { alert("Failed to sync."); } 
+    finally { setIsSyncing(false); }
+  };
+
+  // Fix: Implemented handleCreateNewProject to handle creation of new projects in the CMS
+  const handleCreateNewProject = async () => {
+    const name = prompt("Enter project name:");
+    if (!name) return;
+    setIsSyncing(true);
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .insert([{ name, settings: settings }])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      if (data) {
+        setProjects(prev => [data, ...prev]);
+        setActiveProjectId(data.id);
+        alert("Project created successfully!");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to create project.");
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
   const toggleReveal = (e?: React.MouseEvent) => {
@@ -165,9 +153,7 @@ const App: React.FC = () => {
   const handleJumpToSlide = (e: React.FormEvent) => {
     e.preventDefault();
     const val = parseInt(jumpValue);
-    if (!isNaN(val) && val >= 1 && val <= slides.length) {
-      setCurrentIdx(val - 1);
-    }
+    if (!isNaN(val) && val >= 1 && val <= slides.length) setCurrentIdx(val - 1);
     setJumpValue('');
   };
 
@@ -191,15 +177,7 @@ const App: React.FC = () => {
     const parts = text.split(/(\[h\].*?\[\/h\])/g);
     return parts.map((part, i) => {
       if (part.startsWith('[h]') && part.endsWith('[/h]')) {
-        return (
-          <span 
-            key={i} 
-            className="font-black"
-            style={{ color: '#f0ff00' }}
-          >
-            {part.slice(3, -4)}
-          </span>
-        );
+        return <span key={i} className="font-black" style={{ color: '#f0ff00' }}>{part.slice(3, -4)}</span>;
       }
       return part;
     });
@@ -229,14 +207,15 @@ const App: React.FC = () => {
     s.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const currentGlobalScale = slide?.type === 'quiz' ? settings.quizScale : slide?.type === 'fact' ? settings.factScale : 1;
+
   if (isAdmin) {
     const activeSlide = slides[editingIdx];
     const contentList = Array.isArray(activeSlide?.content) ? activeSlide.content : [activeSlide?.content as string];
     
     return (
       <div className="fixed inset-0 bg-[#0a0a0c] text-white flex flex-col md:flex-row z-[200] font-sans overflow-hidden">
-        {/* Advanced Admin Sidebar */}
-        <div className={`${isSidebarOpen ? 'w-full md:w-96' : 'w-0'} border-r border-white/10 flex flex-col bg-[#0d0d0f] transition-all duration-500 overflow-hidden relative`}>
+        <div className={`${isSidebarOpen ? 'w-full md:w-96' : 'w-0'} border-r border-white/10 flex flex-col bg-[#0d0d0f] transition-all duration-500 overflow-hidden relative shrink-0`}>
           <div className="p-5 border-b border-white/5 bg-[#121215] flex items-center justify-between min-w-[384px]">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-600 rounded-lg"><Layers size={18}/></div>
@@ -266,29 +245,18 @@ const App: React.FC = () => {
               <div className="p-4 space-y-3">
                 <div className="relative">
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"/>
-                  <input 
-                    type="text" 
-                    placeholder="Search slides..." 
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-[#121215] border border-white/5 rounded-xl pl-9 pr-4 py-3 text-xs focus:border-blue-500 outline-none transition-all"
-                  />
+                  <input type="text" placeholder="Search slides..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-[#121215] border border-white/5 rounded-xl pl-9 pr-4 py-3 text-xs focus:border-blue-500 outline-none transition-all" />
                 </div>
                 <div className="space-y-1">
                   {filteredSlides.map((s, i) => {
                     const globalIdx = slides.findIndex(gs => gs.id === s.id);
                     return (
-                      <div 
-                        key={s.id} 
-                        onClick={() => setEditingIdx(globalIdx)} 
-                        className={`p-3 rounded-xl cursor-pointer transition-all border flex items-center gap-3 ${editingIdx === globalIdx ? 'bg-blue-600/20 border-blue-500/50' : 'bg-transparent border-transparent hover:bg-white/5'}`}
-                      >
+                      <div key={s.id} onClick={() => setEditingIdx(globalIdx)} className={`p-3 rounded-xl cursor-pointer transition-all border flex items-center gap-3 ${editingIdx === globalIdx ? 'bg-blue-600/20 border-blue-500/50' : 'bg-transparent border-transparent hover:bg-white/5'}`}>
                         <span className="text-[10px] font-mono text-gray-600">{(globalIdx + 1).toString().padStart(3, '0')}</span>
                         <div className="flex-1 overflow-hidden">
                           <p className="text-[11px] font-bold text-gray-200 truncate">{s.title}</p>
                           <span className="text-[9px] text-gray-500 uppercase font-black">{s.type}</span>
                         </div>
-                        {editingIdx === globalIdx && <Check size={12} className="text-blue-400"/>}
                       </div>
                     );
                   })}
@@ -299,11 +267,27 @@ const App: React.FC = () => {
             {adminTab === 'settings' && (
               <div className="p-6 space-y-8">
                  <div className="space-y-6">
-                   <h3 className="text-[10px] font-black text-gray-500 uppercase flex items-center gap-2"><LayoutGrid size={12}/> Global Typography</h3>
+                   <h3 className="text-[10px] font-black text-blue-500 uppercase flex items-center gap-2"><LayoutGrid size={12}/> Global Type Overrides</h3>
+                    {[
+                      { label: 'All Quiz Slides Scale', key: 'quizScale' },
+                      { label: 'All Fact Slides Scale', key: 'factScale' }
+                    ].map(item => (
+                      <div key={item.key} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <label className="text-[10px] font-bold text-gray-400">{item.label}</label>
+                          <span className="text-[10px] font-mono text-blue-400">{(settings as any)[item.key]?.toFixed(2)}x</span>
+                        </div>
+                        <input type="range" min="0.5" max="1.5" step="0.01" value={(settings as any)[item.key] || 1} onChange={e => setSettings(prev => ({...prev, [item.key]: parseFloat(e.target.value)}))} className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+                      </div>
+                    ))}
+                 </div>
+
+                 <div className="space-y-6 pt-6 border-t border-white/5">
+                   <h3 className="text-[10px] font-black text-gray-500 uppercase flex items-center gap-2"><LayoutGrid size={12}/> General Typography</h3>
                     {[
                       { label: 'Title Size', key: 'titleFontScale' },
                       { label: 'Body Content', key: 'bodyFontScale' },
-                      { label: 'Fact Cards', key: 'factFontScale' }
+                      { label: 'Fact Text', key: 'factFontScale' }
                     ].map(item => (
                       <div key={item.key} className="space-y-2">
                         <div className="flex justify-between items-center">
@@ -326,7 +310,7 @@ const App: React.FC = () => {
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <label className="text-[10px] font-bold text-gray-400">Navigation Scale</label>
+                        <label className="text-[10px] font-bold text-gray-400">Navigation Buttons Scale</label>
                         <span className="text-[10px] font-mono text-blue-400">{(settings.navScale || 1).toFixed(2)}x</span>
                       </div>
                       <input type="range" min="0.5" max="1.5" step="0.05" value={settings.navScale || 1} onChange={e => setSettings(prev => ({...prev, navScale: parseFloat(e.target.value)}))} className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
@@ -360,7 +344,6 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Content Preview & Editor Area */}
         <div className="flex-1 overflow-y-auto p-6 md:p-12 bg-[#050506] custom-scrollbar flex flex-col">
           {!isSidebarOpen && <button onClick={() => setIsSidebarOpen(true)} className="fixed top-6 left-6 p-3 bg-blue-600 rounded-xl shadow-xl z-[210]"><Menu size={20}/></button>}
           
@@ -372,7 +355,7 @@ const App: React.FC = () => {
                </div>
                <div className="flex gap-4">
                   <div className="px-4 py-2 bg-[#121215] border border-white/10 rounded-xl flex items-center gap-3">
-                    <span className="text-[10px] font-black text-gray-500 uppercase">Scale Override</span>
+                    <span className="text-[10px] font-black text-gray-500 uppercase">Individual Scale Override</span>
                     <input type="range" min="0.5" max="1.5" step="0.05" value={activeSlide?.contentScale || 1} onChange={e => { const s = [...slides]; s[editingIdx].contentScale = parseFloat(e.target.value); setSlides(s); }} className="w-24 h-1 accent-blue-600" />
                   </div>
                </div>
@@ -390,14 +373,14 @@ const App: React.FC = () => {
                    </div>
                    {activeSlide?.type === 'fact' && (
                      <div className="space-y-2 pt-4">
-                       <label className="text-[10px] font-black text-gray-500 uppercase">Image URL (Thematic)</label>
+                       <label className="text-[10px] font-black text-gray-500 uppercase">Image URL (Verbatim Content)</label>
                        <input type="text" value={activeSlide?.imageUrl || ''} onChange={e => { const s = [...slides]; s[editingIdx].imageUrl = e.target.value; setSlides(s); }} className="w-full bg-[#121215] border border-white/10 p-4 rounded-xl text-[10px] font-mono focus:border-blue-500 outline-none" />
                      </div>
                    )}
                 </div>
 
                 <div className="lg:col-span-8 space-y-4">
-                   <label className="text-[10px] font-black text-gray-500 uppercase block mb-2">Content Blocks</label>
+                   <label className="text-[10px] font-black text-gray-500 uppercase block mb-2">Verbatim Content Blocks</label>
                    {contentList.map((box, bIdx) => (
                      <div key={bIdx} className="bg-[#121215] border border-white/10 p-1 rounded-2xl relative group focus-within:border-blue-500/50 transition-all">
                         <div className="px-4 py-2 border-b border-white/5 flex items-center justify-between">
@@ -407,7 +390,6 @@ const App: React.FC = () => {
                        <textarea 
                          ref={el => boxRefs.current[bIdx] = el}
                          value={box}
-                         placeholder="Enter text here... use (हिंदी अनुवाद) for bilingual blocks"
                          onFocus={() => setFocusedBoxIdx(bIdx)}
                          onChange={e => {
                            const s = [...slides];
@@ -432,16 +414,9 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-[#00040a] text-white flex flex-col items-center justify-center overflow-hidden font-sans relative select-none">
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#0b1a33_0%,_#000000_100%)] opacity-85" />
       
-      {/* Small Jump Input */}
       <form onSubmit={handleJumpToSlide} className="fixed bottom-6 left-6 z-[100] group opacity-20 hover:opacity-100 transition-all duration-500">
         <div className="flex items-center gap-2 bg-gray-900/60 backdrop-blur-3xl px-3 py-1.5 rounded-full border border-white/10 shadow-2xl">
-          <input 
-            type="text" 
-            placeholder={(currentIdx + 1).toString()} 
-            value={jumpValue}
-            onChange={e => setJumpValue(e.target.value)}
-            className="w-10 bg-transparent text-[10px] font-mono text-center border-none focus:ring-0 text-blue-400 placeholder-gray-700"
-          />
+          <input type="text" placeholder={(currentIdx + 1).toString()} value={jumpValue} onChange={e => setJumpValue(e.target.value)} className="w-10 bg-transparent text-[10px] font-mono text-center border-none focus:ring-0 text-blue-400 placeholder-gray-700" />
           <span className="text-[9px] text-gray-700 font-black">/ {slides.length}</span>
         </div>
       </form>
@@ -458,7 +433,6 @@ const App: React.FC = () => {
             className="w-full h-full flex flex-col pt-24 md:pt-32 px-6 md:px-16 relative overflow-y-auto custom-scrollbar scroll-smooth"
             style={{ paddingBottom: `${settings.defaultBottomPadding}px` }}
           >
-            {/* Header */}
             <div className={`absolute top-4 md:top-6 left-4 md:left-6 right-4 md:right-6 min-h-[60px] md:h-24 bg-[#0d1c3a]/70 backdrop-blur-3xl flex items-center px-6 md:px-10 border border-white/10 z-20 rounded-2xl ${GLOW_SHADOW}`}>
               <div className="w-1.5 md:w-2 h-8 md:h-12 bg-[#ea580c] mr-4 md:mr-6 rounded-full shadow-[0_0_20px_rgba(234,88,12,0.8)] shrink-0" />
               <div className="animate-in slide-in-from-left duration-700 w-full overflow-hidden">
@@ -467,8 +441,7 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Content Area */}
-            <div className="flex-1 flex flex-col items-center transition-all duration-700 w-full" style={{ transform: `scale(${slide.contentScale || 1}) translateY(${slide.contentYOffset || 0}px)`, transformOrigin: 'top center' }}>
+            <div className="flex-1 flex flex-col items-center transition-all duration-700 w-full" style={{ transform: `scale(${(slide.contentScale || 1) * (currentGlobalScale || 1)}) translateY(${slide.contentYOffset || 0}px)`, transformOrigin: 'top center' }}>
               {slide.type === 'quiz' && (
                 <div className="flex-1 flex flex-col items-center justify-start pt-6 space-y-6 md:space-y-10 animate-in slide-in-from-bottom duration-1000 w-full">
                   <div className={`w-full max-w-full border border-white/10 rounded-[1.5rem] md:rounded-[3rem] text-center shadow-2xl bg-[#0d1c3a]/40 backdrop-blur-2xl ${GLOW_SHADOW}`} style={{ padding: `${settings.boxPadding}px` }}>
@@ -498,14 +471,8 @@ const App: React.FC = () => {
                       return (
                         <div key={lIdx} className={`bg-[#1e40af]/20 border-l-[10px] border-[#ea580c] p-5 md:p-8 rounded-xl border border-white/10 shadow-2xl transition-all hover:bg-[#1e40af]/30 flex flex-col ${GLOW_SHADOW}`}>
                           <div className="overflow-hidden">
-                            <p className="font-black text-white leading-snug break-words" style={{ fontSize: getScaledSize(22, settings.factFontScale) }}>
-                              {renderHighlightedText(main)}
-                            </p>
-                            {translation && (
-                              <p className="font-bold text-gray-400 mt-4 opacity-80 leading-relaxed break-words" style={{ fontSize: getScaledSize(16, settings.factFontScale) }}>
-                                {renderHighlightedText(translation)}
-                              </p>
-                            )}
+                            <p className="font-black text-white leading-snug break-words" style={{ fontSize: getScaledSize(22, settings.factFontScale) }}>{renderHighlightedText(main)}</p>
+                            {translation && <p className="font-bold text-gray-400 mt-4 opacity-80 leading-relaxed break-words" style={{ fontSize: getScaledSize(16, settings.factFontScale) }}>{renderHighlightedText(translation)}</p>}
                           </div>
                         </div>
                       );
@@ -540,42 +507,21 @@ const App: React.FC = () => {
         )}
       </div>
 
-      {/* Navigation Buttons */}
       <div className="fixed bottom-4 md:bottom-8 left-0 right-0 z-50 pointer-events-none px-6 flex flex-col items-center">
         <div className="w-full max-w-[1920px] relative flex items-center justify-center gap-6">
-          <div 
-            className="flex gap-4 pointer-events-auto bg-black/80 backdrop-blur-3xl p-1.5 rounded-full border border-white/10 shadow-[0_0_80px_rgba(0,0,0,1)]"
-            style={{ transform: `scale(${settings.navScale || 1})` }}
-          >
-            <button 
-              onClick={() => setCurrentIdx(p => Math.max(0, p - 1))} 
-              className="px-6 md:px-10 py-3 md:py-4 bg-[#121215] border border-white/5 rounded-full font-black text-[10px] md:text-xs hover:bg-blue-600 hover:text-white transition-all disabled:opacity-10 flex items-center gap-2 uppercase tracking-widest" 
-              disabled={currentIdx === 0}
-            >
-              <ChevronLeft size={16}/> Prev
-            </button>
+          <div className="flex gap-4 pointer-events-auto bg-black/80 backdrop-blur-3xl p-1.5 rounded-full border border-white/10 shadow-[0_0_80px_rgba(0,0,0,1)]" style={{ transform: `scale(${settings.navScale || 1})` }}>
+            <button onClick={() => setCurrentIdx(p => Math.max(0, p - 1))} className="px-6 md:px-10 py-3 md:py-4 bg-[#121215] border border-white/5 rounded-full font-black text-[10px] md:text-xs hover:bg-blue-600 hover:text-white transition-all disabled:opacity-10 flex items-center gap-2 uppercase tracking-widest" disabled={currentIdx === 0}><ChevronLeft size={16}/> Prev</button>
             <div className="px-4 flex items-center border-x border-white/10">
               <span className="text-[10px] font-mono font-bold text-blue-400">{(currentIdx + 1).toString().padStart(3, '0')}</span>
               <span className="mx-2 text-[9px] text-gray-600 font-black">/</span>
               <span className="text-[10px] font-mono text-gray-600">{slides.length.toString().padStart(3, '0')}</span>
             </div>
-            <button 
-              onClick={() => setCurrentIdx(p => Math.min(slides.length - 1, p + 1))} 
-              className="px-6 md:px-10 py-3 md:py-4 bg-[#121215] border border-white/5 rounded-full font-black text-[10px] md:text-xs hover:bg-blue-600 hover:text-white transition-all disabled:opacity-10 flex items-center gap-2 uppercase tracking-widest" 
-              disabled={currentIdx === slides.length - 1}
-            >
-              Next <ChevronRight size={16}/>
-            </button>
+            <button onClick={() => setCurrentIdx(p => Math.min(slides.length - 1, p + 1))} className="px-6 md:px-10 py-3 md:py-4 bg-[#121215] border border-white/5 rounded-full font-black text-[10px] md:text-xs hover:bg-blue-600 hover:text-white transition-all disabled:opacity-10 flex items-center gap-2 uppercase tracking-widest" disabled={currentIdx === slides.length - 1}>Next <ChevronRight size={16}/></button>
           </div>
           
           {slide?.type === 'quiz' && (
             <div className="pointer-events-auto">
-              <button 
-                onClick={toggleReveal} 
-                className={`p-3 md:p-4 bg-yellow-400 text-black rounded-full shadow-[0_0_40px_rgba(250,204,21,0.5)] hover:scale-110 active:scale-95 transition-all animate-bounce-subtle flex items-center justify-center`}
-              >
-                <CheckCircle2 size={24}/>
-              </button>
+              <button onClick={toggleReveal} className={`p-3 md:p-4 bg-yellow-400 text-black rounded-full shadow-[0_0_40px_rgba(250,204,21,0.5)] hover:scale-110 active:scale-95 transition-all animate-bounce-subtle flex items-center justify-center`}><CheckCircle2 size={24}/></button>
             </div>
           )}
         </div>

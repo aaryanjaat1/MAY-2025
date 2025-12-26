@@ -39,12 +39,12 @@ export const SLIDES: SlideData[] = [
     title: 'Quantum Technology Research Centre (QTRC)',
     subtitle: 'क्वांटम टेक्नोलॉजी रिसर्च सेंटर',
     content: [
-      "Context: रक्षा अनुसंधान और विकास संगठन (DRDO) ने रक्षा और रणनीतिक अनुप्रयोगों के लिए स्वदेशी क्वांटम क्षमताओं को मजबूत करने हेतु QTRC का उद्घाटन किया।",
-      "GK Facts: भारत सरकार ने 2023 में 2030-31 तक के लिए 'नेशनल क्वांटम मिशन' (NQM) को मंजूरी दी थी।"
+      "रक्षा अनुसंधान और विकास संगठन (DRDO) ने रक्षा और रणनीतिक अनुप्रयोगों के लिए स्वदेशी क्वांटम क्षमताओं को मजबूत करने हेतु QTRC का उद्घाटन किया। (DRDO inaugurated QTRC to strengthen indigenous quantum capabilities for strategic and defence applications.)",
+      "भारत सरकार ने 2023 में 2030-31 तक के लिए 'नेशनल क्वांटम मिशन' (NQM) को मंजूरी दी थी। (Quantum tech is based on superposition and entanglement. Govt approved National Quantum Mission (NQM) in 2023 for the period up to 2030-31.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 2: RoDTEP Scheme ---
@@ -52,7 +52,7 @@ export const SLIDES: SlideData[] = [
     id: 't2-quiz',
     type: 'quiz',
     title: 'RoDTEP Scheme',
-    subtitle: 'निर्यातित उत्पादों पर शुल्क और करों की छूट योजना',
+    subtitle: 'RoDTEP योजना',
     content: [
       "निर्यातित उत्पादों पर शुल्क और करों की छूट (RoDTEP) योजना किस वर्ष शुरू की गई थी?",
       "In which year was the Remission of Duties and Taxes on Exported Products (RoDTEP) scheme launched?"
@@ -71,14 +71,15 @@ export const SLIDES: SlideData[] = [
     id: 't2-fact',
     type: 'fact',
     title: 'RoDTEP Scheme',
-    subtitle: 'निर्यातित उत्पादों पर शुल्क और करों की छूट योजना',
+    subtitle: 'RoDTEP योजना',
     content: [
-      "Context: भारत सरकार ने SEZ और EOU इकाइयों द्वारा किए गए निर्यात के लिए RoDTEP लाभों को फिर से बहाल कर दिया है।",
-      "GK Facts: यह योजना निर्यातकों को उन करों की प्रतिपूर्ति करती है जो पहले वापस नहीं किए जाते थे।"
+      "भारत सरकार ने SEZ और EOU इकाइयों द्वारा किए गए निर्यात के लिए RoDTEP लाभों को फिर से बहाल कर दिया है। (Govt announced restoration of RoDTEP benefits for SEZ and EOU exports.)",
+      "यह योजना निर्यातकों को उन केंद्रीय, राज्य और स्थानीय करों की प्रतिपूर्ति करती है जो पहले वापस नहीं किए जाते थे। (Reimburses exporters for previously non-refundable central, state, and local taxes.)",
+      "यह योजना विश्व व्यापार संगठन (WTO) के नियमों के अनुकूल है। (This scheme is compatible with WTO rules.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1454165833767-027eeea15c3e?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 3: India’s First Gene-Edited Sheep ---
@@ -107,12 +108,12 @@ export const SLIDES: SlideData[] = [
     title: 'India’s First Gene-Edited Sheep',
     subtitle: 'भारत की पहली जीन-संपादित भेड़',
     content: [
-      "Context: कश्मीर स्थित कृषि विश्वविद्यालय के शोधकर्ताओं ने भारत की पहली जीन-संपादित भेड़ का उत्पादन किया है।",
-      "GK Facts: CRISPR तकनीक 2009 में खोजी गई थी, जो प्राकृतिक जीवाणु प्रतिरक्षा प्रणाली पर आधारित है।"
+      "कश्मीर स्थित कृषि विश्वविद्यालय के शोधकर्ताओं ने भारत की पहली जीन-संपादित भेड़ का उत्पादन कर एक ऐतिहासिक उपलब्धि हासिल की है। (Researchers in Kashmir produced India’s first gene-edited sheep.)",
+      "CRISPR तकनीक 2009 में खोजी गई थी, जो प्राकृतिक जीवाणु प्रतिरक्षा प्रणाली पर आधारित है। (CRISPR tool invented in 2009 is based on bacterial immune system. It differs from transgenic organisms as it contains no foreign DNA.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1484557985045-edf25e08da73?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 4: Breakthrough Prize 2025 ---
@@ -141,12 +142,13 @@ export const SLIDES: SlideData[] = [
     title: 'Breakthrough Prize 2025',
     subtitle: 'ब्रेकथ्रू पुरस्कार 2025',
     content: [
-      "Context: 2025 का ब्रेकथ्रू पुरस्कार CERN के LHC में 'हिग्स बोसोन' का अध्ययन करने वाले प्रयोगों को दिया गया।",
-      "GK Facts: CERN (यूरोपीय परमाणु अनुसंधान संगठन) 1954 में जिनेवा में स्थापित किया गया था।"
+      "2025 का ब्रेकथ्रू पुरस्कार CERN के LHC में 'हिग्स बोसोन' (Higgs boson) का अध्ययन करने वाले प्रयोगों (ATLAS, CMS, ALICE, LHCb) को दिया गया। (2025 Breakthrough Prize awarded to four CERN LHC experiments for studying Higgs boson.)",
+      "यह पुरस्कार जीवन विज्ञान, मौलिक भौतिकी और गणित में अग्रणी उपलब्धियों के लिए दिया जाता है। (Honours achievements in Life Sciences, Fundamental Physics, and Mathematics.)",
+      "CERN (यूरोपीय परमाणु अनुसंधान संगठन) 1954 में जिनेवा (स्विट्जरलैंड-फ्रांस सीमा) में स्थापित किया गया था। LHC दुनिया का सबसे बड़ा कण त्वरक (particle accelerator) है। (CERN established in 1954 in Geneva. LHC is the world's largest particle accelerator.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 5: Index of Industrial Production (IIP) ---
@@ -156,7 +158,7 @@ export const SLIDES: SlideData[] = [
     title: 'Index of Industrial Production (IIP)',
     subtitle: 'औद्योगिक उत्पादन सूचकांक',
     content: [
-      "भारत के औद्योगिक उत्पादन सूचकांक (IIP) में 'आठ प्रमुख उद्योगों' का कुल भार कितना है?",
+      "भारत के औद्योगिक उत्पादन सूचकांक (IIP) में 'आठ प्रमुख उद्योगों' (Eight Core Industries) का कुल भार कितना है?",
       "What is the total weight of the 'Eight Core Industries' in India's Index of Industrial Production (IIP)?"
     ],
     options: [
@@ -175,12 +177,13 @@ export const SLIDES: SlideData[] = [
     title: 'Index of Industrial Production (IIP)',
     subtitle: 'औद्योगिक उत्पादन सूचकांक',
     content: [
-      "Context: खनन उत्पादन और बिजली उत्पादन में गिरावट के कारण औद्योगिक वृद्धि में कमी आई है।",
-      "GK Facts: केंद्रीय सांख्यिकी संगठन (CSO) 1950 से IIP संकलित कर रहा है।"
+      "खनन उत्पादन और बिजली उत्पादन में गिरावट के कारण भारत की औद्योगिक उत्पादन वृद्धि अप्रैल में आठ महीने के निचले स्तर (2.7%) पर आ गई। (India’s IIP growth dropped to 2.7% in April due to decline in mining and electricity output.)",
+      "IIP औद्योगिक उत्पादन के भौतिक डेटा का उपयोग करके उत्पादन की मात्रा को मापता है। (IIP measures industrial output primarily using physical production data.)",
+      "केंद्रीय सांख्यिकी संगठन (CSO) 1950 से IIP संकलित कर रहा है। इसमें निर्माण, गैस और जलापूर्ति शामिल नहीं हैं। (CSO compiling IIP since 1950. Excludes construction, gas, and water supply.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 6: Seven Summits Challenge ---
@@ -209,12 +212,13 @@ export const SLIDES: SlideData[] = [
     title: 'Seven Summits Challenge',
     subtitle: 'सेवन समिट्स चुनौती',
     content: [
-      "Context: हैदराबाद के किशोर विश्वनाथ कार्तिकेय पडकंती ने दुनिया की 7 समिट्स चुनौती पूरी की।",
-      "GK Facts: इसमें सातों महाद्वीपों की सबसे ऊंची चोटियां शामिल हैं।"
+      "हैदराबाद के किशोर विश्वनाथ कार्तिकेय पडकंती ने दुनिया की 7 समिट्स चुनौती पूरी की। (Hyderabad teen Vishwanath Padakanti completed the 7 Summits challenge.)",
+      "वह इस उपलब्धि को हासिल करने वाले सबसे कम उम्र के भारतीय और दुनिया के दूसरे सबसे कम उम्र के व्यक्ति हैं। (Youngest Indian and 2nd youngest in the world to achieve this.)",
+      "सेवन समिट्स में सात महाद्वीपों की सात सबसे ऊंची चोटियां शामिल हैं: एवरेस्ट, किलिमंजारो, एल्ब्रस, एकांकागुआ, कोसिअस्को, विंसन और डेनाली। (Includes highest peaks of all 7 continents: Everest, Kilimanjaro, Elbrus, Aconcagua, Kosciuszko, Vinson and Denali.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 7: Swachh Survekshan Grameen (SSG) 2025 ---
@@ -243,12 +247,13 @@ export const SLIDES: SlideData[] = [
     title: 'Swachh Survekshan Grameen (SSG) 2025',
     subtitle: 'स्वच्छ सर्वेक्षण ग्रामीण 2025',
     content: [
-      "Context: केंद्रीय जल शक्ति मंत्री श्री सी आर पाटिल ने स्वच्छ सर्वेक्षण ग्रामीण (SSG) 2025 लॉन्च किया।",
-      "GK Facts: स्वच्छ भारत मिशन (ग्रामीण) का दूसरा चरण 1 अप्रैल 2020 को शुरू हुआ था।"
+      "केंद्रीय जल शक्ति मंत्री श्री सी आर पाटिल ने स्वच्छ सर्वेक्षण ग्रामीण (SSG) 2025 लॉन्च किया। (Jal Shakti Minister launched Swachh Survekshan Grameen 2025.)",
+      "यह भारत का सबसे बड़ा स्वच्छता सर्वेक्षण है, जो ग्रामीण क्षेत्रों में ओडीएफ (ODF) प्लस मॉडल की उपलब्धियों का आकलन करेगा। (India’s largest sanitation survey assessing ODF Plus achievements in rural areas.)",
+      "पहला स्वच्छ सर्वेक्षण 2016 में आयोजित किया गया था। स्वच्छ भारत मिशन (ग्रामीण) का दूसरा चरण 1 अप्रैल 2020 को शुरू हुआ था। (First survey in 2016. SBM-G Phase-II started on April 1, 2020.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb75bb44?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 8: Viksit Krishi Sankalp Abhiyan ---
@@ -277,12 +282,13 @@ export const SLIDES: SlideData[] = [
     title: 'Viksit Krishi Sankalp Abhiyan',
     subtitle: 'विकसित कृषि संकल्प अभियान',
     content: [
-      "Context: केंद्रीय कृषि मंत्री ने भुवनेश्वर में इस अभियान की शुरुआत की।",
-      "GK Facts: यह वैज्ञानिकों और किसानों के बीच सीधा संवाद स्थापित करता है।"
+      "केंद्रीय कृषि मंत्री ने भुवनेश्वर में विकसित कृषि संकल्प अभियान अभियान की शुरुआत की। (Union Agriculture Minister launched this campaign in Bhubaneswar.)",
+      "यह अभियान वैज्ञानिकों और किसानों के बीच सीधा संवाद स्थापित करता है। (Bridges the gap between lab and land via direct scientist-farmer interaction.)",
+      "सौर खेती, मधुमक्खी पालन और 'श्री अन्न' (मोटा अनाज) को अपनाने के लिए प्रोत्साहित किया जाता है। (Promotes solar farming, Sweet Revolution, and Shri Anna/millets.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 9: Exercise NOMADIC ELEPHANT ---
@@ -311,12 +317,12 @@ export const SLIDES: SlideData[] = [
     title: 'Exercise NOMADIC ELEPHANT',
     subtitle: 'अभ्यास नोमैडिक एलीफेंट',
     content: [
-      "Context: भारतीय सेना ने मंगोलिया के उलानबटोर में इस अभ्यास के 17वें संस्करण में भाग लिया।",
-      "GK Facts: यह 2006 से आयोजित होने वाला एक वार्षिक द्विपक्षीय अभ्यास है।"
+      "भारतीय सेना ने मंगोलिया के उलानबटोर में इस अभ्यास के 17वें संस्करण में भाग लिया। (Indian Army participated in the 17th edition in Ulaanbaatar, Mongolia.)",
+      "यह 2006 से आयोजित होने वाला एक वार्षिक द्विपक्षीय अभ्यास है। पिछला संस्करण 2024 में मेघालय, भारत में आयोजित किया गया था। (Annual bilateral exercise since 2006. Previous edition held in Meghalaya, India in 2024.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   },
 
   // --- TOPIC 10: ULLAS Scheme (Goa Literacy) ---
@@ -345,11 +351,12 @@ export const SLIDES: SlideData[] = [
     title: 'ULLAS Scheme (Goa Literacy)',
     subtitle: 'उल्लास योजना (गोवा साक्षरता)',
     content: [
-      "Context: उल्लास योजना के तहत गोवा आधिकारिक तौर पर पूर्ण साक्षर राज्य बन गया है।",
-      "GK Facts: उल्लास योजना का लक्ष्य उन वयस्कों को साक्षर बनाना है जो स्कूल नहीं जा सके।"
+      "उल्लास योजना के तहत गोवा आधिकारिक तौर पर पूर्ण साक्षर राज्य बन गया है। (Goa officially became a fully literate state under the ULLAS scheme.)",
+      "गोवा ने मिजोरम के बाद 95% साक्षरता की सीमा को पार किया है। (Goa followed Mizoram in surpassing the 95% literacy mark.)",
+      "उल्लास योजना (2022-2027) का लक्ष्य 15 वर्ष और उससे अधिक आयु के उन वयस्कों को साक्षर बनाना है जो स्कूल नहीं जा सके। (ULLAS scheme targets adults aged 15+ years who missed formal schooling.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1000',
     contentScale: 0.85,
-    contentYOffset: 20
+    contentYOffset: 10
   }
 ];

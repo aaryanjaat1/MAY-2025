@@ -27,6 +27,8 @@ const App: React.FC = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [adminTab, setAdminTab] = useState<'slides' | 'settings'>('slides');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  // Fix: Added missing state variable for focusedBoxIdx used in the admin panel
+  const [focusedBoxIdx, setFocusedBoxIdx] = useState<number | null>(null);
 
   const [settings, setSettings] = useState<GlobalSettings>({
     titleFontScale: 1.1,
@@ -44,8 +46,6 @@ const App: React.FC = () => {
   const [exportProgress, setExportProgress] = useState(0);
 
   const slideRef = useRef<HTMLDivElement>(null);
-  const contentTextAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [focusedBoxIdx, setFocusedBoxIdx] = useState<number | null>(null);
   const boxRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
 
   useEffect(() => {
@@ -194,78 +194,6 @@ const App: React.FC = () => {
       document.exitFullscreen();
       setIsFullscreen(false);
     }
-  };
-
-  const handleExport = async (type: 'PDF' | 'PPTX') => {
-    setIsExporting(true);
-    setExportType(type);
-    setExportProgress(0);
-    const originalIdx = currentIdx;
-    const captureAndAdd = async (i: number, doc: any) => {
-      setCurrentIdx(i);
-      await new Promise(r => setTimeout(r, 1200));
-      if (slideRef.current) {
-        const canvas = await html2canvas(slideRef.current, { scale: 2, useCORS: true });
-        const img = canvas.toDataURL(type === 'PDF' ? 'image/jpeg' : 'image/png', 0.95);
-        if (type === 'PDF') {
-          if (i > 0) doc.addPage([1920, 1080], 'landscape');
-          doc.addImage(img, 'JPEG', 0, 0, 1920, 1080);
-        } else {
-          const slide = doc.addSlide();
-          slide.addImage({ data: img, x: 0, y: 0, w: '100%', h: '100%' });
-        }
-      }
-    };
-
-    if (type === 'PDF') {
-      const pdf = new jsPDF('landscape', 'px', [1920, 1080]);
-      for (let i = 0; i < slides.length; i++) {
-        await captureAndAdd(i, pdf);
-        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
-      }
-      pdf.save(`Presentation_May2025.pdf`);
-    } else {
-      const pres = new pptxgen();
-      pres.layout = 'LAYOUT_16x9';
-      for (let i = 0; i < slides.length; i++) {
-        await captureAndAdd(i, pres);
-        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
-      }
-      await pres.writeFile({ fileName: `Presentation_May2025.pptx` });
-    }
-    setCurrentIdx(originalIdx);
-    setIsExporting(false);
-  };
-
-  const handleApplyHighlight = (boxIndex?: number) => {
-    const targetIdx = boxIndex !== undefined ? boxIndex : focusedBoxIdx;
-    if (targetIdx === null) {
-      if (!contentTextAreaRef.current) return;
-      applyToTextarea(contentTextAreaRef.current, (val) => {
-        const s = [...slides];
-        s[editingIdx].content = val.split('\n');
-        setSlides(s);
-      });
-      return;
-    }
-    const textarea = boxRefs.current[targetIdx];
-    if (!textarea) return;
-    applyToTextarea(textarea, (val) => {
-      const s = [...slides];
-      const content = Array.isArray(s[editingIdx].content) ? [...s[editingIdx].content as string[]] : [s[editingIdx].content as string];
-      content[targetIdx] = val;
-      s[editingIdx].content = content;
-      setSlides(s);
-    });
-  };
-
-  const applyToTextarea = (textarea: HTMLTextAreaElement, callback: (newVal: string) => void) => {
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    if (start === end) return;
-    const text = textarea.value;
-    const newText = `${text.substring(0, start)}[h]${text.substring(start, end)}[/h]${text.substring(end)}`;
-    callback(newText);
   };
 
   const renderHighlightedText = (text: string) => {
@@ -423,7 +351,6 @@ const App: React.FC = () => {
                       {contentList.map((box, bIdx) => (
                         <div key={bIdx} className="bg-[#0a0a0a] border border-white/5 p-4 rounded-xl relative">
                           <textarea ref={el => boxRefs.current[bIdx] = el} value={box} onFocus={() => setFocusedBoxIdx(bIdx)} onChange={e => { const s = [...slides]; const c = Array.isArray(s[editingIdx].content) ? [...s[editingIdx].content as string[]] : [s[editingIdx].content as string]; c[bIdx] = e.target.value; s[editingIdx].content = c; setSlides(s); }} className="w-full h-24 bg-transparent border-none p-0 text-xs font-bold focus:ring-0 outline-none resize-none" />
-                          <button onClick={() => handleApplyHighlight(bIdx)} className="absolute top-2 right-2 p-1 text-blue-500"><Highlighter size={12}/></button>
                         </div>
                       ))}
                     </div>
@@ -456,7 +383,7 @@ const App: React.FC = () => {
       
       <div ref={slideRef} className="relative z-10 w-full h-full md:max-w-[1920px] md:aspect-[16/9] bg-[#00040d] overflow-hidden flex flex-col">
         {slide ? (
-          <div key={currentIdx} className="w-full h-full flex flex-col pt-32 md:pt-40 pb-48 md:pb-64 px-4 md:px-12 relative overflow-y-auto">
+          <div key={currentIdx} className="w-full h-full flex flex-col pt-24 md:pt-32 pb-72 md:pb-96 px-4 md:px-12 relative overflow-y-auto custom-scrollbar">
             {/* Header UI */}
             <div className={`absolute top-2 md:top-5 left-2 md:left-5 right-2 md:right-5 min-h-[64px] md:h-24 bg-gradient-to-r from-[#1e3a8a]/60 via-[#1e3a8a]/30 to-transparent backdrop-blur-3xl flex items-center px-4 md:px-10 border border-white/10 z-20 rounded-xl ${GLOW_SHADOW}`}>
               <div className="w-1 md:w-2 h-8 md:h-14 bg-[#ea580c] mr-3 md:mr-6 rounded-full shadow-[0_0_20px_rgba(234,88,12,0.6)] shrink-0" />
@@ -469,16 +396,16 @@ const App: React.FC = () => {
             {/* Content Area */}
             <div className="flex-1 flex flex-col items-center transition-transform duration-500 w-full" style={{ transform: `scale(${slide.contentScale || 1}) translateY(${slide.contentYOffset || 0}px)`, transformOrigin: 'top center' }}>
               {slide.type === 'quiz' && (
-                <div className="flex-1 flex flex-col items-center justify-start pt-10 space-y-8 md:space-y-12 animate-in slide-in-from-bottom duration-700 w-full">
-                  <div className={`w-full max-w-full border border-white/10 rounded-[1.5rem] md:rounded-[3rem] text-center shadow-2xl bg-[#0d1c3a]/50 backdrop-blur-2xl mt-4 md:mt-16 ${GLOW_SHADOW}`} style={{ padding: `${settings.boxPadding}px` }}>
+                <div className="flex-1 flex flex-col items-center justify-start pt-6 space-y-6 md:space-y-10 animate-in slide-in-from-bottom duration-700 w-full">
+                  <div className={`w-full max-w-full border border-white/10 rounded-[1.5rem] md:rounded-[3rem] text-center shadow-2xl bg-[#0d1c3a]/50 backdrop-blur-2xl mt-4 md:mt-12 ${GLOW_SHADOW}`} style={{ padding: `${settings.boxPadding}px` }}>
                     <h3 className="font-black leading-snug text-white" style={{ fontSize: getScaledSize(28, settings.bodyFontScale) }}>{Array.isArray(slide.content) ? renderHighlightedText(slide.content[0]) : renderHighlightedText(slide.content as string)}</h3>
                     {Array.isArray(slide.content) && slide.content[1] && <p className="text-gray-400 font-bold opacity-70 mt-6" style={{ fontSize: getScaledSize(18, settings.bodyFontScale) }}>{renderHighlightedText(slide.content[1])}</p>}
                   </div>
-                  <div className="w-full max-w-full flex flex-col gap-4 md:gap-6">
+                  <div className="w-full max-w-full flex flex-col gap-3 md:gap-5">
                     {slide.options?.map((opt) => {
                       const isCorrect = slide.correctOptionId === opt.id && slide.isRevealed;
                       return (
-                        <div key={opt.id} className={`p-4 md:p-6 rounded-2xl border transition-all duration-700 flex items-center gap-6 md:gap-12 shadow-xl ${isCorrect ? `bg-[#2563eb]/60 border-yellow-400/60 shadow-[0_0_50px_rgba(250,204,21,0.3)] scale-[1.02]` : 'bg-[#1e40af]/20 border-white/5 hover:bg-[#1e40af]/30'}`}>
+                        <div key={opt.id} className={`p-3.5 md:p-5 rounded-2xl border transition-all duration-700 flex items-center gap-5 md:gap-10 shadow-xl ${isCorrect ? `bg-[#2563eb]/60 border-yellow-400/60 shadow-[0_0_50px_rgba(250,204,21,0.3)] scale-[1.02]` : 'bg-[#1e40af]/20 border-white/5 hover:bg-[#1e40af]/30'}`}>
                           <div className={`text-base md:text-2xl font-black w-8 h-8 md:w-12 md:h-12 flex items-center justify-center rounded-xl ${isCorrect ? 'text-yellow-400 bg-black/40 shadow-inner' : 'text-gray-500 bg-white/5'}`}>{opt.label}</div>
                           <span className={`font-black flex-1 ${isCorrect ? 'text-yellow-400' : 'text-gray-200'}`} style={{ fontSize: getScaledSize(22, settings.bodyFontScale) }}>{renderHighlightedText(opt.text)}</span>
                           {isCorrect && <Check size={24} className="text-yellow-400 animate-in zoom-in"/>}
@@ -490,16 +417,16 @@ const App: React.FC = () => {
               )}
               
               {slide.type === 'fact' && (
-                <div className="flex-1 flex flex-col lg:flex-row gap-8 items-center justify-center animate-in slide-in-from-right duration-700 w-full pt-16">
-                  <div className="flex-1 w-full space-y-6">
+                <div className="flex-1 flex flex-col lg:flex-row gap-6 items-center justify-center animate-in slide-in-from-right duration-700 w-full pt-12">
+                  <div className="flex-1 w-full space-y-5">
                     {Array.isArray(slide.content) && (slide.content as string[]).map((line, lIdx) => (
-                      <div key={lIdx} className={`bg-[#1e40af]/30 border-l-[6px] md:border-l-[12px] border-[#ea580c] p-4 md:p-8 rounded-r-2xl border border-white/10 shadow-2xl transition-all ${GLOW_SHADOW}`}>
+                      <div key={lIdx} className={`bg-[#1e40af]/30 border-l-[6px] md:border-l-[12px] border-[#ea580c] p-4 md:p-7 rounded-r-2xl border border-white/10 shadow-2xl transition-all ${GLOW_SHADOW}`}>
                         <p className="font-black text-gray-100" style={{ fontSize: getScaledSize(22, settings.factFontScale) }}>{renderHighlightedText(line)}</p>
                       </div>
                     ))}
                   </div>
                   {slide.imageUrl && (
-                    <div className="w-full lg:w-[45%] flex items-center justify-center p-4">
+                    <div className="w-full lg:w-[45%] flex items-center justify-center p-3">
                       <img src={slide.imageUrl} className="max-w-full rounded-[2rem] shadow-2xl border border-white/10 object-cover" />
                     </div>
                   )}
@@ -507,7 +434,7 @@ const App: React.FC = () => {
               )}
               
               {slide.type === 'title' && (
-                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-8 md:space-y-14 animate-in zoom-in duration-1000 w-full">
+                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6 md:space-y-12 animate-in zoom-in duration-1000 w-full">
                   <div className={`bg-[#ea580c] px-8 py-3 rounded-full text-xs md:text-xl font-black uppercase tracking-widest shadow-2xl border border-white/30 ${GLOW_SHADOW}`}>Current Affairs</div>
                   <h1 className="font-black text-white px-4 leading-tight" style={{ fontSize: getScaledSize(68, settings.titleFontScale) }}>{renderHighlightedText(slide.title || '')}</h1>
                   <div className="space-y-6 px-4">
@@ -527,15 +454,15 @@ const App: React.FC = () => {
         )}
       </div>
 
-      <div className="fixed bottom-6 md:bottom-10 left-0 right-0 z-50 pointer-events-none px-4 flex flex-col items-center">
+      <div className="fixed bottom-4 md:bottom-8 left-0 right-0 z-50 pointer-events-none px-4 flex flex-col items-center">
         <div className="w-full max-w-[1920px] relative flex items-center justify-center">
-          <div className="flex gap-4 md:gap-12 pointer-events-auto bg-black/50 backdrop-blur-2xl p-2 rounded-full border border-white/10 shadow-2xl">
-            <button onClick={() => setCurrentIdx(p => Math.max(0, p - 1))} className="px-10 md:px-20 py-4 md:py-6 bg-gray-900/80 border border-white/10 rounded-full font-black text-xs md:text-base hover:bg-blue-600/50 transition-all disabled:opacity-20 flex items-center gap-2" disabled={currentIdx === 0}><ChevronLeft size={20}/> PREV</button>
-            <button onClick={() => setCurrentIdx(p => Math.min(slides.length - 1, p + 1))} className="px-10 md:px-20 py-4 md:py-6 bg-gray-900/80 border border-white/10 rounded-full font-black text-xs md:text-base hover:bg-blue-600/50 transition-all disabled:opacity-20 flex items-center gap-2" disabled={currentIdx === slides.length - 1}>NEXT <ChevronRight size={20}/></button>
+          <div className="flex gap-4 md:gap-8 pointer-events-auto bg-black/60 backdrop-blur-3xl p-1.5 rounded-full border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.8)]">
+            <button onClick={() => setCurrentIdx(p => Math.max(0, p - 1))} className="px-8 md:px-16 py-3.5 md:py-5 bg-gray-900/90 border border-white/10 rounded-full font-black text-xs md:text-base hover:bg-blue-600/50 transition-all disabled:opacity-20 flex items-center gap-2" disabled={currentIdx === 0}><ChevronLeft size={20}/> PREV</button>
+            <button onClick={() => setCurrentIdx(p => Math.min(slides.length - 1, p + 1))} className="px-8 md:px-16 py-3.5 md:py-5 bg-gray-900/90 border border-white/10 rounded-full font-black text-xs md:text-base hover:bg-blue-600/50 transition-all disabled:opacity-20 flex items-center gap-2" disabled={currentIdx === slides.length - 1}>NEXT <ChevronRight size={20}/></button>
           </div>
           {slide?.type === 'quiz' && (
-            <div className="absolute right-0 top-0 bottom-0 flex items-center pointer-events-auto">
-              <button onClick={toggleReveal} title="Reveal Correct Answer" className={`p-5 md:p-8 bg-yellow-400 text-black rounded-full shadow-[0_0_50px_rgba(250,204,21,0.4)] hover:scale-110 active:scale-95 transition-all animate-bounce-subtle`}><CheckCircle2 size={32}/></button>
+            <div className="absolute right-0 md:right-4 top-0 bottom-0 flex items-center pointer-events-auto">
+              <button onClick={toggleReveal} title="Reveal Correct Answer" className={`p-4 md:p-6 bg-yellow-400 text-black rounded-full shadow-[0_0_50px_rgba(250,204,21,0.5)] hover:scale-110 active:scale-95 transition-all animate-bounce-subtle`}><CheckCircle2 size={30}/></button>
             </div>
           )}
         </div>
@@ -552,6 +479,9 @@ const App: React.FC = () => {
       <style>{`
         @keyframes bounce-subtle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         .animate-bounce-subtle { animation: bounce-subtle 2s infinite ease-in-out; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
       `}</style>
     </div>
   );

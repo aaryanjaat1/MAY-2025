@@ -179,12 +179,9 @@ const App: React.FC = () => {
   };
 
   const splitTranslation = (text: string) => {
-    // Robust split: Find the last occurrence of '(' that is followed by ')' at the end.
-    // This handles technical terms like (DRDO) inside the Hindi sentence correctly.
     const lastOpenBrace = text.lastIndexOf('(');
     const lastCloseBrace = text.lastIndexOf(')');
     
-    // If the string ends with ')', we assume the text from the last '(' to the end is the English translation
     if (lastOpenBrace !== -1 && lastCloseBrace === text.length - 1) {
       const main = text.substring(0, lastOpenBrace).trim();
       const translation = text.substring(lastOpenBrace + 1, lastCloseBrace).trim();
@@ -301,7 +298,7 @@ const App: React.FC = () => {
       
       <div ref={slideRef} className="relative z-10 w-full h-full md:max-w-[1920px] md:aspect-[16/9] bg-[#00040d] overflow-hidden flex flex-col shadow-2xl">
         {slide ? (
-          <div key={currentIdx} className="w-full h-full flex flex-col pt-32 md:pt-40 pb-80 md:pb-96 px-6 md:px-16 relative overflow-y-auto custom-scrollbar">
+          <div key={currentIdx} className="w-full h-full flex flex-col pt-32 md:pt-40 pb-96 md:pb-[400px] px-6 md:px-16 relative overflow-y-auto custom-scrollbar scroll-smooth">
             {/* Header */}
             <div className={`absolute top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 min-h-[70px] md:h-28 bg-[#0d1c3a]/60 backdrop-blur-3xl flex items-center px-6 md:px-12 border border-white/10 z-20 rounded-2xl ${GLOW_SHADOW}`}>
               <div className="w-1.5 md:w-2.5 h-10 md:h-16 bg-[#ea580c] mr-4 md:mr-8 rounded-full shadow-[0_0_25px_rgba(234,88,12,0.8)] shrink-0" />
@@ -410,9 +407,36 @@ const App: React.FC = () => {
       <style>{`
         @keyframes bounce-subtle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .animate-bounce-subtle { animation: bounce-subtle 2.5s infinite ease-in-out; }
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+        
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(234, 88, 12, 0.4) transparent;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar { 
+          width: 8px; 
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track { 
+          background: transparent; 
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb { 
+          background: rgba(234, 88, 12, 0.3); 
+          border-radius: 10px;
+          border: 2px solid transparent;
+          background-clip: content-box;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(234, 88, 12, 0.5);
+          background-clip: content-box;
+        }
+
+        .scroll-smooth {
+          scroll-behavior: smooth;
+        }
+
         * { overflow-wrap: anywhere; }
       `}</style>
     </div>

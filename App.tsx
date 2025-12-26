@@ -6,7 +6,7 @@ import {
   Loader2, FileDown, Presentation, Target, LogOut, CheckCircle2,
   PlusCircle, RefreshCw, Check, Layers, FolderOpen, Upload,
   Maximize, Minimize, Type as TypeIcon, Sliders, Image as ImageIcon,
-  Highlighter, Plus, X, Menu
+  Highlighter, Plus, X, Menu, MoveUp
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import html2canvas from 'html2canvas';
@@ -34,6 +34,8 @@ const App: React.FC = () => {
     bodyFontScale: 1,
     factFontScale: 1,
     boxPadding: 24,
+    defaultContentScale: 1,
+    defaultContentYOffset: 0,
   });
 
   const [isSyncing, setIsSyncing] = useState(false);
@@ -72,15 +74,14 @@ const App: React.FC = () => {
   const fetchProjectData = async (projectId: string) => {
     setIsSyncing(true);
     try {
-      // 1. Fetch settings for this project
       const { data: project } = await supabase.from('projects').select('settings').eq('id', projectId).single();
       if (project?.settings) {
-        setSettings(project.settings);
-      } else {
-        setSettings({ titleFontScale: 1, bodyFontScale: 1, factFontScale: 1, boxPadding: 24 });
+        setSettings({
+          ...settings,
+          ...project.settings
+        });
       }
 
-      // 2. Fetch slides
       const { data: slidesData } = await supabase.from('slides').select('data').eq('project_id', projectId).order('slide_index', { ascending: true });
       if (slidesData && slidesData.length > 0) {
         setSlides(slidesData.map(d => d.data as SlideData));
@@ -98,7 +99,7 @@ const App: React.FC = () => {
   const handleCreateProject = async () => {
     const name = prompt("Enter project name:");
     if (!name) return;
-    const initialSettings = { titleFontScale: 1, bodyFontScale: 1, factFontScale: 1, boxPadding: 24 };
+    const initialSettings = { titleFontScale: 1, bodyFontScale: 1, factFontScale: 1, boxPadding: 24, defaultContentScale: 1, defaultContentYOffset: 0 };
     const { data } = await supabase.from('projects').insert({ name, settings: initialSettings }).select().single();
     if (data) {
       setProjects([data, ...projects]);
@@ -110,7 +111,6 @@ const App: React.FC = () => {
     e.stopPropagation();
     if (!confirm("Are you sure you want to delete this project?")) return;
     await supabase.from('projects').delete().eq('id', id);
-    // Cascade delete slides (assumed DB setup or manual here)
     await supabase.from('slides').delete().eq('project_id', id);
     
     const updated = projects.filter(p => p.id !== id);
@@ -125,18 +125,12 @@ const App: React.FC = () => {
     setIsSyncing(true);
     setSyncSuccess(false);
     try {
-      // Update Project Settings
       await supabase.from('projects').update({ settings: settings }).eq('id', activeProjectId);
-      
-      // Update Slides (Delete and Replace for consistency)
       await supabase.from('slides').delete().eq('project_id', activeProjectId);
       const rows = slides.map((s, i) => ({ project_id: activeProjectId, slide_index: i, data: s }));
       await supabase.from('slides').insert(rows);
-      
       setSyncSuccess(true);
       setTimeout(() => setSyncSuccess(false), 3000);
-      
-      // Refresh local projects list to keep metadata synced
       fetchProjects();
     } catch (err) { 
       console.error("Sync Error:", err); 
@@ -401,7 +395,7 @@ const App: React.FC = () => {
           <button onClick={() => setIsSidebarOpen(true)} className={`${isSidebarOpen ? 'hidden' : 'block'} mb-4 p-2 bg-gray-900 rounded-lg text-gray-400`}><Menu size={20}/></button>
           
           {activeSlide && adminTab === 'slides' ? (
-            <div className="max-w-5xl mx-auto space-y-8">
+            <div className="max-w-5xl mx-auto space-y-8 pb-32">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
                 <div>
                   <h1 className="text-xl md:text-2xl font-black text-white">{activeSlide.title}</h1>
@@ -412,6 +406,23 @@ const App: React.FC = () => {
                   <option value="fact">Fact</option>
                   <option value="title">Cover</option>
                 </select>
+              </div>
+
+              {/* Layout Tuning Section */}
+              <div className="bg-[#0a0a0a] border border-blue-500/20 rounded-2xl p-6 space-y-4">
+                 <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-widest flex items-center gap-2"><MoveUp size={14}/> Layout Fine Tuning (Per Slide)</h3>
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase">Content Scale: {(activeSlide.contentScale || 1).toFixed(2)}x</label>
+                      <input type="range" min="0.5" max="1.2" step="0.05" value={activeSlide.contentScale || 1} onChange={e => { const s = [...slides]; s[editingIdx].contentScale = parseFloat(e.target.value); setSlides(s); }} className="w-full accent-blue-600 h-1.5 bg-white/5 rounded-lg cursor-pointer" />
+                      <p className="text-[8px] text-gray-600 italic">Shrink content to avoid overlap</p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase">Vertical Offset (Y): {activeSlide.contentYOffset || 0}px</label>
+                      <input type="range" min="-200" max="100" step="10" value={activeSlide.contentYOffset || 0} onChange={e => { const s = [...slides]; s[editingIdx].contentYOffset = parseInt(e.target.value); setSlides(s); }} className="w-full accent-blue-600 h-1.5 bg-white/5 rounded-lg cursor-pointer" />
+                      <p className="text-[8px] text-gray-600 italic">Negative values move content UP</p>
+                    </div>
+                 </div>
               </div>
 
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -577,7 +588,6 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center overflow-hidden font-sans relative select-none">
       <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,_#0b1a33_0%,_#000000_100%)] opacity-85" />
       
-      {/* Top Utility Toolbar */}
       <div className="fixed top-4 right-4 md:top-6 md:right-8 z-[100] flex gap-2 md:gap-3 pointer-events-auto">
         <button 
           onClick={() => setIsAdmin(true)} 
@@ -596,9 +606,8 @@ const App: React.FC = () => {
 
       <div ref={slideRef} className="relative z-10 w-full h-full md:max-w-[1920px] md:aspect-[16/9] bg-[#00040d] overflow-hidden md:shadow-[0_0_100px_rgba(0,0,0,1)] flex flex-col">
         {slide ? (
-          <div key={currentIdx} className="w-full h-full flex flex-col pt-20 md:pt-28 pb-20 md:pb-32 px-4 md:px-12 relative overflow-y-auto custom-scrollbar">
+          <div key={currentIdx} className="w-full h-full flex flex-col pt-20 md:pt-28 pb-48 md:pb-64 px-4 md:px-12 relative overflow-y-auto custom-scrollbar">
             
-            {/* Slide Header */}
             <div className={`absolute top-2 md:top-5 left-2 md:left-5 right-2 md:right-5 min-h-[64px] md:h-24 bg-gradient-to-r from-[#1e3a8a]/50 via-[#1e3a8a]/20 to-transparent backdrop-blur-3xl flex items-center px-4 md:px-10 border border-white/10 z-20 rounded-xl shadow-2xl ${GLOW_SHADOW}`}>
               <div className="w-1 md:w-2 h-8 md:h-14 bg-[#ea580c] mr-3 md:mr-6 rounded-full shadow-[0_0_20px_rgba(234,88,12,0.4)] shrink-0" />
               <div className="animate-in slide-in-from-left duration-700 max-w-[95%] overflow-hidden">
@@ -612,8 +621,14 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Template Content Area */}
-            <div className="flex-1 flex flex-col overflow-y-auto custom-scrollbar pr-2 -mr-2">
+            {/* Template Content Area with scaling and offset logic */}
+            <div 
+              className="flex-1 flex flex-col overflow-visible pr-2 -mr-2 transition-transform duration-500"
+              style={{
+                transform: `scale(${slide.contentScale || 1}) translateY(${slide.contentYOffset || 0}px)`,
+                transformOrigin: 'top center'
+              }}
+            >
               
               {/* Template: Quiz */}
               {slide.type === 'quiz' && (
@@ -640,7 +655,7 @@ const App: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="w-full max-w-[96%] flex flex-col gap-3 md:gap-4 pb-4">
+                  <div className="w-full max-w-[96%] flex flex-col gap-3 md:gap-4">
                     {slide.options?.map((opt) => {
                       const isCorrect = slide.correctOptionId === opt.id && slide.isRevealed;
                       return (
@@ -747,12 +762,11 @@ const App: React.FC = () => {
         )}
       </div>
 
-      {/* Navigation Controls - Elevated slightly */}
       <div className="fixed bottom-6 md:bottom-10 left-0 right-0 z-50 pointer-events-none px-4 md:px-12 flex flex-col items-center">
         <div className="w-full max-w-[1920px] relative flex items-center justify-center">
-          <div className="flex gap-4 md:gap-12 pointer-events-auto">
-            <button onClick={e => { e.stopPropagation(); setCurrentIdx(p => Math.max(0, p - 1)); }} className="flex-1 md:flex-none px-8 md:px-16 py-3 md:py-5 bg-gray-900/70 backdrop-blur-3xl border border-white/10 rounded-full font-black text-[10px] md:text-sm tracking-widest hover:bg-blue-600/50 transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-2 active:scale-95" disabled={currentIdx === 0}><ChevronLeft size={18}/> PREV</button>
-            <button onClick={e => { e.stopPropagation(); setCurrentIdx(p => Math.min(slides.length - 1, p + 1)); }} className="flex-1 md:flex-none px-8 md:px-16 py-3 md:py-5 bg-gray-900/70 backdrop-blur-3xl border border-white/10 rounded-full font-black text-[10px] md:text-sm tracking-widest hover:bg-blue-600/50 transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-2 active:scale-95" disabled={currentIdx === slides.length - 1}>NEXT <ChevronRight size={18}/></button>
+          <div className="flex gap-4 md:gap-12 pointer-events-auto bg-black/40 backdrop-blur-3xl p-2 rounded-full border border-white/5">
+            <button onClick={e => { e.stopPropagation(); setCurrentIdx(p => Math.max(0, p - 1)); }} className="flex-1 md:flex-none px-8 md:px-16 py-3 md:py-5 bg-gray-900/70 border border-white/10 rounded-full font-black text-[10px] md:text-sm tracking-widest hover:bg-blue-600/50 transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-2 active:scale-95" disabled={currentIdx === 0}><ChevronLeft size={18}/> PREV</button>
+            <button onClick={e => { e.stopPropagation(); setCurrentIdx(p => Math.min(slides.length - 1, p + 1)); }} className="flex-1 md:flex-none px-8 md:px-16 py-3 md:py-5 bg-gray-900/70 border border-white/10 rounded-full font-black text-[10px] md:text-sm tracking-widest hover:bg-blue-600/50 transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-2 active:scale-95" disabled={currentIdx === slides.length - 1}>NEXT <ChevronRight size={18}/></button>
           </div>
           
           {slide?.type === 'quiz' && (

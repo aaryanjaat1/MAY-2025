@@ -34,6 +34,8 @@ export interface SlideData {
   imageWidth?: number;  // New: Custom width for image box
   imageHeight?: number; // New: Custom height for image box
   boxPadding?: number;
+  contentScale?: number;   // New: Shrink/Grow content area
+  contentYOffset?: number; // New: Move content up/down
   highlights?: Highlight[];
 }
 
@@ -55,6 +57,8 @@ export interface GlobalSettings {
   bodyFontScale?: number;
   titleFontScale?: number;
   factFontScale?: number;
+  defaultContentScale?: number;
+  defaultContentYOffset?: number;
 }
 
 export interface Project {

@@ -883,7 +883,7 @@ export const SLIDES: SlideData[] = [
     id: 't26-quiz',
     type: 'quiz',
     title: 'Aravalli Green Wall Project',
-    subtitle: 'अरावली ग्रीन वॉल प्रोजेक्ट',
+    subtitle: 'अरावली ग्रीन Wall प्रोजेक्ट',
     content: [
       "'अरावली ग्रीन Wall प्रोजेक्ट' के तहत अरावली पर्वतमाला के साथ कितने किलोमीटर चौड़ा ग्रीन बफर जोन बनाया जाएगा?",
       "Under the 'Aravalli Green Wall Project', how many kilometers wide green buffer zone will be created along the Aravalli range?"
@@ -1044,7 +1044,7 @@ export const SLIDES: SlideData[] = [
     title: 'AI RAM Initiative',
     subtitle: 'एआई रैम पहल',
     content: [
-      "यूनेस्को के दक्षिण एशिया क्षेत्रीय कार्यालय ने 'इंडियाएआई मिशन' के सहयोग से AI RAM पर परामर्श आयोजित किया। (UNESCO Regional Office and IndiaAI Mission organized AI RAM consultation.)",
+      "यूनेस्को के दक्षिण एशिया क्षेत्रीय कार्यालय ने 'INDIAai Mission' के सहयोग से AI RAM पर परामर्श आयोजित किया। (UNESCO Regional Office and IndiaAI Mission organized AI RAM consultation.)",
       "इसका उद्देश्य भारत-विशिष्ट एआई नीति रिपोर्ट विकसित करना है जो क्षेत्रों में एआई के नैतिक और जिम्मेदार अपनाने के लिए सुझाव देती है। (Aims to develop an India-specific AI policy for ethical and responsible AI adoption.)",
       "यह पहल 10,000 करोड़ रुपये से अधिक के फंड के साथ लॉन्च किए गए 'INDIAai मिशन' के अनुरूप है। (Aligns with the INDIAai Mission launched with over Rs 10,000 crore funding.)"
     ],
@@ -1136,7 +1136,7 @@ export const SLIDES: SlideData[] = [
       { id: 'A', label: 'A', text: 'प्रधानमंत्री (Prime Minister)' },
       { id: 'B', label: 'B', text: 'नीति आयोग के सीईओ (CEO of NITI Aayog)' },
       { id: 'C', label: 'C', text: 'केंद्रीय वित्त मंत्री (Union Finance Minister)' },
-      { id: 'D', label: 'D', text: 'भारतीय रिजर्व बैंक के गवर्नर (Governor of RBI)' }
+      { id: 'D', label: 'D', text: 'भारत के रिजर्व बैंक के गवर्नर (Governor of RBI)' }
     ],
     correctOptionId: 'C',
     contentScale: 0.8,
@@ -1219,7 +1219,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'लोकपाल: नया आदर्श वाक्य',
     content: [
       "भारत के लोकपाल की पूर्ण पीठ ने \"नागरिकों को सशक्त बनाएं, भ्रष्टाचार को उजागर करें\" नामक एक नया आदर्श वाक्य अपनाया है। (The Full Bench of Lokpal adopted the new motto “Empower Citizens, Expose Corruption”.)",
-      "लोकपाल सार्वजनिक कार्यालयों में भ्रष्टाचार की शिकायतों के समाधान के लिए एक वैधानिक निकाय है। (Lokpal is a statutory anti-corruption body created via the 2013 Act.)",
+      "लोकपाल सार्वजनिक कार्यालयों में भ्रष्टाचार की शिकायतों के समाधान के लिए एक वैधानिक निकाय है। (Statutory anti-corruption body created via the 2013 Act.)",
       "लोकपाल का अध्यक्ष सेवानिवृत्त CJI या सुप्रीम कोर्ट का न्यायाधीश होता है जिसकी नियुक्ति चयन समिति की सिफारिश पर की जाती है। (Chairperson is a retired CJI/SC judge appointed by a high-level committee.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1589216532372-1c2a367900d8?q=80&w=1000',
@@ -1289,7 +1289,7 @@ export const SLIDES: SlideData[] = [
     subtitle: 'अभ्यास ‘खान क्वेस्ट’',
     content: [
       "भारतीय सेना का दल बहुराष्ट्रीय सैन्य अभ्यास 'खान क्वेस्ट' में भाग लेने के लिए उलानबटोर, मंगोलिया पहुँचा। (Indian Army reached Mongolia for the multinational Exercise Khaan Quest.)",
-      "यह एक वार्षिक अभ्यास है जो शांति सेना की क्षमताओं (Peacekeeping capabilities) को बढ़ाने के लिए दुनिया भर की सेनाओं को एक साथ लाता है। (Annual exercise to enhance peacekeeping capabilities of global forces.)",
+      "यह एक वार्षिक अभ्यास है जो शांति सेना की क्षमताओं (Peacekeeping capabilities) को बढ़ाने के लिए दुनिया भर की सेनाओं को एक साथ लाता है। (Annual exercise to enhance peacekeeping capabilities.)",
       "यह 2003 में अमेरिका और मंगोलिया के बीच द्विपक्षीय अभ्यास के रूप में शुरू हुआ था और 2006 से बहुराष्ट्रीय बन गया। (Started in 2003 as US-Mongolia bilateral; multinational since 2006.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1547483129-45009da1476c?q=80&w=1000',
@@ -1503,6 +1503,346 @@ export const SLIDES: SlideData[] = [
       "इसमें 80% से अधिक स्वदेशी सामग्री है और यह जलप्रलय (waterjet) प्रणोदन प्रणाली से संचालित है। (It has over 80% indigenous content and is powered by a waterjet propulsion system.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 51: Third UN Oceans Conference (UNOC) ---
+  {
+    id: 't51-quiz',
+    type: 'quiz',
+    title: 'Third UN Oceans Conference (UNOC)',
+    subtitle: 'तीसरा संयुक्त राष्ट्र महासागर सम्मेलन',
+    content: [
+      "तीसरे संयुक्त राष्ट्र महासागर सम्मेलन (UNOC) 2025 का आयोजन कहाँ किया गया?",
+      "Where was the third United Nations Oceans Conference (UNOC) 2025 held?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'न्यूयॉर्क, यूएसए (New York, USA)' },
+      { id: 'B', label: 'B', text: 'नीस, फ्रांस (Nice, France)' },
+      { id: 'C', label: 'C', text: 'नई दिल्ली, भारत (New Delhi, India)' },
+      { id: 'D', label: 'D', text: 'सियोल, दक्षिण कोरिया (Seoul, South Korea)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't51-fact',
+    type: 'fact',
+    title: 'Third UN Oceans Conference (UNOC)',
+    subtitle: 'तीसरा संयुक्त राष्ट्र महासागर सम्मेलन',
+    content: [
+      "फ्रांस के नीस में आयोजित सम्मेलन समुद्री पारिस्थितिक तंत्र की रक्षा के वादों के साथ संपन्न हुआ और 'नीस ओशन एक्शन प्लान' को अपनाया गया। (The UNOC held in Nice, France, concluded with marine conservation commitments and the adoption of the 'Nice Ocean Action Plan'.)",
+      "भारत ने हाई सीज़ ट्रीटी (BBNJ Agreement) की पुष्टि करने का वादा किया और फ्रेंच पोलिनेशिया ने दुनिया का सबसे बड़ा समुद्री संरक्षित क्षेत्र बनाने की घोषणा की। (India pledged to ratify the High Seas Treaty, while French Polynesia announced the creation of the world's largest MPA.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 52: India Post Payments Bank (IPPB) ---
+  {
+    id: 't52-quiz',
+    type: 'quiz',
+    title: 'India Post Payments Bank (IPPB)',
+    subtitle: 'इंडिया पोस्ट पेमेंट्स बैंक',
+    content: [
+      "डिजिटल भुगतान को बढ़ावा देने के लिए किस भुगतान बैंक को 'डिजिटल पेमेंट्स अवार्ड 2024-25' से सम्मानित किया गया है?",
+      "Which payments bank was honored with the 'Digital Payments Award 2024–25' for promoting digital payments?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'एयरटेल पेमेंट्स बैंक (Airtel Payments Bank)' },
+      { id: 'B', label: 'B', text: 'पेटीएम पेमेंट्स बैंक (Paytm Payments Bank)' },
+      { id: 'C', label: 'C', text: 'इंडिया पोस्ट पेमेंट्स बैंक (IPPB)' },
+      { id: 'D', label: 'D', text: 'फिनो पेमेंट्स बैंक (Fino Payments Bank)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't52-fact',
+    type: 'fact',
+    title: 'India Post Payments Bank (IPPB)',
+    subtitle: 'इंडिया पोस्ट पेमेंट्स बैंक',
+    content: [
+      "वित्त मंत्रालय ने इंडिया पोस्ट पेमेंट्स बैंक (IPPB) को डिजिटल भुगतान और वित्तीय समावेशन को बढ़ावा देने के लिए पुरस्कृत किया। (Ministry of Finance awarded IPPB for promoting digital payments and financial inclusion.)",
+      "IPPB की स्थापना 2018 में हुई थी और यह 100% भारत सरकार के स्वामित्व वाली इकाई है जो 1.65 लाख डाकघरों के नेटवर्क का उपयोग करती है। (IPPB was launched in 2018 as a 100% Govt-owned entity leveraging a network of 1.65 lakh post offices.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1621416848440-236914c7467e?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 53: Gharial Species Conservation Programme ---
+  {
+    id: 't53-quiz',
+    type: 'quiz',
+    title: 'Gharial Species Conservation Programme',
+    subtitle: 'घड़ियाल प्रजाति संरक्षण कार्यक्रम',
+    content: [
+      "हाल ही में उत्तर प्रदेश के किस वन्यजीव अभयारण्य में 'घड़ियाल प्रजाति संरक्षण कार्यक्रम' शुरू किया गया है?",
+      "In which wildlife sanctuary of Uttar Pradesh was the 'Gharial Species Conservation Programme' recently launched?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'दुधवा नेशनल पार्क (Dudhwa National Park)' },
+      { id: 'B', label: 'B', text: 'कतर्नियाघाट वन्यजीव अभयारण्य (Katarniaghat Wildlife Sanctuary)' },
+      { id: 'C', label: 'C', text: 'चंबल अभयारण्य (Chambal Sanctuary)' },
+      { id: 'D', label: 'D', text: 'चंद्रप्रभा अभयारण्य (Chandraprabha Sanctuary)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't53-fact',
+    type: 'fact',
+    title: 'Gharial Species Conservation Programme',
+    subtitle: 'घड़ियाल प्रजाति संरक्षण कार्यक्रम',
+    content: [
+      "केंद्रीय पर्यावरण मंत्री ने कतर्नियाघाट की गेरुआ नदी में घड़ियाल के बच्चों को छोड़कर इस कार्यक्रम की शुरुआत की। (Environment Minister launched the programme by releasing Gharials into the Gerua River, Katarniaghat.)",
+      "घड़ियाल केवल मछलियाँ खाते हैं और IUCN स्टेटस के अनुसार 'गंभीर रूप से लुप्तप्राय' हैं जिन्हें 1972 के अधिनियम के तहत सूचीबद्ध किया गया है। (Gharials feed on fish and are Critically Endangered; they are protected under Schedule 1 of the Wildlife Act.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1549240923-93a2e080e653?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 54: Operation Midnight Hammer ---
+  {
+    id: 't54-quiz',
+    type: 'quiz',
+    title: 'Operation Midnight Hammer',
+    subtitle: 'ऑपरेशन मिडनाइट हैमर',
+    content: [
+      "'ऑपरेशन मिडनाइट हैमर' (Operation Midnight Hammer) किस देश के परमाणु ठिकानों पर अमेरिका द्वारा किए गए हमलों का नाम है?",
+      "'Operation Midnight Hammer' is the name of US strikes on nuclear installations of which country?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'उत्तर कोरिया (North Korea)' },
+      { id: 'B', label: 'B', text: 'रूस (Russia)' },
+      { id: 'C', label: 'C', text: 'ईरान (Iran)' },
+      { id: 'D', label: 'D', text: 'इराक (Iraq)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't54-fact',
+    type: 'fact',
+    title: 'Operation Midnight Hammer',
+    subtitle: 'ऑपरेशन मिडनाइट हैमर',
+    content: [
+      "अमेरिका ने ईरान के तीन प्रमुख परमाणु ठिकानों—नतांज, फोर्डो और इस्फहान—पर हवाई हमले किए जिन्हें 'ऑपरेशन मिडनाइट हैमर' नाम दिया गया। (The US conducted air strikes on three major Iranian nuclear sites: Natanz, Fordow, and Isfahan under 'Operation Midnight Hammer'.)",
+      "यह हमला ईरान के परमाणु बुनियादी ढांचे को लक्षित करने वाला पहला प्रत्यक्ष अमेरिकी सैन्य हस्तक्षेप है। (This attack marks the first direct US military intervention targeting Iran's nuclear infrastructure.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1460186136353-977e9d6085a1?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 55: Project 17A Stealth Frigates: INS Nilgiri ---
+  {
+    id: 't55-quiz',
+    type: 'quiz',
+    title: 'Project 17A Stealth Frigates: INS Nilgiri',
+    subtitle: 'प्रोजेक्ट 17A स्टील्थ फ्रिगेट: आईएनएस नीलगिरी',
+    content: [
+      "प्रोजेक्ट 17A के तहत निर्मित पहला स्वदेशी स्टील्थ फ्रिगेट कौन सा है जो पूर्वी नौसेना कमान में शामिल हुआ है?",
+      "Which is the first indigenously built Project 17A stealth frigate to join the Eastern Naval Command?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'आईएनएस शिवालिक (INS Shivalik)' },
+      { id: 'B', label: 'B', text: 'आईएनएस नीलगिरी (INS Nilgiri)' },
+      { id: 'C', label: 'C', text: 'आईएनएस उदयगिरी (INS Udaygiri)' },
+      { id: 'D', label: 'D', text: 'आईएनएस विंध्यगिरी (INS Vindhyagiri)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't55-fact',
+    type: 'fact',
+    title: 'Project 17A Stealth Frigates: INS Nilgiri',
+    subtitle: 'प्रोजेक्ट 17A स्टील्थ फ्रिगेट: आईएनएस नीलगिरी',
+    content: [
+      "आईएनएस नीलगिरी मझगांव डॉक शिपबिल्डर्स लिमिटेड (MDL) द्वारा निर्मित प्रोजेक्ट 17A का पहला स्टील्थ फ्रिगेट है। (INS Nilgiri is the first Project 17A stealth frigate built by MDL; it is an advanced follow-on to the Shivalik class.)",
+      "इसे एंटी-एयर, एंटी-सरफेस और एंटी-सबमरीन युद्ध के लिए डिज़ाइन किया गया है और यह विशाखापत्तनम के 'सनराइज फ्लीट' में शामिल हुआ है। (Designed for multi-dimensional warfare, it has joined the Eastern Naval Command’s Sunrise Fleet in Visakhapatnam.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1544256718-3bcf237f3974?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 56: INS Tamal: Multi-role Frigate ---
+  {
+    id: 't56-quiz',
+    type: 'quiz',
+    title: 'INS Tamal: Multi-role Frigate',
+    subtitle: 'आईएनएस तमाल: मल्टी-रोल फ्रिगेट',
+    content: [
+      "भारतीय नौसेना का वह अंतिम युद्धपोत कौन सा है जिसे भारत के बाहर (रूस में) निर्मित किया गया है?",
+      "Which is the last warship of the Indian Navy to have been built outside India (in Russia)?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'आईएनएस तलवार (INS Talwar)' },
+      { id: 'B', label: 'B', text: 'आईएनएस तमाल (INS Tamal)' },
+      { id: 'C', label: 'C', text: 'आईएनएस तुशील (INS Tushil)' },
+      { id: 'D', label: 'D', text: 'आईएनएस तेग (INS Teg)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't56-fact',
+    type: 'fact',
+    title: 'INS Tamal: Multi-role Frigate',
+    subtitle: 'आईएनएस तमाल: मल्टी-रोल फ्रिगेट',
+    content: [
+      "आईएनएस तमाल रूस के कलिनिनग्राद में निर्मित 'तुशील' श्रेणी का दूसरा जहाज है और भारत के बाहर बनने वाला अंतिम युद्धपोत है। (INS Tamal is the second Tushil-class vessel built in Kaliningrad and the last Indian warship constructed abroad.)",
+      "इसमें ब्रह्मोस क्रूज मिसाइल सहित 26% स्वदेशी घटक हैं और इसका नया डिज़ाइन बेहतर स्टील्थ सुविधाएँ प्रदान करता है। (It features 26% indigenous components, including BrahMos missiles, and an enhanced stealth design.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1551047125-9922e9603f95?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 57: NAVYA Initiative ---
+  {
+    id: 't57-quiz',
+    type: 'quiz',
+    title: 'NAVYA Initiative',
+    subtitle: 'नव्या (NAVYA) पहल',
+    content: [
+      "'नव्या' (NAVYA) पहल का मुख्य उद्देश्य किशोरियों (16-18 वर्ष) को किस क्षेत्र में कौशल प्रदान करना है?",
+      "What is the primary objective of the 'NAVYA' initiative for adolescent girls (16-18 years)?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'केवल सिलाई और बुनाई (Only sewing and knitting)' },
+      { id: 'B', label: 'B', text: 'गैर-पारंपरिक नौकरी भूमिकाएँ (Non-traditional job roles)' },
+      { id: 'C', label: 'C', text: 'खाना पकाना (Cooking)' },
+      { id: 'D', label: 'D', text: 'प्राथमिक शिक्षा (Primary education)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't57-fact',
+    type: 'fact',
+    title: 'NAVYA Initiative',
+    subtitle: 'नव्या (NAVYA) पहल',
+    content: [
+      "महिला एवं बाल विकास मंत्रालय ने लड़कियों को गैर-पारंपरिक भूमिकाओं में कौशल प्रदान करने के लिए 'नव्या' पहल शुरू की। (MWCD and MSDE launched NAVYA to skill adolescent girls in non-traditional career paths.)",
+      "यह पहल देश के 27 जिलों में पायलट प्रोजेक्ट के रूप में लागू की जा रही है और मौजूदा कौशल योजनाओं का लाभ उठाएगी। (This pilot project is being implemented in 27 districts, leveraging existing vocational training infrastructure.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 58: SDG Index 2025 ---
+  {
+    id: 't58-quiz',
+    type: 'quiz',
+    title: 'SDG Index 2025',
+    subtitle: 'सतत विकास लक्ष्य (SDG) सूचकांक 2025',
+    content: [
+      "'सतत विकास लक्ष्य (SDG) सूचकांक 2025' में भारत की रैंकिंग क्या है?",
+      "What is India's rank in the 'Sustainable Development Goals (SDG) Index 2025'?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '109वीं (109th)' },
+      { id: 'B', label: 'B', text: '99वीं (99th)' },
+      { id: 'C', label: 'C', text: '121वीं (121st)' },
+      { id: 'D', label: 'D', text: '85वीं (85th)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't58-fact',
+    type: 'fact',
+    title: 'SDG Index 2025',
+    subtitle: 'सतत विकास लक्ष्य (SDG) सूचकांक 2025',
+    content: [
+      "भारत ने पहली बार 67 के स्कोर के साथ सतत विकास लक्ष्य (SDG) सूचकांक में शीर्ष 100 देशों में (99वें स्थान पर) जगह बनाई है। (India entered the top 100 of the SDG Index for the first time, ranking 99th with a score of 67.)",
+      "फिनलैंड, स्वीडन और डेनमार्क शीर्ष तीन स्थानों पर हैं, जबकि पूर्वी और दक्षिण एशिया दुनिया में सबसे तेजी से प्रगति करने वाला क्षेत्र है। (Finland, Sweden, and Denmark hold the top spots; East and South Asia remains the fastest-progressing region.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 59: Digital Payment Intelligence Platform (DPIP) ---
+  {
+    id: 't59-quiz',
+    type: 'quiz',
+    title: 'Digital Payment Intelligence Platform (DPIP)',
+    subtitle: 'डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म',
+    content: [
+      "डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म (DPIP) को मुख्य रूप से किस संस्था के मार्गदर्शन में विकसित किया जा रहा है?",
+      "Under the guidance of which institution is the Digital Payment Intelligence Platform (DPIP) primarily being developed?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'सेबी (SEBI)' },
+      { id: 'B', label: 'B', text: 'वित्त मंत्रालय (Ministry of Finance)' },
+      { id: 'C', label: 'C', text: 'भारतीय रिजर्व बैंक (RBI)' },
+      { id: 'D', label: 'D', text: 'एनपीसीआई (NPCI)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't59-fact',
+    type: 'fact',
+    title: 'Digital Payment Intelligence Platform (DPIP)',
+    subtitle: 'डिजिटल भुगतान इंटेलिजेंस प्लेटफॉर्म',
+    content: [
+      "धोखाधड़ी रोकने के लिए भारतीय रिजर्व बैंक (RBI) के मार्गदर्शन में बैंक DPIP विकसित कर रहे हैं। (Major banks are developing DPIP under RBI guidance to strengthen fraud risk management through real-time data sharing.)",
+      "वित्त वर्ष 2025 की रिपोर्ट के अनुसार, बैंक धोखाधड़ी तीन गुना बढ़कर ₹36,014 करोड़ हो गई है जिसमें सार्वजनिक क्षेत्र के बैंक ऋण श्रेणी में सबसे आगे हैं। (Bank frauds rose significantly to ₹36,014 crore in FY25, with PSBs reporting the highest cases in loans/advances.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 60: SCO Defence Ministers’ Meeting ---
+  {
+    id: 't60-quiz',
+    type: 'quiz',
+    title: 'SCO Defence Ministers’ Meeting',
+    subtitle: 'एससीओ रक्षा मंत्रियों की बैठक',
+    content: [
+      "भारत ने किस शहर में आयोजित शंघाई सहयोग संगठन (SCO) के रक्षा मंत्रियों की बैठक में संयुक्त घोषणापत्र पर हस्ताक्षर करने से इनकार कर दिया?",
+      "In which city did India refuse to sign the joint declaration at the SCO Defence Ministers’ meeting?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'बीजिंग, चीन (Beijing, China)' },
+      { id: 'B', label: 'B', text: 'ताशकंद, उज्बेकिस्तान (Tashkent, Uzbekistan)' },
+      { id: 'C', label: 'C', text: 'किंगदाओ, चीन (Qingdao, China)' },
+      { id: 'D', label: 'D', text: 'नई दिल्ली, भारत (New Delhi, India)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't60-fact',
+    type: 'fact',
+    title: 'SCO Defence Ministers’ Meeting',
+    subtitle: 'एससीओ रक्षा मंत्रियों की बैठक',
+    content: [
+      "भारत ने चीन के किंगदाओ में आयोजित SCO बैठक में संयुक्त घोषणापत्र पर हस्ताक्षर करने से इनकार कर दिया क्योंकि इसमें सीमा पार आतंकवाद का उल्लेख नहीं था। (India refused to sign the SCO joint declaration in Qingdao, China, due to the absence of language addressing cross-border terrorism.)",
+      "SCO की स्थापना 2001 में हुई थी और भारत 2017 में इसका पूर्ण सदस्य बना; इसका मुख्यालय बीजिंग में स्थित है। (SCO was established in 2001, and India joined as a full member in 2017; its headquarters are in Beijing.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1000',
     contentScale: 0.85,
     contentYOffset: 10
   }

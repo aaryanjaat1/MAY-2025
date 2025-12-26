@@ -1,33 +1,39 @@
 
-export type SlideType = 'title' | 'section' | 'question' | 'fact' | 'table' | 'content';
+export type SlideType = 'title' | 'section' | 'quiz' | 'fact' | 'table' | 'content';
 export type SlideLayout = 'default' | 'split-horizontal' | 'split-vertical' | 'cover-page';
 export type BackgroundType = 'image' | 'gradient';
 
 export interface Highlight {
   id: string;
   target: 'title' | 'body';
-  lineIndex: number; // Index in the content array if target is body
-  startWord: number; // 1-based index
-  endWord: number;   // 1-based index
-  bgColor: string;   // The "strip" color
-  textColor: string; // The text color
+  lineIndex: number;
+  startWord: number;
+  endWord: number;
+  bgColor: string;
+  textColor: string;
+}
+
+export interface QuizOption {
+  id: string;
+  label: string; // A, B, C, D
+  text: string;  // e.g. "Gujarat (गुजरात)"
 }
 
 export interface SlideData {
-  id: number;
+  id: string;
   type: SlideType;
   layout?: SlideLayout;
   title?: string;
+  subtitle?: string; // For Hindi translation in header
   content: string | string[] | TableRow[];
-  extra?: string;
-  footer?: string;
+  options?: QuizOption[];
+  correctOptionId?: string;
+  isRevealed?: boolean; // For showing the checkmark
   imageUrl?: string;
-  imageSize?: number; // percentage for split layouts
-  gap?: number; // gap between boxes in split layouts
-  boxPadding?: number; // internal padding of content boxes
-  bgBlur?: number; // override global background blur
-  bgType?: BackgroundType;
-  bgGradient?: string;
+  imageSize?: number;
+  imageWidth?: number;  // New: Custom width for image box
+  imageHeight?: number; // New: Custom height for image box
+  boxPadding?: number;
   highlights?: Highlight[];
 }
 
@@ -37,16 +43,22 @@ export interface TableRow {
   col3?: string;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  created_at?: string;
+}
+
 export interface GlobalSettings {
   bgImage?: string;
   bgType?: BackgroundType;
   bgGradient?: string;
-  boxWidth?: number;  // Global width % for standard layout
-  boxHeight?: number; // Global height % for standard layout
+  boxWidth?: number;
+  boxHeight?: number;
   boxPadding?: number;
-  bgBlur?: number;    // Global background blur intensity
+  bgBlur?: number;
   brandText?: string;
-  bodyFontScale?: number; // Global multiplier for standard body/question text
-  titleFontScale?: number; // Global multiplier for slide titles
-  factFontScale?: number;  // Global multiplier for fact/content text
+  bodyFontScale?: number;
+  titleFontScale?: number;
+  factFontScale?: number;
 }

@@ -1,155 +1,136 @@
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { SLIDES as INITIAL_SLIDES } from './constants/slidesData';
-import { SlideData, TableRow, SlideType, SlideLayout, GlobalSettings, BackgroundType, Highlight } from './types';
-import { ProgressBar } from './components/ProgressBar';
+import React, { useState, useEffect, useRef } from 'react';
+import { SlideData, Project, GlobalSettings } from './types';
 import { 
-  ChevronLeft, ChevronRight, Maximize2, Minimize2, 
-  Settings, Save, Plus, Trash2, Play, Download, 
-  Upload, X, RotateCcw, Type, List, HelpCircle, 
-  Layout, Copy, FileText, Loader2, Lock, Mail, 
-  LogOut, ArrowRight, Columns, Rows, Square, 
-  Globe, MoveHorizontal, Maximize, CloudCheck, 
-  CloudOff, UploadCloud, Trash, ShieldCheck, Palette,
-  Highlighter, Type as TypeIcon, Image as ImageIcon,
-  Presentation, Upload as UploadIcon, ExternalLink,
-  CheckCircle2, AlertCircle, FileDown
+  ChevronLeft, ChevronRight, Settings, Save, Trash2, 
+  Loader2, FileDown, Presentation, Target, LogOut, CheckCircle2,
+  PlusCircle, RefreshCw, Check, Layers, FolderOpen, Upload,
+  Maximize, Minimize, Type as TypeIcon, Sliders, Image as ImageIcon,
+  Highlighter, Plus, X, Menu
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import html2canvas from 'html2canvas';
 import pptxgen from 'pptxgenjs';
 import { jsPDF } from 'jspdf';
+import { SLIDES as INITIAL_DATA } from './constants/slidesData';
 
-// Supabase Configuration
 const SUPABASE_URL = 'https://tvcwdfgvyhkjcfjljcna.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR2Y3dkZmd2eWhramNmamxqY25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1ODY1MzMsImV4cCI6MjA4MjE2MjUzM30.8DxeIeYWCW6EfQ7kPWD041mqjNNDlEx9ax8l2MN0pC4';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const GRADIENT_PRESETS = [
-  { name: 'Crystal Blue', value: 'radial-gradient(circle at center, #ffffff 0%, #1e40af 40%, #001f3f 100%)' },
-  { name: 'Ocean Aura', value: 'radial-gradient(circle at center, #1e40af 0%, #000000 100%)' },
-  { name: 'Soft Focus', value: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, rgba(30, 58, 138, 0.5) 100%)' },
-  { name: 'Midnight Blue', value: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)' },
-  { name: 'Deep Space', value: 'radial-gradient(circle at center, #111827 0%, #000000 100%)' },
-  { name: 'Royal Linear', value: 'linear-gradient(to right, #000000, #1e3a8a, #000000)' },
-];
-
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return localStorage.getItem('is_auth_may_2025') === 'true';
-  });
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const [slides, setSlides] = useState<SlideData[]>([]);
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [editingIdx, setEditingIdx] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [adminTab, setAdminTab] = useState<'slides' | 'settings'>('slides');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const [globalSettings, setGlobalSettings] = useState<GlobalSettings>({
-    brandText: '',
-    boxWidth: 90,
-    boxHeight: 85,
-    boxPadding: 40,
-    bgBlur: 3,
-    bgType: 'gradient',
-    bgGradient: GRADIENT_PRESETS[0].value,
-    bodyFontScale: 1.0,
-    titleFontScale: 1.0,
-    factFontScale: 1.0,
-    bgImage: ''
+  const [settings, setSettings] = useState<GlobalSettings>({
+    titleFontScale: 1,
+    bodyFontScale: 1,
+    factFontScale: 1,
+    boxPadding: 24,
   });
 
-  const [slides, setSlides] = useState<SlideData[]>(INITIAL_SLIDES);
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [exportType, setExportType] = useState<'PPTX' | 'PDF' | null>(null);
   const [exportProgress, setExportProgress] = useState(0);
-  const [syncError, setSyncError] = useState<string | null>(null);
-
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [editingIdx, setEditingIdx] = useState(0);
 
   const slideRef = useRef<HTMLDivElement>(null);
-
-  const getErrorMessage = (err: any): string => {
-    if (typeof err === 'string') return err;
-    return err?.message || err?.error_description || "An unknown error occurred";
-  };
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const contentTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  
+  const [focusedBoxIdx, setFocusedBoxIdx] = useState<number | null>(null);
+  const boxRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const fetchData = async () => {
-        setIsSyncing(true);
-        try {
-          const { data: slidesData } = await supabase.from('slides_data').select('data').order('id', { ascending: true });
-          if (slidesData && slidesData.length > 0) setSlides(slidesData.map(item => item.data as SlideData));
-          
-          const { data: settingsData } = await supabase.from('app_settings').select('data').single();
-          if (settingsData) setGlobalSettings(prev => ({ ...prev, ...(settingsData.data as GlobalSettings) }));
-        } catch (err) {
-          console.error("Supabase fetch error:", err);
-        } finally {
-          setIsSyncing(false);
-        }
-      };
-      fetchData();
-    }
-  }, [isAuthenticated]);
+    fetchProjects();
+  }, []);
 
-  const syncToCloud = async (updatedSlides: SlideData[], updatedSettings: GlobalSettings) => {
-    if (!isAuthenticated) return;
+  useEffect(() => {
+    if (activeProjectId) {
+      fetchSlides(activeProjectId);
+    } else if (projects.length === 0) {
+       setSlides(INITIAL_DATA);
+    }
+  }, [activeProjectId, projects]);
+
+  const fetchProjects = async () => {
+    const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+    if (data && data.length > 0) {
+      setProjects(data);
+      if (!activeProjectId) setActiveProjectId(data[0].id);
+    }
+  };
+
+  const fetchSlides = async (projectId: string) => {
     setIsSyncing(true);
-    setSyncError(null);
+    const { data } = await supabase.from('slides').select('data').eq('project_id', projectId).order('slide_index', { ascending: true });
+    if (data && data.length > 0) {
+      setSlides(data.map(d => d.data as SlideData));
+      setCurrentIdx(0);
+    } else {
+      setSlides(INITIAL_DATA);
+    }
+    setIsSyncing(false);
+  };
+
+  const handleCreateProject = async () => {
+    const name = prompt("Enter project name:");
+    if (!name) return;
+    const { data } = await supabase.from('projects').insert({ name }).select().single();
+    if (data) {
+      setProjects([data, ...projects]);
+      setActiveProjectId(data.id);
+    }
+  };
+
+  const handleDeleteProject = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm("Are you sure you want to delete this project?")) return;
+    await supabase.from('projects').delete().eq('id', id);
+    const updated = projects.filter(p => p.id !== id);
+    setProjects(updated);
+    if (activeProjectId === id) {
+      setActiveProjectId(updated.length > 0 ? updated[0].id : null);
+    }
+  };
+
+  const syncToCloud = async () => {
+    if (!activeProjectId) return;
+    setIsSyncing(true);
     setSyncSuccess(false);
     try {
-      await supabase.from('slides_data').delete().gte('id', 0);
-      await supabase.from('slides_data').insert(updatedSlides.map((s, idx) => ({ id: idx, data: s })));
-      await supabase.from('app_settings').upsert({ id: 1, data: updatedSettings });
-      
+      await supabase.from('slides').delete().eq('project_id', activeProjectId);
+      const rows = slides.map((s, i) => ({ project_id: activeProjectId, slide_index: i, data: s }));
+      await supabase.from('slides').insert(rows);
       setSyncSuccess(true);
       setTimeout(() => setSyncSuccess(false), 3000);
-    } catch (err: any) {
-      setSyncError(`Sync error: ${getErrorMessage(err)}`);
-    } finally {
-      setIsSyncing(false);
+    } catch (err) { console.error(err); }
+    finally { setIsSyncing(false); }
+  };
+
+  const toggleReveal = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const newSlides = [...slides];
+    const current = newSlides[currentIdx];
+    if (current && current.type === 'quiz') {
+      current.isRevealed = !current.isRevealed;
+      setSlides(newSlides);
     }
   };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoggingIn(true);
-    setLoginError('');
-    setTimeout(() => {
-      if (loginEmail === 'admin@currentaffairs.com' && loginPassword === 'password2025') {
-        setIsAuthenticated(true);
-        localStorage.setItem('is_auth_may_2025', 'true');
-      } else {
-        setLoginError('Invalid credentials.');
-      }
-      setIsLoggingIn(false);
-    }, 800);
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('is_auth_may_2025');
-    setIsAdmin(false);
-  };
-
-  const nextSlide = useCallback((e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setCurrentIdx((prev) => (prev < slides.length - 1 ? prev + 1 : prev));
-  }, [slides.length]);
-
-  const prevSlide = useCallback((e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setCurrentIdx((prev) => (prev > 0 ? prev - 1 : prev));
-  }, []);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
       setIsFullscreen(true);
     } else {
       document.exitFullscreen();
@@ -157,594 +138,627 @@ const App: React.FC = () => {
     }
   };
 
-  const handleDownloadPPTX = async () => {
-    if (!slideRef.current || slides.length === 0) return;
-    
+  const handleExport = async (type: 'PDF' | 'PPTX') => {
     setIsExporting(true);
-    setExportType('PPTX');
+    setExportType(type);
     setExportProgress(0);
-    const pres = new pptxgen();
-    pres.layout = 'LAYOUT_16x9';
     const originalIdx = currentIdx;
-    
-    try {
-      for (let i = 0; i < slides.length; i++) {
-        setCurrentIdx(i);
-        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
-        await new Promise(resolve => setTimeout(resolve, 800)); 
-        
-        if (slideRef.current) {
-          const canvas = await html2canvas(slideRef.current, {
-            useCORS: true,
-            scale: 2,
-            backgroundColor: '#000000',
-            logging: false,
-            allowTaint: true,
-            scrollX: 0,
-            scrollY: 0,
-            windowWidth: 1920,
-            windowHeight: 1080
-          });
-          const imgData = canvas.toDataURL('image/png');
-          const pptSlide = pres.addSlide();
-          pptSlide.addImage({ 
-            data: imgData, 
-            x: 0, y: 0, w: '100%', h: '100%',
-            sizing: { type: 'cover', w: 10, h: 5.625 } 
-          });
+
+    const captureAndAdd = async (i: number, doc: any) => {
+      setCurrentIdx(i);
+      await new Promise(r => setTimeout(r, 1200));
+      if (slideRef.current) {
+        const canvas = await html2canvas(slideRef.current, { scale: 2, useCORS: true, logging: false });
+        const img = canvas.toDataURL(type === 'PDF' ? 'image/jpeg' : 'image/png', 0.95);
+        if (type === 'PDF') {
+          if (i > 0) doc.addPage([1920, 1080], 'landscape');
+          doc.addImage(img, 'JPEG', 0, 0, 1920, 1080);
+        } else {
+          const slide = doc.addSlide();
+          slide.addImage({ data: img, x: 0, y: 0, w: '100%', h: '100%' });
         }
       }
-      await pres.writeFile({ fileName: `Current_Affairs_May_2025.pptx` });
-    } catch (err) {
-      console.error("PPTX Export failed:", err);
-    } finally {
-      setCurrentIdx(originalIdx);
-      setIsExporting(false);
-      setExportType(null);
-      setExportProgress(0);
+    };
+
+    if (type === 'PDF') {
+      const pdf = new jsPDF('landscape', 'px', [1920, 1080]);
+      for (let i = 0; i < slides.length; i++) {
+        await captureAndAdd(i, pdf);
+        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
+      }
+      pdf.save(`Presentation_${activeProjectId}.pdf`);
+    } else {
+      const pres = new pptxgen();
+      pres.layout = 'LAYOUT_16x9';
+      for (let i = 0; i < slides.length; i++) {
+        await captureAndAdd(i, pres);
+        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
+      }
+      await pres.writeFile({ fileName: `Presentation_${activeProjectId}.pptx` });
+    }
+    setCurrentIdx(originalIdx);
+    setIsExporting(false);
+  };
+
+  const handleExportProject = async (projectId: string, type: 'PDF' | 'PPTX', e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (activeProjectId !== projectId) {
+      setActiveProjectId(projectId);
+      setTimeout(() => handleExport(type), 1000);
+    } else {
+      handleExport(type);
     }
   };
 
-  const handleDownloadPDF = async () => {
-    if (!slideRef.current || slides.length === 0) return;
-
-    setIsExporting(true);
-    setExportType('PDF');
-    setExportProgress(0);
-    const originalIdx = currentIdx;
-    const pdf = new jsPDF('landscape', 'px', [1920, 1080]);
-
-    try {
-      for (let i = 0; i < slides.length; i++) {
-        setCurrentIdx(i);
-        setExportProgress(Math.round(((i + 1) / slides.length) * 100));
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        if (slideRef.current) {
-          const canvas = await html2canvas(slideRef.current, {
-            useCORS: true,
-            scale: 2,
-            backgroundColor: '#000000',
-            logging: false,
-            allowTaint: true,
-            scrollX: 0,
-            scrollY: 0,
-            windowWidth: 1920,
-            windowHeight: 1080
-          });
-          const imgData = canvas.toDataURL('image/png');
-          
-          if (i > 0) pdf.addPage([1920, 1080], 'landscape');
-          pdf.addImage(imgData, 'PNG', 0, 0, 1920, 1080);
-        }
-      }
-      pdf.save(`Current_Affairs_May_2025.pdf`);
-    } catch (err) {
-      console.error("PDF Export failed:", err);
-    } finally {
-      setCurrentIdx(originalIdx);
-      setIsExporting(false);
-      setExportType(null);
-      setExportProgress(0);
-    }
-  };
-
-  const updateSlideField = (field: keyof SlideData, value: any) => {
-    const newSlides = [...slides];
-    newSlides[editingIdx] = { ...newSlides[editingIdx], [field]: value };
-    setSlides(newSlides);
-  };
-
-  const updateGlobalField = (field: keyof GlobalSettings, value: any) => {
-    const updatedSettings = { ...globalSettings, [field]: value };
-    setGlobalSettings(updatedSettings);
-  };
-
-  const handleLocalImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (event) => {
-      const base64String = event.target?.result as string;
-      updateGlobalField('bgImage', base64String);
-      updateGlobalField('bgType', 'image');
+      const base64 = event.target?.result as string;
+      const s = [...slides];
+      s[editingIdx].imageUrl = base64;
+      setSlides(s);
     };
     reader.readAsDataURL(file);
   };
 
-  const handleSlideLocalImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64String = event.target?.result as string;
-      updateSlideField('imageUrl', base64String);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleAddSlide = () => {
-    const newSlide: SlideData = { id: Date.now(), type: 'fact', layout: 'default', title: 'New Slide', content: ['Content...'], highlights: [] };
-    const newSlides = [...slides];
-    newSlides.splice(editingIdx + 1, 0, newSlide);
-    setSlides(newSlides);
-    setEditingIdx(editingIdx + 1);
-  };
-
-  const handleDeleteSlide = (idx: number) => {
-    if (slides.length <= 1) return;
-    const newSlides = slides.filter((_, i) => i !== idx);
-    setSlides(newSlides);
-    setEditingIdx(Math.max(0, idx - 1));
-  };
-
-  const handleAddHighlight = () => {
-    const activeSlide = slides[editingIdx];
-    const newH: Highlight = { id: crypto.randomUUID(), target: 'body', lineIndex: 0, startWord: 1, endWord: 5, bgColor: '#ffff00', textColor: '#000000' };
-    const updated = [...(activeSlide.highlights || []), newH];
-    updateSlideField('highlights', updated);
-  };
-
-  const handleUpdateHighlight = (id: string, updates: Partial<Highlight>) => {
-    const activeSlide = slides[editingIdx];
-    const updated = (activeSlide.highlights || []).map(h => h.id === id ? { ...h, ...updates } : h);
-    updateSlideField('highlights', updated);
-  };
-
-  const handleRemoveHighlight = (id: string) => {
-    const activeSlide = slides[editingIdx];
-    const updated = (activeSlide.highlights || []).filter(h => h.id !== id);
-    updateSlideField('highlights', updated);
-  };
-
-  const slide = useMemo(() => slides[currentIdx] || INITIAL_SLIDES[0], [slides, currentIdx]);
-
-  const theme = useMemo(() => {
-    if (!slide) return { box: '', color: '', glow: '' };
-    switch (slide.type) {
-      case 'title': return { 
-        box: 'border-blue-500/50 bg-gray-900/70', 
-        color: '#3b82f6',
-        glow: '0 20px 60px -15px rgba(59, 130, 246, 0.3)' 
-      };
-      case 'section': return { 
-        box: 'border-emerald-500/50 bg-gray-900/70', 
-        color: '#10b981',
-        glow: '0 20px 60px -15px rgba(16, 185, 129, 0.3)' 
-      };
-      case 'question': return { 
-        box: 'border-amber-500/50 bg-gray-900/70', 
-        color: '#f59e0b',
-        glow: '0 20px 60px -15px rgba(245, 158, 11, 0.3)' 
-      };
-      default: return { 
-        box: 'border-gray-800 bg-gray-900/80', 
-        color: '#ffffff',
-        glow: '0 20px 60px -15px rgba(255, 255, 255, 0.05)' 
-      };
+  const handleApplyHighlight = (boxIndex?: number) => {
+    const targetIdx = boxIndex !== undefined ? boxIndex : focusedBoxIdx;
+    if (targetIdx === null) {
+      if (!contentTextAreaRef.current) return;
+      const textarea = contentTextAreaRef.current;
+      applyToTextarea(textarea, (val) => {
+        const s = [...slides];
+        s[editingIdx].content = val.split('\n');
+        setSlides(s);
+      });
+      return;
     }
-  }, [slide]);
 
-  const renderTextWithHighlights = (text: string, target: 'title' | 'body', lineIndex: number, slideHighlights?: Highlight[], baseClass: string = "", customStyles: React.CSSProperties = {}) => {
-    if (!text) return null;
-    const words = text.split(/\s+/);
-    const applicableHighlights = (slideHighlights || []).filter(h => h.target === target && (target === 'title' || h.lineIndex === lineIndex));
+    const textarea = boxRefs.current[targetIdx];
+    if (!textarea) return;
 
-    return (
-      <span className={baseClass} style={customStyles}>
-        {words.map((word, idx) => {
-          const wNum = idx + 1;
-          const h = applicableHighlights.find(hl => wNum >= hl.startWord && wNum <= hl.endWord);
-          if (h) {
-            return (
-              <span key={idx} className="inline relative px-1 rounded-sm leading-normal whitespace-pre-wrap" style={{ backgroundColor: h.bgColor, color: h.textColor }}>
-                {word}{idx < words.length - 1 ? ' ' : ''}
-              </span>
-            );
-          }
-          return <React.Fragment key={idx}>{word}{idx < words.length - 1 ? ' ' : ''}</React.Fragment>;
-        })}
-      </span>
-    );
+    applyToTextarea(textarea, (val) => {
+      const s = [...slides];
+      const content = Array.isArray(s[editingIdx].content) ? [...s[editingIdx].content as string[]] : [s[editingIdx].content as string];
+      content[targetIdx] = val;
+      s[editingIdx].content = content;
+      setSlides(s);
+    });
   };
 
-  const renderContent = (content: any, type: SlideType, hls?: Highlight[]) => {
-    if (!content) return null;
-    const fontScale = type === 'fact' ? (globalSettings.factFontScale || 1.0) : (globalSettings.bodyFontScale || 1.0);
+  const applyToTextarea = (textarea: HTMLTextAreaElement, callback: (newVal: string) => void) => {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    if (start === end) return;
+    
+    const text = textarea.value;
+    const before = text.substring(0, start);
+    const selection = text.substring(start, end);
+    const after = text.substring(end);
+    
+    const newText = `${before}[h]${selection}[/h]${after}`;
+    callback(newText);
 
-    if (Array.isArray(content)) {
-      if (typeof content[0] === 'string' || content.length === 0) {
-        const isQuestion = type === 'question';
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start, end + 6);
+    }, 10);
+  };
+
+  const renderHighlightedText = (text: string) => {
+    if (!text) return text;
+    const parts = text.split(/(\[h\].*?\[\/h\])/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('[h]') && part.endsWith('[/h]')) {
+        const innerText = part.slice(3, -4);
         return (
-          <ul className={`space-y-4 md:space-y-6 lg:space-y-8 ${isQuestion ? 'list-none' : ''} w-full`}>
-            {content.map((item: string, i: number) => {
-              const isLead = isQuestion && (i === 0 || i === 1);
-              const baseSize = isLead ? 'clamp(1.3rem, 3.5vw, 2.2rem)' : 'clamp(0.9rem, 2.2vw, 1.35rem)';
-              return (
-                <li key={i} className="flex items-start gap-4 leading-relaxed w-full">
-                  {!isQuestion && <span className="mt-2.5 w-2 h-2 rounded-full bg-blue-500 shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />}
-                  <div className="flex-1">
-                    {renderTextWithHighlights(item, 'body', i, hls, `${isLead ? 'font-black text-white' : 'text-gray-300 font-medium'}`, { fontSize: `calc(${baseSize} * ${fontScale})` })}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        );
-      } else {
-        return (
-          <div className="overflow-x-auto border border-gray-800 rounded-2xl bg-gray-900/30 backdrop-blur-sm mt-4 custom-scrollbar shadow-inner w-full">
-            <table className="w-full text-left">
-              <thead className="bg-gray-800/90 text-gray-100 uppercase tracking-widest text-[10px] md:text-xs font-black sticky top-0 z-10 border-b border-gray-700">
-                <tr><th className="p-4 md:p-6">Topic</th><th className="p-4 md:p-6">Details</th></tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800">
-                {(content as TableRow[]).slice(1).map((row, i) => (
-                  <tr key={i} className="hover:bg-white/5 transition-colors">
-                    <td className="p-4 md:p-6 font-bold text-blue-400 align-top whitespace-nowrap" style={{ fontSize: `calc(1rem * ${fontScale})` }}>{row.col1}</td>
-                    <td className="p-4 md:p-6 text-gray-300 leading-relaxed" style={{ fontSize: `calc(1.1rem * ${fontScale})` }}>{row.col2}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <span 
+            key={i} 
+            className="bg-[#f0ff00] text-black px-1.5 py-0.5 rounded-sm mx-0.5 shadow-sm inline-block"
+            style={{ fontWeight: 'inherit' }}
+          >
+            {innerText}
+          </span>
         );
       }
-    }
-    return (
-      <div className="text-center font-black text-white px-4 leading-tight w-full">
-        {renderTextWithHighlights(String(content), 'body', 0, hls, "", { fontSize: `calc(clamp(1.8rem, 5vw, 3.5rem) * ${fontScale})` })}
-      </div>
-    );
+      return part;
+    });
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center font-sans">
-        <div className="max-w-md w-full p-8 md:p-12 bg-[#0f0f12] border border-white/5 rounded-[2.5rem] shadow-2xl">
-          <h1 className="text-xl md:text-2xl font-black text-center mb-8 md:mb-10 tracking-widest uppercase">Admin Login</h1>
-          <form onSubmit={handleLogin} className="space-y-6">
-            <input type="email" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-sm focus:border-blue-500/50 outline-none transition-all" placeholder="Email" required />
-            <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} className="w-full bg-black/40 border border-white/5 rounded-2xl p-4 text-sm focus:border-blue-500/50 outline-none transition-all" placeholder="Password" required />
-            {loginError && <p className="text-red-500 text-xs font-bold">{loginError}</p>}
-            <button type="submit" className="w-full bg-blue-600 py-4 rounded-2xl font-black hover:bg-blue-500 transition-all text-sm uppercase tracking-widest shadow-xl shadow-blue-600/20">SIGN IN</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  const slide = slides[currentIdx];
+  const GLOW_SHADOW = "shadow-[0_0_20px_rgba(255,255,255,0.06)]";
+
+  const getScaledSize = (base: number, scale: number = 1) => {
+    const desktopSize = base * scale;
+    const mobileSize = Math.max(desktopSize * 0.7, 14);
+    return `clamp(${mobileSize}px, 2.5vw, ${desktopSize}px)`;
+  };
 
   if (isAdmin) {
-    const activeSlide = slides[editingIdx] || slides[0];
-    return (
-      <div className="fixed inset-0 bg-[#0a0a0c] text-white flex flex-col z-[100] font-sans">
-        <div className="h-16 border-b border-white/5 flex items-center justify-between px-4 md:px-6 bg-[#0f0f12] shrink-0">
-          <h1 className="font-black tracking-widest text-sm md:text-lg flex items-center gap-2 md:gap-3"><Settings className="text-blue-500" size={18} /> EDITOR</h1>
-          <div className="flex items-center gap-2 md:gap-4">
-             <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 rounded-xl">
-               {isSyncing ? <Loader2 size={14} className="animate-spin text-blue-500" /> : syncSuccess ? <CheckCircle2 size={14} className="text-emerald-500" /> : <CloudOff size={14} className="text-gray-500" />}
-               <span className="text-[10px] font-black uppercase text-gray-400">{isSyncing ? 'Syncing...' : syncSuccess ? 'Cloud Saved' : 'Not Synced'}</span>
-             </div>
-             <button onClick={handleDownloadPDF} className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-500 rounded-xl text-[10px] md:text-sm font-black active:scale-95 transition-all shadow-lg"><FileDown size={14} /> PDF</button>
-             <button onClick={handleDownloadPPTX} className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-xl text-[10px] md:text-sm font-black active:scale-95 transition-all shadow-lg"><Presentation size={14} /> PPTX</button>
-             <button onClick={() => syncToCloud(slides, globalSettings)} className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-[10px] md:text-sm font-black active:scale-95 transition-all shadow-lg"><Save size={14} /> SAVE ALL</button>
-             <button onClick={() => setIsAdmin(false)} className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-[10px] md:text-sm font-black transition-all">PREVIEW</button>
-             <button onClick={handleLogout} className="p-1 md:p-2 text-gray-500 hover:text-red-500 transition-colors"><LogOut size={20} /></button>
-          </div>
-        </div>
+    const activeSlide = slides[editingIdx];
+    const contentList = Array.isArray(activeSlide.content) ? activeSlide.content : [activeSlide.content as string];
 
-        <div className="flex-1 flex overflow-hidden">
-          <div className="w-20 md:w-72 border-r border-white/5 flex flex-col bg-[#0f0f12] overflow-y-auto no-scrollbar shrink-0">
-            <div className="p-2 md:p-4 border-b border-white/5">
-              <button onClick={handleAddSlide} className="w-full py-2 bg-blue-600/10 text-blue-400 border border-blue-500/20 rounded-lg text-[10px] md:text-xs font-bold transition-all hover:bg-blue-600/20 flex items-center justify-center gap-1"><Plus size={14} /><span className="hidden md:inline">Add Slide</span></button>
+    return (
+      <div className="fixed inset-0 bg-black text-white flex flex-col md:flex-row z-[100] font-sans overflow-hidden">
+        {/* Sidebar */}
+        <div className={`${isSidebarOpen ? 'w-full md:w-80' : 'w-0'} border-b md:border-b-0 md:border-r border-white/5 flex flex-col bg-[#050505] transition-all duration-300 overflow-hidden relative`}>
+          <div className="p-4 border-b border-white/5 bg-[#0a0a0d] flex items-center justify-between min-w-[320px]">
+            <h2 className="text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-2"><Layers size={14}/> Projects</h2>
+            <div className="flex items-center gap-2">
+              <button onClick={handleCreateProject} className="text-blue-500 hover:scale-110 transition-transform active:scale-90"><PlusCircle size={18}/></button>
+              <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-gray-500"><X size={18}/></button>
             </div>
-            {slides.map((s, i) => (
-              <button key={s.id} onClick={() => setEditingIdx(i)} className={`w-full text-left p-2 md:p-4 border-b border-white/5 transition-all relative group ${editingIdx === i ? 'bg-blue-600/10 border-r-4 border-r-blue-500' : 'hover:bg-white/5'}`}>
-                <p className="text-[10px] md:text-xs font-bold truncate pr-6">{i+1}. {s.title || 'Untitled'}</p>
-                <button onClick={(e) => { e.stopPropagation(); handleDeleteSlide(i); }} title="Delete Slide" className="absolute right-1 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:bg-red-500/20 rounded transition-all"><Trash2 size={12} /></button>
-              </button>
+          </div>
+          
+          <div className="h-40 overflow-y-auto custom-scrollbar p-2 space-y-1 bg-black/30 border-b border-white/5 min-w-[320px]">
+            {projects.map(p => (
+              <div 
+                key={p.id} 
+                onClick={() => setActiveProjectId(p.id)} 
+                className={`group p-3 rounded-lg cursor-pointer transition-all flex items-center justify-between gap-2 ${activeProjectId === p.id ? 'bg-blue-600/10 border-l-2 border-blue-500' : 'hover:bg-white/5'}`}
+              >
+                <span className="flex-1 text-[11px] font-bold text-gray-300 truncate">{p.name}</span>
+                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                   <button onClick={(e) => handleExportProject(p.id, 'PDF', e)} title="Export PDF" className="p-1 text-red-500 hover:bg-red-500/10 rounded transition-colors"><FileDown size={12}/></button>
+                   <button onClick={(e) => handleExportProject(p.id, 'PPTX', e)} title="Export PPTX" className="p-1 text-purple-500 hover:bg-purple-500/10 rounded transition-colors"><Presentation size={12}/></button>
+                   <button onClick={(e) => handleDeleteProject(p.id, e)} title="Delete Project" className="p-1 text-gray-600 hover:text-red-500 rounded transition-colors"><Trash2 size={12}/></button>
+                </div>
+              </div>
             ))}
           </div>
 
-          <div className="flex-1 overflow-y-auto bg-[#0a0a0c] p-4 md:p-12 custom-scrollbar">
-            <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 pb-24">
-              <section className="space-y-4">
-                <div className="text-indigo-400 font-black uppercase text-[10px] tracking-widest flex items-center gap-2"><Globe size={14} /> GLOBAL SETTINGS</div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-                  <div className="p-4 md:p-8 bg-[#0f0f12] rounded-[1.5rem] border border-white/5 space-y-6">
-                    <h3 className="text-[10px] font-black text-blue-400 uppercase tracking-widest flex items-center gap-2"><Type size={14} /> Global Font Sizes</h3>
-                    <div className="space-y-5">
-                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-500 uppercase flex justify-between">Title Size <span>{globalSettings.titleFontScale?.toFixed(1)}x</span></label>
-                        <input type="range" min="0.5" max="3.0" step="0.1" value={globalSettings.titleFontScale || 1.0} onChange={(e) => updateGlobalField('titleFontScale', parseFloat(e.target.value))} className="w-full accent-blue-500" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-500 uppercase flex justify-between">Fact Text Size <span>{globalSettings.factFontScale?.toFixed(1)}x</span></label>
-                        <input type="range" min="0.5" max="3.0" step="0.1" value={globalSettings.factFontScale || 1.0} onChange={(e) => updateGlobalField('factFontScale', parseFloat(e.target.value))} className="w-full accent-emerald-500" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-500 uppercase flex justify-between">Body & Question Size <span>{globalSettings.bodyFontScale?.toFixed(1)}x</span></label>
-                        <input type="range" min="0.5" max="3.0" step="0.1" value={globalSettings.bodyFontScale || 1.0} onChange={(e) => updateGlobalField('bodyFontScale', parseFloat(e.target.value))} className="w-full accent-amber-500" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 md:p-8 bg-[#0f0f12] rounded-[1.5rem] border border-white/5 space-y-6">
-                    <h3 className="text-[10px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2"><Maximize size={14} /> Box Dimensions</h3>
-                    <div className="space-y-5">
-                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-500 uppercase flex justify-between">Box Width <span>{globalSettings.boxWidth}%</span></label>
-                        <input type="range" min="40" max="100" value={globalSettings.boxWidth} onChange={(e) => updateGlobalField('boxWidth', parseInt(e.target.value))} className="w-full accent-emerald-500" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-500 uppercase flex justify-between">Box Height <span>{globalSettings.boxHeight}%</span></label>
-                        <input type="range" min="40" max="100" value={globalSettings.boxHeight} onChange={(e) => updateGlobalField('boxHeight', parseInt(e.target.value))} className="w-full accent-emerald-500" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[9px] font-black text-gray-500 uppercase flex justify-between">Inner Padding <span>{globalSettings.boxPadding}px</span></label>
-                        <input type="range" min="10" max="120" value={globalSettings.boxPadding} onChange={(e) => updateGlobalField('boxPadding', parseInt(e.target.value))} className="w-full accent-emerald-500" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-4 md:p-8 bg-[#0f0f12] rounded-[1.5rem] border border-white/5 space-y-6">
-                   <div className="flex items-center justify-between">
-                     <label className="text-[10px] font-black text-gray-500 uppercase flex items-center gap-2"><ImageIcon size={14} /> Background Sources (Global)</label>
-                     <div className="flex gap-2">
-                        <button onClick={() => updateGlobalField('bgType', 'gradient')} className={`px-4 py-1.5 text-[9px] font-black rounded uppercase transition-all ${globalSettings.bgType === 'gradient' ? 'bg-blue-600 shadow-lg' : 'bg-white/5 hover:bg-white/10'}`}>Gradient</button>
-                        <button onClick={() => updateGlobalField('bgType', 'image')} className={`px-4 py-1.5 text-[9px] font-black rounded uppercase transition-all ${globalSettings.bgType === 'image' ? 'bg-blue-600 shadow-lg' : 'bg-white/5 hover:bg-white/10'}`}>Image</button>
-                     </div>
-                   </div>
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                     <div className="space-y-3">
-                        <p className="text-[9px] text-gray-400 font-bold uppercase flex items-center gap-1"><ExternalLink size={10} /> Global A: External URL</p>
-                        <input type="text" value={globalSettings.bgImage || ''} onChange={(e) => updateGlobalField('bgImage', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-3 text-[10px] font-mono focus:border-blue-500/30 outline-none" placeholder="https://link-to-your-image.com" />
-                     </div>
-                     <div className="space-y-3">
-                        <p className="text-[9px] text-gray-400 font-bold uppercase flex items-center gap-1"><UploadIcon size={10} /> Global B: Local System Upload</p>
-                        <label className="flex items-center justify-center gap-3 w-full bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/20 rounded-xl px-4 py-3 text-[10px] font-black cursor-pointer transition-all uppercase tracking-widest group">
-                          <UploadIcon size={16} className="group-hover:scale-110 transition-transform" /> Browse Global BG
-                          <input type="file" accept="image/*" onChange={handleLocalImageUpload} className="hidden" />
-                        </label>
-                     </div>
-                   </div>
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/5">
-                     <div className="space-y-2">
-                       <label className="text-[10px] font-black text-gray-500 uppercase flex justify-between">Background Blur <span>{globalSettings.bgBlur}px</span></label>
-                       <input type="range" min="0" max="20" value={globalSettings.bgBlur} onChange={(e) => updateGlobalField('bgBlur', parseInt(e.target.value))} className="w-full accent-red-500" />
-                     </div>
-                   </div>
-                </div>
-              </section>
-
-              <section className="space-y-4">
-                <div className="text-blue-400 font-black uppercase text-[10px] tracking-widest flex items-center gap-2"><Layout size={14} /> SLIDE CONTENT</div>
-                <div className="p-4 md:p-8 bg-[#0f0f12] rounded-[1.5rem] border border-white/5 space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black text-gray-500 uppercase">Category</label>
-                      <select value={activeSlide.type} onChange={(e) => updateSlideField('type', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-xs outline-none">
-                        <option value="fact">Fact Slide</option>
-                        <option value="question">Question Slide</option>
-                        <option value="title">Title Page</option>
-                        <option value="section">Section Break</option>
-                        <option value="table">Data Table</option>
-                      </select>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black text-gray-500 uppercase">Layout Choice</label>
-                      <select value={activeSlide.layout || 'default'} onChange={(e) => updateSlideField('layout', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-xs outline-none">
-                        <option value="default">Standard Box</option>
-                        <option value="cover-page">Cover Page (Sharp Full-Screen)</option>
-                        <option value="split-horizontal">Horizontal Split</option>
-                        <option value="split-vertical">Vertical Split</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Heading</label>
-                    <input type="text" value={activeSlide.title || ''} onChange={(e) => updateSlideField('title', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-sm font-bold focus:border-blue-500/30 outline-none" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-500 uppercase">Body Content</label>
-                    <textarea value={Array.isArray(activeSlide.content) ? activeSlide.content.join('\n') : activeSlide.content} onChange={(e) => updateSlideField('content', e.target.value.split('\n'))} className="w-full h-48 bg-black border border-white/5 rounded-xl px-4 py-3 text-xs md:text-sm leading-relaxed custom-scrollbar focus:border-blue-500/30 outline-none" />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black text-gray-500 uppercase">Slide Image (URL)</label>
-                      <input type="text" value={activeSlide.imageUrl || ''} onChange={(e) => updateSlideField('imageUrl', e.target.value)} className="w-full bg-black border border-white/5 rounded-xl px-4 py-2 text-[10px] font-mono focus:border-blue-500/30 outline-none" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black text-gray-500 uppercase">Slide Image (Local)</label>
-                      <label className="flex items-center justify-center gap-2 w-full bg-emerald-600/10 hover:bg-emerald-600/20 border border-emerald-500/20 rounded-xl px-4 py-2 text-[10px] font-black cursor-pointer transition-all uppercase group">
-                        <UploadIcon size={14} /> Upload Image
-                        <input type="file" accept="image/*" onChange={handleSlideLocalImageUpload} className="hidden" />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section className="space-y-4 pb-20">
-                <div className="flex items-center justify-between">
-                  <div className="text-yellow-400 font-black uppercase text-[10px] tracking-widest flex items-center gap-2"><Highlighter size={14} /> TEXT HIGHLIGHTS</div>
-                  <button onClick={handleAddHighlight} className="px-4 py-1.5 bg-yellow-600/10 text-yellow-500 border border-yellow-500/20 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-yellow-600/20 transition-all">+ NEW STRIP</button>
-                </div>
-                <div className="space-y-4">
-                  {(activeSlide.highlights || []).map(h => (
-                    <div key={h.id} className="p-4 md:p-6 bg-[#0f0f12] border border-white/5 rounded-2xl flex flex-wrap gap-4 items-end shadow-sm">
-                      <div className="flex flex-col gap-1"><label className="text-[9px] font-bold text-gray-500 uppercase">Target</label><select value={h.target} onChange={(e) => handleUpdateHighlight(h.id, { target: e.target.value as any })} className="bg-black border border-white/5 rounded-lg px-2 py-1.5 text-[10px] outline-none"><option value="title">Heading</option><option value="body">Body Line</option></select></div>
-                      {h.target === 'body' && (<div className="flex flex-col gap-1"><label className="text-[9px] font-bold text-gray-500 uppercase">Line</label><input type="number" value={h.lineIndex} onChange={(e) => handleUpdateHighlight(h.id, { lineIndex: parseInt(e.target.value) })} className="w-12 bg-black border border-white/5 rounded-lg px-2 py-1.5 text-[10px] outline-none" /></div>)}
-                      <div className="flex flex-col gap-1"><label className="text-[9px] font-bold text-gray-500 uppercase">Start Word</label><input type="number" min="1" value={h.startWord} onChange={(e) => handleUpdateHighlight(h.id, { startWord: parseInt(e.target.value) })} className="w-14 bg-black border border-white/5 rounded-lg px-2 py-1.5 text-[10px] outline-none" /></div>
-                      <div className="flex flex-col gap-1"><label className="text-[9px] font-bold text-gray-500 uppercase">End Word</label><input type="number" min="1" value={h.endWord} onChange={(e) => handleUpdateHighlight(h.id, { endWord: parseInt(e.target.value) })} className="w-14 bg-black border border-white/5 rounded-lg px-2 py-1.5 text-[10px] outline-none" /></div>
-                      <div className="flex flex-col gap-1"><label className="text-[9px] font-bold text-gray-500 uppercase">Strip</label><input type="color" value={h.bgColor} onChange={(e) => handleUpdateHighlight(h.id, { bgColor: e.target.value })} className="h-8 w-12 bg-black border border-white/5 rounded p-1 cursor-pointer" /></div>
-                      <div className="flex flex-col gap-1"><label className="text-[9px] font-bold text-gray-500 uppercase">Text</label><input type="color" value={h.textColor} onChange={(e) => handleUpdateHighlight(h.id, { textColor: e.target.value })} className="h-8 w-12 bg-black border border-white/5 rounded p-1 cursor-pointer" /></div>
-                      <button onClick={() => handleRemoveHighlight(h.id)} className="p-2.5 text-red-500 hover:bg-red-500/10 rounded-xl ml-auto transition-all"><Trash2 size={16} /></button>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
+          <div className="flex border-b border-white/5 min-w-[320px]">
+            <button onClick={() => setAdminTab('slides')} className={`flex-1 p-3 text-[10px] font-black uppercase tracking-widest transition-all ${adminTab === 'slides' ? 'bg-blue-600/10 text-blue-400 border-b-2 border-blue-500' : 'text-gray-500 hover:bg-white/5'}`}>Slides</button>
+            <button onClick={() => setAdminTab('settings')} className={`flex-1 p-3 text-[10px] font-black uppercase tracking-widest transition-all ${adminTab === 'settings' ? 'bg-blue-600/10 text-blue-400 border-b-2 border-blue-500' : 'text-gray-500 hover:bg-white/5'}`}>Settings</button>
           </div>
+
+          <div className="flex-1 overflow-y-auto custom-scrollbar min-w-[320px]">
+            {adminTab === 'slides' ? (
+              <div className="p-2 space-y-1">
+                {slides.map((s, i) => (
+                  <div key={s.id} onClick={() => setEditingIdx(i)} className={`p-3 rounded-lg cursor-pointer transition-all ${editingIdx === i ? 'bg-blue-600/10 border-l-2 border-blue-500' : 'hover:bg-white/5'}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-[10px] font-mono text-gray-600">{(i+1).toString().padStart(2, '0')}</span>
+                      <span className="flex-1 text-[11px] font-bold text-gray-300 truncate">{s.title || 'Untitled'}</span>
+                      <button onClick={(e) => { e.stopPropagation(); setSlides(slides.filter((_, idx) => idx !== i)); }} className="text-red-500/50 hover:text-red-500 transition-all"><Trash2 size={12}/></button>
+                    </div>
+                  </div>
+                ))}
+                <button onClick={() => setSlides([...slides, { id: crypto.randomUUID(), type: 'quiz', title: 'New Topic', subtitle: 'नया विषय', content: ['Que. ...?', '...'], options: [{id: '1', label: 'A', text: 'Option A'}, {id: '2', label: 'B', text: 'Option B'}, {id: '3', label: 'C', text: 'Option C'}, {id: '4', label: 'D', text: 'Option D'}], correctOptionId: '3' }])} className="w-full p-3 border border-dashed border-white/10 rounded-lg text-[10px] font-black text-gray-500 hover:bg-white/5 transition-all">+ ADD SLIDE</button>
+              </div>
+            ) : (
+              <div className="p-4 space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-widest flex items-center gap-2"><Sliders size={12}/> Global Font Scaling</h3>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-500 uppercase">Title Font Scale: {settings.titleFontScale}x</label>
+                    <input type="range" min="0.5" max="2" step="0.1" value={settings.titleFontScale} onChange={e => setSettings({...settings, titleFontScale: parseFloat(e.target.value)})} className="w-full accent-blue-600 h-1.5 bg-white/5 rounded-lg cursor-pointer" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-500 uppercase">Body/Quiz Font Scale: {settings.bodyFontScale}x</label>
+                    <input type="range" min="0.5" max="2" step="0.1" value={settings.bodyFontScale} onChange={e => setSettings({...settings, bodyFontScale: parseFloat(e.target.value)})} className="w-full accent-blue-600 h-1.5 bg-white/5 rounded-lg cursor-pointer" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-500 uppercase">Fact Line Font Scale: {settings.factFontScale}x</label>
+                    <input type="range" min="0.5" max="2" step="0.1" value={settings.factFontScale} onChange={e => setSettings({...settings, factFontScale: parseFloat(e.target.value)})} className="w-full accent-blue-600 h-1.5 bg-white/5 rounded-lg cursor-pointer" />
+                  </div>
+                </div>
+
+                <div className="space-y-4 pt-4 border-t border-white/5">
+                  <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-widest flex items-center gap-2"><Maximize size={12}/> Layout Scaling</h3>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-gray-500 uppercase">Container Padding: {settings.boxPadding}px</label>
+                    <input type="range" min="8" max="64" step="4" value={settings.boxPadding} onChange={e => setSettings({...settings, boxPadding: parseInt(e.target.value)})} className="w-full accent-blue-600 h-1.5 bg-white/5 rounded-lg cursor-pointer" />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <div className="p-4 border-t border-white/5 bg-[#0a0a0d] space-y-2 min-w-[320px]">
+            <button onClick={syncToCloud} className="w-full py-3 bg-blue-600 rounded-lg text-[10px] font-black flex items-center justify-center gap-2 active:scale-95 transition-all">
+              {isSyncing ? <RefreshCw className="animate-spin" size={12}/> : <Save size={12}/>}
+              {syncSuccess ? 'SAVED' : 'SYNC CLOUD'}
+            </button>
+            <button onClick={() => setIsAdmin(false)} className="w-full py-3 bg-gray-800 rounded-lg text-[10px] font-black active:scale-95">PREVIEW</button>
+          </div>
+        </div>
+
+        {/* Editor Main Content */}
+        <div className="flex-1 overflow-y-auto p-4 md:p-10 bg-black custom-scrollbar">
+          <button onClick={() => setIsSidebarOpen(true)} className={`${isSidebarOpen ? 'hidden' : 'block'} mb-4 p-2 bg-gray-900 rounded-lg text-gray-400`}><Menu size={20}/></button>
+          
+          {activeSlide && adminTab === 'slides' ? (
+            <div className="max-w-5xl mx-auto space-y-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+                <div>
+                  <h1 className="text-xl md:text-2xl font-black text-white">{activeSlide.title}</h1>
+                  <p className="text-blue-500 font-mono text-[9px] uppercase tracking-widest mt-1">Template: {activeSlide.type}</p>
+                </div>
+                <select value={activeSlide.type} onChange={e => { const s = [...slides]; s[editingIdx].type = e.target.value as any; setSlides(s); }} className="bg-gray-900 border border-white/10 p-2 rounded-lg text-[10px] font-black uppercase outline-none focus:border-blue-500 w-full sm:w-auto">
+                  <option value="quiz">Quiz</option>
+                  <option value="fact">Fact</option>
+                  <option value="title">Cover</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-black uppercase text-gray-500 tracking-widest">Main Header (EN)</label>
+                    <input type="text" value={activeSlide.title || ''} onChange={e => { const s = [...slides]; s[editingIdx].title = e.target.value; setSlides(s); }} className="w-full bg-[#0a0a0a] border border-white/10 p-3 rounded-xl text-xs font-bold focus:border-blue-500 outline-none" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-black uppercase text-gray-500 tracking-widest">Sub Header (HI)</label>
+                    <input type="text" value={activeSlide.subtitle || ''} onChange={e => { const s = [...slides]; s[editingIdx].subtitle = e.target.value; setSlides(s); }} className="w-full bg-[#0a0a0a] border border-white/10 p-3 rounded-xl text-xs font-bold focus:border-blue-500 outline-none" />
+                  </div>
+                  {activeSlide.type === 'quiz' && (
+                    <div className="space-y-3 pt-4 border-t border-white/5">
+                      <h3 className="text-[9px] font-black uppercase text-blue-500 flex items-center gap-2"><Target size={12}/> Options</h3>
+                      {activeSlide.options?.map((opt, oIdx) => (
+                        <div key={opt.id} className="flex gap-2 items-center">
+                          <span className="w-8 h-8 flex items-center justify-center font-black text-gray-600 text-[10px] border border-white/5 rounded-lg shrink-0">{opt.label}</span>
+                          <input type="text" value={opt.text} onChange={e => { const s = [...slides]; s[editingIdx].options![oIdx].text = e.target.value; setSlides(s); }} className="flex-1 bg-[#0a0a0a] border border-white/10 p-2 rounded-xl text-[11px] focus:border-blue-500 outline-none" />
+                          <input type="radio" checked={activeSlide.correctOptionId === opt.id} onChange={() => { const s = [...slides]; s[editingIdx].correctOptionId = opt.id; setSlides(s); }} className="w-4 h-4 accent-blue-600 cursor-pointer shrink-0" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {activeSlide.type === 'fact' && (
+                    <div className="space-y-4 pt-4 border-t border-white/5">
+                      <h3 className="text-[9px] font-black uppercase text-blue-500 flex items-center gap-2"><ImageIcon size={12}/> Image Box Controls</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-bold text-gray-500 uppercase">Width (px)</label>
+                          <input type="number" value={activeSlide.imageWidth || 400} onChange={e => { const s = [...slides]; s[editingIdx].imageWidth = parseInt(e.target.value); setSlides(s); }} className="w-full bg-[#0a0a0a] border border-white/10 p-2 rounded-lg text-xs outline-none focus:border-blue-500" />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-bold text-gray-500 uppercase">Height (px)</label>
+                          <input type="number" value={activeSlide.imageHeight || 300} onChange={e => { const s = [...slides]; s[editingIdx].imageHeight = parseInt(e.target.value); setSlides(s); }} className="w-full bg-[#0a0a0a] border border-white/10 p-2 rounded-lg text-xs outline-none focus:border-blue-500" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-6">
+                  {activeSlide.type === 'fact' ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                         <label className="text-[9px] font-black uppercase text-gray-500 tracking-widest">Content Boxes</label>
+                         <button 
+                          onClick={() => {
+                            const s = [...slides];
+                            const content = Array.isArray(s[editingIdx].content) ? [...s[editingIdx].content as string[]] : [s[editingIdx].content as string];
+                            content.push('New Box\nनया बॉक्स');
+                            s[editingIdx].content = content;
+                            setSlides(s);
+                          }}
+                          className="flex items-center gap-1 text-blue-500 hover:text-blue-400 text-[10px] font-black uppercase"
+                         >
+                           <Plus size={14}/> Add Box
+                         </button>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {contentList.map((box, bIdx) => (
+                          <div key={bIdx} className="group bg-[#0a0a0a] border border-white/5 p-4 rounded-xl space-y-2 relative transition-all hover:border-white/10">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest">Box {bIdx + 1}</span>
+                              <div className="flex items-center gap-2">
+                                <button 
+                                  onClick={() => handleApplyHighlight(bIdx)}
+                                  className="p-1 text-blue-500 hover:bg-blue-500/10 rounded" title="Highlight Selection"
+                                >
+                                  <Highlighter size={12}/>
+                                </button>
+                                <button 
+                                  onClick={() => {
+                                    const s = [...slides];
+                                    const content = [...contentList];
+                                    content.splice(bIdx, 1);
+                                    s[editingIdx].content = content;
+                                    setSlides(s);
+                                  }}
+                                  className="p-1 text-red-500 hover:bg-red-500/10 rounded" title="Delete Box"
+                                >
+                                  <X size={12}/>
+                                </button>
+                              </div>
+                            </div>
+                            <textarea 
+                              ref={el => boxRefs.current[bIdx] = el}
+                              value={box}
+                              onFocus={() => setFocusedBoxIdx(bIdx)}
+                              onChange={e => {
+                                const s = [...slides];
+                                const content = [...contentList];
+                                content[bIdx] = e.target.value;
+                                s[editingIdx].content = content;
+                                setSlides(s);
+                              }}
+                              className="w-full h-24 bg-transparent border-none p-0 text-xs leading-relaxed focus:ring-0 outline-none resize-none custom-scrollbar font-bold"
+                              placeholder="English text\nHindi translation"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="text-[9px] font-black uppercase text-gray-500 tracking-widest">Content Lines</label>
+                        <button 
+                          onClick={() => handleApplyHighlight()}
+                          className="p-1.5 bg-blue-600/10 text-blue-500 rounded hover:bg-blue-600/20 transition-all flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-tight"
+                          title="Highlight Selected Text"
+                        >
+                          <Highlighter size={10}/> Highlight Selection
+                        </button>
+                      </div>
+                      <textarea 
+                        ref={contentTextAreaRef}
+                        onFocus={() => setFocusedBoxIdx(null)}
+                        value={Array.isArray(activeSlide.content) ? activeSlide.content.join('\n') : activeSlide.content} 
+                        onChange={e => { const s = [...slides]; s[editingIdx].content = e.target.value.split('\n'); setSlides(s); }} 
+                        className="w-full h-48 bg-[#0a0a0a] border border-white/10 p-3 rounded-xl text-xs leading-relaxed focus:border-blue-500 outline-none resize-none custom-scrollbar" 
+                      />
+                    </div>
+                  )}
+
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-black uppercase text-gray-500 tracking-widest flex items-center justify-between">
+                      <span>Asset Image</span>
+                      <button onClick={() => fileInputRef.current?.click()} className="flex items-center gap-1 text-blue-500 hover:text-blue-400 transition-colors uppercase tracking-tight">
+                        <Upload size={10} /> Upload Local
+                      </button>
+                    </label>
+                    <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
+                    <div className="flex gap-2">
+                      <input type="text" value={activeSlide.imageUrl || ''} onChange={e => { const s = [...slides]; s[editingIdx].imageUrl = e.target.value; setSlides(s); }} className="flex-1 bg-[#0a0a0a] border border-white/10 p-3 rounded-xl text-[10px] font-mono focus:border-blue-500 outline-none" placeholder="https://... or uploaded base64" />
+                    </div>
+                    {activeSlide.imageUrl && (
+                      <div className="mt-2 w-full aspect-video bg-white/5 rounded-lg border border-white/5 flex items-center justify-center p-2 overflow-hidden">
+                        <img src={activeSlide.imageUrl} className="max-w-full max-h-full object-contain rounded" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : adminTab === 'slides' ? (
+            <div className="h-full flex flex-col items-center justify-center text-gray-800 space-y-6">
+              <FolderOpen size={64} className="opacity-20"/>
+              <p className="font-black uppercase tracking-[0.2em] text-sm">Select a slide to edit</p>
+            </div>
+          ) : (
+            <div className="h-full flex flex-col items-center justify-center text-gray-800 space-y-6">
+               <Sliders size={64} className="opacity-20"/>
+               <p className="font-black uppercase tracking-[0.2em] text-sm">Fine tune presentation layout</p>
+            </div>
+          )}
         </div>
       </div>
     );
   }
 
-  const bgGradient = globalSettings.bgGradient || GRADIENT_PRESETS[0].value;
-  const currentBlur = globalSettings.bgBlur ?? 3;
-  const activeBgImage = globalSettings.bgType === 'image' ? globalSettings.bgImage : null;
-  const titleFontScale = globalSettings.titleFontScale || 1.0;
-
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-2 md:p-8 overflow-hidden select-none relative font-sans" onClick={() => nextSlide()}>
-      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: bgGradient }} />
-      {activeBgImage && slide.layout !== 'cover-page' && (
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <img src={activeBgImage} className="w-full h-full object-cover opacity-35 transition-all duration-1000" style={{ filter: `blur(${currentBlur}px)` }} />
-          <div className="absolute inset-0 bg-black/65" />
-        </div>
-      )}
-      <ProgressBar current={currentIdx + 1} total={slides.length} />
-      <div className="fixed top-4 right-4 md:top-8 md:right-10 z-[100] flex items-center gap-2 md:gap-4">
-        <button onClick={(e) => { e.stopPropagation(); setIsAdmin(true); }} title="Open Editor" className="p-2 md:p-3 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-2xl text-gray-400 hover:text-blue-400 hover:border-blue-500/50 transition-all shadow-2xl active:scale-95"><Settings size={20} /></button>
-        <button onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }} title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"} className="p-2 md:p-3 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-2xl text-gray-400 hover:text-white transition-all shadow-2xl active:scale-95">{isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}</button>
+    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center overflow-hidden font-sans relative select-none">
+      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,_#0b1a33_0%,_#000000_100%)] opacity-85" />
+      
+      {/* Top Utility Toolbar */}
+      <div className="fixed top-4 right-4 md:top-6 md:right-8 z-[100] flex gap-2 md:gap-3 pointer-events-auto">
+        <button 
+          onClick={() => setIsAdmin(true)} 
+          className="p-2.5 bg-gray-900/30 backdrop-blur-xl rounded-xl border border-white/10 hover:border-blue-500/50 transition-all text-gray-500 hover:text-blue-400 group"
+        >
+          <Settings size={18} className="group-hover:rotate-45 transition-transform" />
+        </button>
+        <button 
+          onClick={toggleFullscreen} 
+          className="p-2.5 bg-gray-900/30 backdrop-blur-xl rounded-xl border border-white/10 hover:border-green-500/50 transition-all text-gray-500 hover:text-green-400"
+          title={isFullscreen ? "Exit Full Screen" : "Enter Full Screen"}
+        >
+          {isFullscreen ? <Minimize size={18}/> : <Maximize size={18}/>}
+        </button>
       </div>
-      <div ref={slideRef} className="relative z-10 w-full max-w-[100vw] h-[95vh] md:max-w-[1600px] md:aspect-[16/9] flex items-center justify-center pointer-events-none overflow-hidden">
-        <div key={currentIdx} className="w-full h-full flex items-center justify-center slide-entry-animation relative pointer-events-auto">
-            {slide.layout === 'cover-page' ? (
-              <div className="w-full h-full flex flex-col items-center justify-center p-8 md:p-16 text-center relative overflow-hidden">
-                  {slide.imageUrl && (
-                    <div className="absolute inset-0 -z-20 scale-up-animation">
-                      <img src={slide.imageUrl} className="w-full h-full object-cover opacity-100" style={{ filter: 'blur(0px)' }} />
-                    </div>
-                  )}
-                 {slide.title && (
-                    <div className="mb-10 md:mb-16 shrink-0 scale-up-animation relative z-10">
-                      <h2 className="font-black tracking-tighter leading-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]" style={{ color: theme.color, fontSize: `calc(clamp(3rem, 10vw, 8rem) * ${titleFontScale})` }}>{renderTextWithHighlights(slide.title, 'title', 0, slide.highlights)}</h2>
-                    </div>
-                  )}
-                  <div className="max-w-4xl relative z-10 drop-shadow-[0_5px_15px_rgba(0,0,0,0.9)]">{renderContent(slide.content, slide.type, slide.highlights)}</div>
+
+      <div ref={slideRef} className="relative z-10 w-full h-full md:max-w-[1920px] md:aspect-[16/9] bg-[#00040d] overflow-hidden md:shadow-[0_0_100px_rgba(0,0,0,1)] flex flex-col">
+        {slide ? (
+          <div key={currentIdx} className="w-full h-full flex flex-col pt-20 md:pt-28 pb-20 md:pb-32 px-4 md:px-12 relative overflow-y-auto custom-scrollbar">
+            
+            {/* Slide Header */}
+            <div className={`absolute top-2 md:top-5 left-2 md:left-5 right-2 md:right-5 min-h-[64px] md:h-24 bg-gradient-to-r from-[#1e3a8a]/50 via-[#1e3a8a]/20 to-transparent backdrop-blur-3xl flex items-center px-4 md:px-10 border border-white/10 z-20 rounded-xl shadow-2xl ${GLOW_SHADOW}`}>
+              <div className="w-1 md:w-2 h-8 md:h-14 bg-[#ea580c] mr-3 md:mr-6 rounded-full shadow-[0_0_20px_rgba(234,88,12,0.4)] shrink-0" />
+              <div className="animate-in slide-in-from-left duration-700 max-w-[95%] overflow-hidden">
+                <h1 
+                  className="font-black tracking-tight text-white uppercase drop-shadow-md leading-tight truncate"
+                  style={{ fontSize: getScaledSize(24, settings.titleFontScale) }}
+                >
+                  {slide.title}
+                </h1>
+                <p className="text-[10px] md:text-base font-bold text-gray-400 tracking-tight opacity-90 truncate">{slide.subtitle}</p>
               </div>
-            ) : slide.layout === 'split-horizontal' ? (
-              <div className="flex h-full w-full gap-2 md:gap-6 lg:gap-8 p-3 md:p-8">
-                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} 
-                     style={{ width: `${slide.imageSize || 50}%`, padding: `${globalSettings.boxPadding}px`, boxShadow: theme.glow }}>
-                   {slide.title && (
-                    <div className="mb-6 md:mb-8 flex items-center gap-4 shrink-0">
-                      <div className="w-2.5 h-10 md:h-12 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
-                      <h2 className="text-xl md:text-3xl lg:text-4xl font-black leading-tight" style={{ color: theme.color, fontSize: `calc(clamp(1.5rem, 4vw, 3rem) * ${titleFontScale})` }}>{renderTextWithHighlights(slide.title, 'title', 0, slide.highlights)}</h2>
+            </div>
+
+            {/* Template Content Area */}
+            <div className="flex-1 flex flex-col overflow-y-auto custom-scrollbar pr-2 -mr-2">
+              
+              {/* Template: Quiz */}
+              {slide.type === 'quiz' && (
+                <div className="flex-1 flex flex-col items-center justify-start pt-4 md:pt-10 space-y-6 md:space-y-10 animate-in slide-in-from-bottom duration-700 w-full">
+                  <div 
+                    className={`w-full max-w-[96%] border border-white/5 rounded-[1.25rem] md:rounded-[2.5rem] text-center shadow-xl relative bg-[#0d1c3a]/40 backdrop-blur-lg mt-4 md:mt-8 ${GLOW_SHADOW}`}
+                    style={{ padding: `${settings.boxPadding}px` }}
+                  >
+                    <div className="relative space-y-2 md:space-y-4">
+                      <h3 
+                        className="font-black leading-snug text-white drop-shadow-sm"
+                        style={{ fontSize: getScaledSize(26, settings.bodyFontScale) }}
+                      >
+                        {Array.isArray(slide.content) ? renderHighlightedText(slide.content[0]) : renderHighlightedText(slide.content as string)}
+                      </h3>
+                      {Array.isArray(slide.content) && slide.content[1] && (
+                        <p 
+                          className="text-gray-400 font-bold opacity-70 leading-relaxed"
+                          style={{ fontSize: getScaledSize(16, settings.bodyFontScale) }}
+                        >
+                          {renderHighlightedText(slide.content[1])}
+                        </p>
+                      )}
                     </div>
-                  )}
-                  <div className="flex-1 overflow-y-auto custom-scrollbar pr-3 md:pr-6">{renderContent(slide.content, slide.type, slide.highlights)}</div>
-                </div>
-                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
-                     style={{ width: `${100 - (slide.imageSize || 50)}%`, boxShadow: theme.glow }}>
-                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
-                </div>
-              </div>
-            ) : slide.layout === 'split-vertical' ? (
-               <div className="flex flex-col h-full w-full gap-2 md:gap-6 p-3 md:p-8">
-                 <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 overflow-hidden ${theme.box} shadow-2xl`} 
-                      style={{ height: `${slide.imageSize || 45}%`, boxShadow: theme.glow }}>
-                  {slide.imageUrl ? <img src={slide.imageUrl} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-900/40 flex items-center justify-center font-black uppercase text-gray-700 text-xl md:text-4xl tracking-widest">ASSET</div>}
-                 </div>
-                <div className={`rounded-[2.5rem] md:rounded-[3.5rem] border-2 flex flex-col transition-all duration-700 ${theme.box} overflow-hidden`} 
-                     style={{ height: `${100 - (slide.imageSize || 45)}%`, padding: `${globalSettings.boxPadding}px`, boxShadow: theme.glow }}>
-                   {slide.title && (
-                    <div className="mb-4 md:mb-6 flex items-center gap-4 shrink-0">
-                      <div className="w-2.5 h-8 md:h-10 rounded-full bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.4)]" />
-                      <h2 className="text-lg md:text-2xl lg:text-3xl font-black leading-tight" style={{ color: theme.color, fontSize: `calc(clamp(1.2rem, 3vw, 2.5rem) * ${titleFontScale})` }}>{renderTextWithHighlights(slide.title, 'title', 0, slide.highlights)}</h2>
-                    </div>
-                  )}
-                  <div className="flex-1 overflow-y-auto custom-scrollbar pr-3 md:pr-6">{renderContent(slide.content, slide.type, slide.highlights)}</div>
-                </div>
-              </div>
-            ) : (
-              <div className={`flex flex-col rounded-[2.5rem] md:rounded-[4.5rem] border-2 transition-all duration-700 relative ${theme.box}`} 
-                  style={{ 
-                    padding: `${globalSettings.boxPadding}px`, 
-                    width: `${globalSettings.boxWidth}%`, 
-                    height: `${globalSettings.boxHeight}%`, 
-                    maxWidth: '96%', 
-                    maxHeight: '94%', 
-                    overflow: 'hidden',
-                    boxShadow: theme.glow 
-                  }}>
-                {slide.title && (
-                  <div className="mb-6 md:mb-10 flex items-center gap-5 md:gap-7 shrink-0">
-                    <div className={`w-2.5 md:w-3 h-10 md:h-16 rounded-full shadow-lg ${slide.type === 'section' ? 'bg-emerald-500 shadow-emerald-500/30' : slide.type === 'question' ? 'bg-amber-500 shadow-amber-500/30' : 'bg-blue-500 shadow-blue-500/30'}`} />
-                    <h2 className="font-black tracking-tighter leading-tight" style={{ color: theme.color, fontSize: `calc(clamp(1.8rem, 5vw, 4.5rem) * ${titleFontScale})` }}>{renderTextWithHighlights(slide.title, 'title', 0, slide.highlights)}</h2>
                   </div>
-                )}
-                <div className="flex-1 flex flex-col justify-start overflow-y-auto custom-scrollbar pr-2 md:pr-8 pb-20 mt-2">{renderContent(slide.content, slide.type, slide.highlights)}</div>
-              </div>
-            )}
+
+                  <div className="w-full max-w-[96%] flex flex-col gap-3 md:gap-4 pb-4">
+                    {slide.options?.map((opt) => {
+                      const isCorrect = slide.correctOptionId === opt.id && slide.isRevealed;
+                      return (
+                        <div 
+                          key={opt.id} 
+                          className={`group relative p-3 md:p-5 rounded-xl md:rounded-[1.5rem] border transition-all duration-700 flex items-center gap-4 md:gap-10 shadow-lg ${isCorrect ? `bg-[#2563eb]/50 border-yellow-400/50 shadow-[0_0_40px_rgba(250,204,21,0.25)] scale-[1.01] ${GLOW_SHADOW}` : 'bg-[#1e40af]/15 border-white/5 hover:border-blue-500/20'}`}
+                        >
+                          <div className={`text-sm md:text-xl font-black w-7 h-7 md:w-10 md:h-10 flex items-center justify-center rounded-lg md:rounded-xl shrink-0 ${isCorrect ? 'text-yellow-400 bg-black/20' : 'text-gray-500 bg-white/5'}`}>{opt.label}</div>
+                          <span 
+                            className={`font-black tracking-tight flex-1 ${isCorrect ? 'text-yellow-400' : 'text-gray-200'}`}
+                            style={{ fontSize: getScaledSize(20, settings.bodyFontScale) }}
+                          >
+                            {renderHighlightedText(opt.text)}
+                          </span>
+                          {isCorrect && <div className="animate-in zoom-in duration-500 flex items-center justify-center shrink-0"><Check size={20} className="md:w-8 md:h-8 text-yellow-400 stroke-[4px]"/></div>}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Template: Fact */}
+              {slide.type === 'fact' && (
+                <div className="flex-1 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center justify-center py-4 md:py-8 animate-in slide-in-from-right duration-700 h-full w-full">
+                  <div className="flex-1 w-full flex flex-col justify-center space-y-4 md:space-y-6">
+                    {Array.isArray(slide.content) && (slide.content as string[]).map((line, lIdx) => {
+                      const lines = line.split('\n');
+                      return (
+                        <div 
+                          key={lIdx} 
+                          className={`bg-[#1e40af]/25 border-l-[4px] md:border-l-[10px] border-[#ea580c] p-3 md:p-6 rounded-r-lg md:rounded-r-2xl border-y border-r border-white/5 shadow-xl hover:translate-x-2 transition-all backdrop-blur-xl ${GLOW_SHADOW}`}
+                        >
+                          <p 
+                            className="font-black leading-snug text-gray-100 drop-shadow-sm"
+                            style={{ fontSize: getScaledSize(20, settings.factFontScale) }}
+                          >
+                            {renderHighlightedText(lines[0])}
+                          </p>
+                          {lines[1] && (
+                            <p 
+                              className="font-bold text-gray-400 mt-1 md:mt-2 opacity-80 leading-relaxed italic"
+                              style={{ fontSize: getScaledSize(14, settings.factFontScale) }}
+                            >
+                              {renderHighlightedText(lines[1])}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {slide.imageUrl && (
+                    <div className="w-full lg:w-[42%] flex flex-col items-center justify-center p-2 md:p-6">
+                      <div 
+                        className="rounded-xl md:rounded-[2rem] shadow-[0_0_60px_rgba(255,255,255,0.2),_0_0_30px_rgba(255,255,255,0.1)] overflow-hidden flex items-center justify-center transition-transform hover:scale-[1.03] duration-500"
+                        style={{ 
+                          width: slide.imageWidth ? `clamp(100px, 80vw, ${slide.imageWidth}px)` : '100%',
+                          height: slide.imageHeight ? `clamp(100px, 50vh, ${slide.imageHeight}px)` : 'auto',
+                          maxWidth: '100%'
+                        }}
+                      >
+                        <img 
+                          src={slide.imageUrl} 
+                          className="w-full h-full object-cover" 
+                          crossOrigin="anonymous" 
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Template: Title */}
+              {slide.type === 'title' && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center space-y-4 md:space-y-10 py-10 animate-in zoom-in duration-1000 w-full">
+                  <div className={`bg-[#ea580c] px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[9px] md:text-lg font-black uppercase tracking-[0.2em] md:tracking-[0.3em] shadow-md border border-white/20 ${GLOW_SHADOW}`}>Current Affairs</div>
+                  <h1 
+                    className="font-black tracking-tighter drop-shadow-2xl text-white leading-none px-4"
+                    style={{ fontSize: getScaledSize(64, settings.titleFontScale) }}
+                  >
+                    {renderHighlightedText(slide.title || '')}
+                  </h1>
+                  <div className="space-y-2 md:space-y-4 px-4">
+                    {Array.isArray(slide.content) && slide.content.map((c, i) => (
+                      <p 
+                        key={i} 
+                        className="font-black text-blue-500 uppercase tracking-widest drop-shadow-md"
+                        style={{ fontSize: getScaledSize(28, settings.bodyFontScale) }}
+                      >
+                        {renderHighlightedText(c)}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full space-y-6 p-10 text-center">
+            <Loader2 size={48} className="animate-spin text-blue-600"/>
+            <p className="font-black uppercase tracking-[0.4em] text-gray-700 text-[10px]">Loading Canvas</p>
+          </div>
+        )}
+      </div>
+
+      {/* Navigation Controls - Elevated slightly */}
+      <div className="fixed bottom-6 md:bottom-10 left-0 right-0 z-50 pointer-events-none px-4 md:px-12 flex flex-col items-center">
+        <div className="w-full max-w-[1920px] relative flex items-center justify-center">
+          <div className="flex gap-4 md:gap-12 pointer-events-auto">
+            <button onClick={e => { e.stopPropagation(); setCurrentIdx(p => Math.max(0, p - 1)); }} className="flex-1 md:flex-none px-8 md:px-16 py-3 md:py-5 bg-gray-900/70 backdrop-blur-3xl border border-white/10 rounded-full font-black text-[10px] md:text-sm tracking-widest hover:bg-blue-600/50 transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-2 active:scale-95" disabled={currentIdx === 0}><ChevronLeft size={18}/> PREV</button>
+            <button onClick={e => { e.stopPropagation(); setCurrentIdx(p => Math.min(slides.length - 1, p + 1)); }} className="flex-1 md:flex-none px-8 md:px-16 py-3 md:py-5 bg-gray-900/70 backdrop-blur-3xl border border-white/10 rounded-full font-black text-[10px] md:text-sm tracking-widest hover:bg-blue-600/50 transition-all shadow-2xl disabled:opacity-20 flex items-center justify-center gap-2 active:scale-95" disabled={currentIdx === slides.length - 1}>NEXT <ChevronRight size={18}/></button>
+          </div>
+          
+          {slide?.type === 'quiz' && (
+            <div className="absolute right-0 top-0 bottom-0 flex items-center pointer-events-auto">
+              <button onClick={toggleReveal} className={`p-4 md:p-6 bg-yellow-400 text-black rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all ${GLOW_SHADOW}`}>
+                <CheckCircle2 size={28} className="md:w-10 md:h-10" strokeWidth={3}/>
+              </button>
+            </div>
+          )}
         </div>
       </div>
-      <div className="fixed bottom-4 left-4 right-4 md:bottom-10 md:left-10 md:right-10 flex flex-col sm:flex-row justify-between items-center gap-4 z-50 pointer-events-none" onClick={(e) => e.stopPropagation()}>
-        <div className="flex gap-3 md:gap-4 pointer-events-auto">
-          <button 
-            onClick={(e) => prevSlide(e)} 
-            disabled={currentIdx === 0} 
-            title="Go to Previous Slide"
-            className="px-5 py-3 md:px-8 md:py-4 bg-gray-900/90 backdrop-blur-2xl border border-white/10 rounded-full disabled:opacity-20 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center gap-2 md:gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all active:scale-90 hover:border-blue-500/50 hover:bg-blue-600/10"
-          >
-            <ChevronLeft size={18} /> PREVIOUS
-          </button>
-          <button 
-            onClick={(e) => nextSlide(e)} 
-            disabled={currentIdx === slides.length - 1} 
-            title="Go to Next Slide"
-            className="px-5 py-3 md:px-8 md:py-4 bg-gray-900/90 backdrop-blur-2xl border border-white/10 rounded-full disabled:opacity-20 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs flex items-center gap-2 md:gap-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all active:scale-90 hover:border-blue-500/50 hover:bg-blue-600/10"
-          >
-            NEXT <ChevronRight size={18} />
-          </button>
-        </div>
-        <div className="text-[10px] md:text-xs font-mono text-gray-500 font-black tracking-[0.3em] uppercase bg-gray-900/80 backdrop-blur-xl px-6 py-3 rounded-full border border-white/10 shadow-2xl pointer-events-none">SLIDE {currentIdx + 1} / {slides.length}</div>
-      </div>
+
       {isExporting && (
-        <div className="fixed inset-0 z-[200] bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-center gap-10 p-8 text-center">
-          <div className="relative"><div className="absolute inset-0 rounded-full blur-3xl bg-blue-600/20 animate-pulse" /><Loader2 className="animate-spin text-blue-500 relative z-10" size={120} /><div className="absolute inset-0 flex items-center justify-center font-black text-xl text-white relative z-20">{exportProgress}%</div></div>
-          <div className="space-y-4 max-w-xl"><h3 className="text-3xl md:text-5xl font-black uppercase tracking-[0.4em] text-white">Exporting {exportType}</h3><p className="text-gray-400 text-sm md:text-lg font-bold uppercase tracking-widest leading-relaxed opacity-80">Generating high-resolution slide frames.<br/> Please do not close your browser.</p></div>
-          <div className="w-full max-w-2xl h-3 bg-white/5 rounded-full overflow-hidden shadow-2xl border border-white/10"><div className="h-full bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 transition-all duration-500 ease-out shadow-[0_0_20px_rgba(59,130,246,0.6)]" style={{ width: `${exportProgress}%` }} /></div>
-          <p className="text-xs text-gray-700 font-mono tracking-widest uppercase">Processing Page {currentIdx + 1} of {slides.length}</p>
+        <div className="fixed inset-0 z-[300] bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-center gap-8 p-10 text-center">
+           <Loader2 className="animate-spin text-blue-600" size={60} md:size={80}/>
+           <div className="space-y-2 md:space-y-3">
+             <h2 className="text-xl md:text-4xl font-black uppercase tracking-[0.2em] text-white">Exporting {exportType}</h2>
+             <p className="text-gray-500 text-[8px] md:text-lg font-bold uppercase tracking-[0.3em] animate-pulse">Processing Slide {currentIdx + 1}</p>
+           </div>
+           <div className="w-full max-w-md h-1.5 md:h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
+             <div className="h-full bg-blue-600 transition-all duration-300" style={{ width: `${exportProgress}%` }} />
+           </div>
         </div>
       )}
+
       <style>{`
-        .custom-scrollbar::-webkit-scrollbar { width: 10px; height: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 20px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 20px; border: 3px solid transparent; background-clip: content-box; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); border: 3px solid transparent; background-clip: content-box; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(80px) scale(0.94); filter: blur(20px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
-        @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .slide-entry-animation { animation: slideInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        .scale-up-animation { animation: scaleUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        input[type="range"] { -webkit-appearance: none; background: transparent; }
-        input[type="range"]::-webkit-slider-runnable-track { width: 100%; height: 8px; cursor: pointer; background: rgba(255,255,255,0.05); border-radius: 10px; }
-        input[type="range"]::-webkit-slider-thumb { height: 24px; width: 24px; border-radius: 50%; background: #3b82f6; cursor: pointer; -webkit-appearance: none; margin-top: -8px; box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); border: 3px solid white; transition: all 0.2s; }
-        input[type="range"]::-webkit-slider-thumb:active { transform: scale(1.2); box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); filter: blur(8px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        .animate-in { animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+        
+        @media (max-width: 768px) {
+          .md\\:aspect-\\[16\\/9\\] { aspect-ratio: auto; min-height: 100vh; }
+        }
       `}</style>
     </div>
   );

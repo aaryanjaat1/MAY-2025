@@ -455,8 +455,8 @@ export const SLIDES: SlideData[] = [
     subtitle: 'नक्शा पहल',
     content: [
       "ग्रामीण विकास मंत्रालय ने नक्शा (NAKSHA) कार्यक्रम का दूसरा चरण शुरू किया है। (The Ministry of Rural Development launched the second phase of the NAKSHA programme.)",
-      "यह 'डिजिटल इंडिया लैंड रिकॉर्ड्स मॉडर्नाइजेशन प्रोग्राम' (DILRMP) के तहत कार्यान्वित है।",
-      "चरण I को 2024-25 के बजट में घोषित किया गया था, जिसका लक्ष्य 5 वर्षों के भीतर देश के पूरे शहरी क्षेत्र को कवर करना है।"
+      "यह 'डिजिटल इंडिया लैंड रिकॉर्ड्स मॉडर्नाइजेशन प्रोग्राम' (DILRMP) के तहत कार्यान्वित है। (Implemented under the Digital India Land Records Modernization Programme.)",
+      "चरण I को 2024-25 के बजट में घोषित किया गया था, जिसका लक्ष्य 5 वर्षों के भीतर देश के पूरे शहरी क्षेत्र को कवर करना है। (Phase I aimed to cover entire urban areas within 5 years.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=1000',
     contentScale: 0.85,
@@ -699,6 +699,705 @@ export const SLIDES: SlideData[] = [
       "इसकी प्राकृतिक गहराई 24 मीटर है, जो इसे बिना ड्रेजिंग के दुनिया के सबसे बड़े जहाजों को खड़ा करने की अनुमति देती है। यह श्रीलंका के कोलंबो पोर्ट पर भारत की निर्भरता को कम करेगा। (Its natural 24m depth allows berthing of largest ships without dredging; aims to reduce dependence on Colombo port.)"
     ],
     imageUrl: 'https://images.unsplash.com/photo-1494412519320-aa613dfb7738?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 21: World Environment Day 2025 ---
+  {
+    id: 't21-quiz',
+    type: 'quiz',
+    title: 'World Environment Day 2025',
+    subtitle: 'विश्व पर्यावरण दिवस 2025',
+    content: [
+      "'विश्व पर्यावरण दिवस 2025' की मेजबानी किस देश द्वारा की गई है?",
+      "Which country hosted 'World Environment Day 2025'?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'स्वीडन (Sweden)' },
+      { id: 'B', label: 'B', text: 'दक्षिण कोरिया (Republic of Korea)' },
+      { id: 'C', label: 'C', text: 'भारत (India)' },
+      { id: 'D', label: 'D', text: 'ब्राजील (Brazil)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't21-fact',
+    type: 'fact',
+    title: 'World Environment Day 2025',
+    subtitle: 'विश्व पर्यावरण दिवस 2025',
+    content: [
+      "पर्यावरण संरक्षण के लिए वैश्विक जागरूकता बढ़ाने हेतु हर साल 5 जून को विश्व पर्यावरण दिवस मनाया जाता है। (World Environment Day is celebrated every June 5 to drive action for environmental protection.)",
+      "2025 का मेजबान देश दक्षिण कोरिया है और इसका विषय (Theme) #BeatPlasticPollution है। (2025 Host: Republic of Korea; Theme: #BeatPlasticPollution.)",
+      "पहला संयुक्त राष्ट्र पर्यावरण सम्मेलन 1972 में स्टॉकहोम में 'ओनली वन अर्थ' थीम के साथ आयोजित किया गया था। (First conference 1972 in Stockholm; UNEP designated June 5 as Environment Day in 1973.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 22: New Ramsar Sites in Rajasthan ---
+  {
+    id: 't22-quiz',
+    type: 'quiz',
+    title: 'New Ramsar Sites in Rajasthan',
+    subtitle: 'राजस्थान में नए रामसर स्थल',
+    content: [
+      "राजस्थान के कौन से दो नए वेटलैंड्स (आर्द्रभूमियों) को हाल ही में रामसर स्थलों के रूप में नामित किया गया है?",
+      "Which two new wetlands from Rajasthan have been recently designated as Ramsar Sites?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'खिचन और मेनार (Khichan and Menar)' },
+      { id: 'B', label: 'B', text: 'सांभर और केवलादेव (Sambhar and Keoladeo)' },
+      { id: 'C', label: 'C', text: 'पुष्कर और राजसमंद (Pushkar and Rajsamand)' },
+      { id: 'D', label: 'D', text: 'जयसमंद और नक्की (Jaisamand and Nakki)' }
+    ],
+    correctOptionId: 'A',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't22-fact',
+    type: 'fact',
+    title: 'New Ramsar Sites in Rajasthan',
+    subtitle: 'राजस्थान में नए रामसर स्थल',
+    content: [
+      "विश्व पर्यावरण दिवस 2025 पर राजस्थान के दो वेटलैंड्स—खिचन और मेनार—को नए रामसर स्थल घोषित किया गया। (Khichan and Menar from Rajasthan were designated as Ramsar Sites on Environment Day 2025.)",
+      "इसके साथ भारत में कुल रामसर स्थलों की संख्या 91 हो गई है। उदयपुर का मेनार वेटलैंड ताजे पानी का परिसर है, जबकि जोधपुर का खिचन वेटलैंड प्रवासी 'डेमोइसेल क्रेन' (कुरजां) के लिए प्रसिद्ध है। (Takes India’s total to 91. Menar is freshwater; Khichan is famous for demoiselle cranes.)",
+      "रामसर कन्वेंशन आर्द्रभूमियों के संरक्षण के लिए 2 फरवरी, 1971 को ईरान के रामसर में हस्ताक्षरित एक समझौता है। भारत 1982 में इसका हस्ताक्षरकर्ता बना। (Ramsar Convention signed on Feb 2, 1971 in Iran. India became a signatory in 1982.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1444464666168-49d633b86747?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 23: International Institute of Administrative Sciences (IIAS) ---
+  {
+    id: 't23-quiz',
+    type: 'quiz',
+    title: 'International Institute of Administrative Sciences (IIAS)',
+    subtitle: 'अंतर्राष्ट्रीय प्रशासनिक विज्ञान संस्थान',
+    content: [
+      "भारत ने किस अवधि के लिए अंतर्राष्ट्रीय प्रशासनिक विज्ञान संस्थान (IIAS) की अध्यक्षता जीती है?",
+      "For which term has India won the Presidency of the International Institute of Administrative Sciences (IIAS)?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '2024-2026' },
+      { id: 'B', label: 'B', text: '2025-2028' },
+      { id: 'C', label: 'C', text: '2026-2030' },
+      { id: 'D', label: 'D', text: '2021-2025' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't23-fact',
+    type: 'fact',
+    title: 'International Institute of Administrative Sciences (IIAS)',
+    subtitle: 'अंतर्राष्ट्रीय प्रशासनिक विज्ञान संस्थान',
+    content: [
+      "भारत ने 2025-2028 कार्यकाल के लिए IIAS की अध्यक्षता हासिल की है। (India won IIAS Presidency for 2025–2028 term.)",
+      "IIAS सार्वजनिक प्रशासन में वैज्ञानिक अनुसंधान पर सहयोग करने वाले देशों का एक वैश्विक संघ है। (IIAS is a global federation collaborating on scientific research in public administration.)",
+      "भारत 1998 से IIAS का सदस्य है। यह संयुक्त राष्ट्र से औपचारिक रूप से संबद्ध नहीं है, लेकिन संयुक्त राष्ट्र लोक प्रशासन नेटवर्क (UNPAN) के साथ मिलकर काम करता है। (India member since 1998; works closely with UNPAN.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 24: Economic and Social Council (ECOSOC) ---
+  {
+    id: 't24-quiz',
+    type: 'quiz',
+    title: 'Economic and Social Council (ECOSOC)',
+    subtitle: 'आर्थिक और सामाजिक परिषद',
+    content: [
+      "भारत को संयुक्त राष्ट्र की आर्थिक और सामाजिक परिषद (ECOSOC) के लिए किस अवधि के लिए चुना गया है?",
+      "For which period has India been elected to the Economic and Social Council (ECOSOC) of the United Nations?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '2024-26' },
+      { id: 'B', label: 'B', text: '2025-27' },
+      { id: 'C', label: 'C', text: '2026-28' },
+      { id: 'D', label: 'D', text: '2023-25' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't24-fact',
+    type: 'fact',
+    title: 'Economic and Social Council (ECOSOC)',
+    subtitle: 'आर्थिक और सामाजिक परिषद',
+    content: [
+      "भारत को 2026-28 की अवधि के लिए संयुक्त राष्ट्र की आर्थिक और सामाजिक परिषद (ECOSOC) के लिए चुना गया है। (India elected to ECOSOC for 2026-28 period.)",
+      "ECOSOC में 54 सदस्य होते हैं, जो महासभा द्वारा तीन साल की अवधि के लिए चुने जाते हैं। (ECOSOC has 54 Members elected by the General Assembly for 3-year terms.)",
+      "यह 1945 में संयुक्त राष्ट्र चार्टर द्वारा स्थापित संयुक्त राष्ट्र के छह प्रमुख अंगों में से एक है। (Established in 1945 as one of the six principal organs of the UN.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 25: Chenab and Anji Rail Bridges ---
+  {
+    id: 't25-quiz',
+    type: 'quiz',
+    title: 'Chenab and Anji Rail Bridges',
+    subtitle: 'चिनाब और अंजी रेल पुल',
+    content: [
+      "जम्मू-कश्मीर में चिनाब नदी पर बना 'चिनाब रेल ब्रिज' नदी तल से कितनी ऊँचाई पर स्थित है?",
+      "At what height above the riverbed is the 'Chenab Rail Bridge' in Jammu and Kashmir situated?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '359 मीटर (359 m)' },
+      { id: 'B', label: 'B', text: '473 मीटर (473 m)' },
+      { id: 'C', label: 'C', text: '324 मीटर (324 m)' },
+      { id: 'D', label: 'D', text: '1,315 मीटर (1,315 m)' }
+    ],
+    correctOptionId: 'A',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't25-fact',
+    type: 'fact',
+    title: 'Chenab and Anji Rail Bridges',
+    subtitle: 'चिनाब और अंजी रेल पुल',
+    content: [
+      "पीएम मोदी ने जम्मू-कश्मीर में चिनाब और अंजी रेल पुलों का उद्घाटन किया। (PM Modi inaugurated the Chenab and Anji rail bridges in J&K.)",
+      "चिनाब ब्रिज नदी तल से 359 मीटर ऊपर दुनिया का सबसे ऊँचा रेलवे आर्च ब्रिज है। अंजी ब्रिज भारत का पहला केबल-स्टेयड रेलवे पुल है। (Chenab Bridge is the world's highest rail arch bridge at 359m. Anji Bridge is India's first cable-stayed rail bridge.)",
+      "ये पुल उधमपुर-श्रीनगर-बारामूला रेल लिंक (USBRL) परियोजना का हिस्सा हैं। अंजी पुल चिनाब की सहायक नदी अंजी पर स्थित है। (Part of the USBRL project. Anji bridge spans across Anji river, a tributary of Chenab.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1545129139-1beb780cb337?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 26: Aravalli Green Wall Project ---
+  {
+    id: 't26-quiz',
+    type: 'quiz',
+    title: 'Aravalli Green Wall Project',
+    subtitle: 'अरावली ग्रीन वॉल प्रोजेक्ट',
+    content: [
+      "'अरावली ग्रीन Wall प्रोजेक्ट' के तहत अरावली पर्वतमाला के साथ कितने किलोमीटर चौड़ा ग्रीन बफर जोन बनाया जाएगा?",
+      "Under the 'Aravalli Green Wall Project', how many kilometers wide green buffer zone will be created along the Aravalli range?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '10 किमी (10 km)' },
+      { id: 'B', label: 'B', text: '1 किमी (1 km)' },
+      { id: 'C', label: 'C', text: '2 किमी (2 km)' },
+      { id: 'D', label: 'D', text: '5 किमी (5 km)' }
+    ],
+    correctOptionId: 'D',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't26-fact',
+    type: 'fact',
+    title: 'Aravalli Green Wall Project',
+    subtitle: 'अरावली ग्रीन वॉल प्रोजेक्ट',
+    content: [
+      "मरुस्थलीकरण (Desertification) को रोकने के लिए 'अरावली ग्रीन वॉल प्रोजेक्ट' शुरू किया गया है। (Aravalli Green Wall project launched to combat desertification.)",
+      "इस परियोजना का लक्ष्य 700 किमी लंबी अरावली श्रृंखला के साथ 5 किमी चौड़ा ग्रीन बफर जोन बनाना है। यह गुजरात, राजस्थान, हरियाणा और दिल्ली में फैला है। (Aim: 5 km wide green buffer along 700 km Aravalli stretch covering Gujarat, Rajasthan, Haryana, and Delhi.)",
+      "यह प्रोजेक्ट मरुस्थलीकरण से निपटने के लिए संयुक्त राष्ट्र सम्मेलन (UNCCD) के प्रति भारत की प्रतिबद्धता में योगदान देता है। अरावली दुनिया की सबसे पुरानी पर्वत श्रृंखलाओं में से एक है। (Contributes to India’s commitments under the UNCCD; Aravalli is one of the world's oldest ranges.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 27: S. Mahendra Dev: New Chief of EAC-PM ---
+  {
+    id: 't27-quiz',
+    type: 'quiz',
+    title: 'S. Mahendra Dev: New Chief of EAC-PM',
+    subtitle: 'EAC-PM के नए अध्यक्ष',
+    content: [
+      "प्रधानमंत्री की आर्थिक सलाहकार परिषद (EAC-PM) के नए अध्यक्ष के रूप में किसे नियुक्त किया गया है?",
+      "Who has been appointed as the new Chairman of the Economic Advisory Council to the Prime Minister (EAC-PM)?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'सुमन बेरी (Suman Bery)' },
+      { id: 'B', label: 'B', text: 'एस. महेंद्र देव (S. Mahendra Dev)' },
+      { id: 'C', label: 'C', text: 'बिबेक देबरॉय (Bibek Debroy)' },
+      { id: 'D', label: 'D', text: 'उर्जित पटेल (Urjit Patel)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't27-fact',
+    type: 'fact',
+    title: 'S. Mahendra Dev: New Chief of EAC-PM',
+    subtitle: 'EAC-PM के नए अध्यक्ष',
+    content: [
+      "प्रसिद्ध अर्थशास्त्री एस. महेंद्र देव को EAC-PM का अध्यक्ष नियुक्त किया गया है, जिन्होंने सुमन बेरी का स्थान लिया है। (Economist S. Mahendra Dev appointed as Chairman of EAC-PM, replacing Suman Bery.)",
+      "वे कृषि और ग्रामीण अर्थव्यवस्था के विशेषज्ञ हैं और 'इकोनॉमिक एंड पॉलिटिकल वीकली' (EPW) के संपादक भी हैं। (Expert in agriculture and rural economy; editor of EPW.)",
+      "EAC-PM एक स्वतंत्र निकाय है जो प्रधानमंत्री को आर्थिक मुद्दों पर सलाह देने के लिए गठित किया गया है। (EAC-PM is an independent body constituted to give economic advice to the PM.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 28: New Base Year for GDP, CPI, IIP ---
+  {
+    id: 't28-quiz',
+    type: 'quiz',
+    title: 'New Base Year for GDP, CPI, IIP',
+    subtitle: 'आर्थिक आंकड़ों के लिए नया आधार वर्ष',
+    content: [
+      "सकल घरेलू उत्पाद (GDP) और औद्योगिक उत्पादन सूचकांक (IIP) के लिए नया आधार वर्ष (Base Year) क्या निर्धारित किया गया है?",
+      "What has been set as the new base year for GDP and IIP data?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '2011-12' },
+      { id: 'B', label: 'B', text: '2018-19' },
+      { id: 'C', label: 'C', text: '2022-23' },
+      { id: 'D', label: 'D', text: '2024' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't28-fact',
+    type: 'fact',
+    title: 'New Base Year for GDP, CPI, IIP',
+    subtitle: 'आर्थिक आंकड़ों के लिए नया आधार वर्ष',
+    content: [
+      "सांख्यिकी मंत्रालय (MoSPI) के अनुसार, अगले साल से GDP, IIP और CPI के लिए नए आधार वर्ष लागू होंगे। (MoSPI to implement new base years for GDP, IIP, and CPI from next year.)",
+      "GDP और IIP के लिए नया आधार वर्ष 2022-23 होगा। CPI (रिटेल मुद्रास्फीति) के लिए नया आधार वर्ष 2024 होगा। (New base for GDP/IIP is 2022-23; for CPI it is 2024.)",
+      "आधार वर्ष तुलना के लिए एक बेंचमार्क वर्ष होता है जो मुद्रास्फीति के प्रभाव को हटाकर वास्तविक विकास दिखाता है। (A base year is a benchmark for economic comparison to track real growth by removing inflation effects.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1551288049-bbbda536639a?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 29: ULLAS Program Update ---
+  {
+    id: 't29-quiz',
+    type: 'quiz',
+    title: 'ULLAS Program Update',
+    subtitle: 'उल्लास कार्यक्रम अपडेट',
+    content: [
+      "मिजोरम और गोवा ने उल्लास (ULLAS) कार्यक्रम के तहत स्वयं को क्या घोषित किया है?",
+      "What have Mizoram and Goa declared themselves under the ULLAS adult literacy programme?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'पूर्ण साक्षर (Fully Literate)' },
+      { id: 'B', label: 'B', text: 'ओडीएफ प्लस (ODF Plus)' },
+      { id: 'C', label: 'C', text: 'कार्बन न्यूट्रल (Carbon Neutral)' },
+      { id: 'D', label: 'D', text: 'प्लास्टिक मुक्त (Plastic Free)' }
+    ],
+    correctOptionId: 'A',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't29-fact',
+    type: 'fact',
+    title: 'ULLAS Program Update',
+    subtitle: 'उल्लास कार्यक्रम अपडेट',
+    content: [
+      "मिजोरम (98.2%) और गोवा (99.72%) ने उल्लास कार्यक्रम के तहत स्वयं को \"पूर्ण साक्षर\" घोषित किया है। (Mizoram and Goa declared \"fully literate\" under ULLAS.)",
+      "उल्लास (New India Literacy Programme) का लक्ष्य 15+ आयु के उन वयस्कों को साक्षरता और जीवन कौशल प्रदान करना है जो स्कूली शिक्षा से वंचित रह गए। (ULLAS aims to provide functional literacy to adults aged 15+ who missed formal education.)",
+      "यह कार्यक्रम स्वयंसेवा पर आधारित है और 'कर्तव्य बोध' की भावना को बढ़ावा देता है। यह राष्ट्रीय शिक्षा नीति (NEP) 2020 के अनुरूप है। (Volunteer-driven program aligned with NEP 2020.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 30: AI RAM Initiative ---
+  {
+    id: 't30-quiz',
+    type: 'quiz',
+    title: 'AI RAM Initiative',
+    subtitle: 'एआई रैम पहल',
+    content: [
+      "'एआई रेडीनेस असेसमेंट मेथोडोलॉजी' (RAM) पहल किस वैश्विक संस्था के दक्षिण एशिया क्षेत्रीय कार्यालय के सहयोग से आयोजित की गई?",
+      "The 'AI Readiness Assessment Methodology' (RAM) initiative was organized in collaboration with the regional office of which global body?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'यूनिसेफ (UNICEF)' },
+      { id: 'B', label: 'B', text: 'विश्व बैंक (World Bank)' },
+      { id: 'C', label: 'C', text: 'डब्ल्यूएचओ (WHO)' },
+      { id: 'D', label: 'D', text: 'यूनेस्को (UNESCO)' }
+    ],
+    correctOptionId: 'D',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't30-fact',
+    type: 'fact',
+    title: 'AI RAM Initiative',
+    subtitle: 'एआई रैम पहल',
+    content: [
+      "यूनेस्को के दक्षिण एशिया क्षेत्रीय कार्यालय ने 'इंडियाएआई मिशन' के सहयोग से AI RAM पर परामर्श आयोजित किया। (UNESCO Regional Office and IndiaAI Mission organized AI RAM consultation.)",
+      "इसका उद्देश्य भारत-विशिष्ट एआई नीति रिपोर्ट विकसित करना है जो क्षेत्रों में एआई के नैतिक और जिम्मेदार अपनाने के लिए सुझाव देती है। (Aims to develop an India-specific AI policy for ethical and responsible AI adoption.)",
+      "यह पहल 10,000 करोड़ रुपये से अधिक के फंड के साथ लॉन्च किए गए 'INDIAai मिशन' के अनुरूप है। (Aligns with the INDIAai Mission launched with over Rs 10,000 crore funding.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 31: World Accreditation Day 2025 ---
+  {
+    id: 't31-quiz',
+    type: 'quiz',
+    title: 'World Accreditation Day 2025',
+    subtitle: 'विश्व प्रत्यायन दिवस 2025',
+    content: [
+      "'विश्व प्रत्यायन दिवस' (WAD) 2025 का विषय (Theme) क्या है?",
+      "What is the theme of 'World Accreditation Day' (WAD) 2025?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'गुणवत्तापूर्ण शिक्षा (Quality Education)' },
+      { id: 'B', label: 'B', text: 'प्रत्यायन: एसएमई (SMEs) को सशक्त बनाना (Accreditation: Empowering SMEs)' },
+      { id: 'C', label: 'C', text: 'डिजिटल इंडिया (Digital India)' },
+      { id: 'D', label: 'D', text: 'सुरक्षित स्वास्थ्य (Safe Health)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't31-fact',
+    type: 'fact',
+    title: 'World Accreditation Day 2025',
+    subtitle: 'विश्व प्रत्यायन दिवस 2025',
+    content: [
+      "9 जून को भारतीय गुणवत्ता परिषद (QCI) द्वारा विश्व प्रत्यायन दिवस मनाया गया जिसकी थीम \"प्रत्यायन: लघु और मध्यम उद्यमों (SMEs) को सशक्त बनाना\" थी। (Quality Council of India celebrated WAD on June 9th. Theme: “Accreditation: Empowering Small and Medium Enterprises”.)",
+      "QCI 1997 में वाणिज्य और उद्योग मंत्रालय (DPIIT) के तहत स्थापित एक स्वायत्त निकाय है। (QCI is an autonomous body under DPIIT established in 1997.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1589561093571-08a142e443ad?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 32: UNFPA State of World Population 2025 ---
+  {
+    id: 't32-quiz',
+    type: 'quiz',
+    title: 'UNFPA State of World Population 2025',
+    subtitle: 'विश्व जनसंख्या रिपोर्ट 2025',
+    content: [
+      "संयुक्त राष्ट्र की रिपोर्ट 'स्टेट ऑफ द वर्ल्ड पॉपुलेशन 2025' के अनुसार, दुनिया का सबसे अधिक आबादी वाला देश कौन सा है?",
+      "According to the UN report ‘State of the World Population 2025’, which is the world’s most populous country?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'चीन (China)' },
+      { id: 'B', label: 'B', text: 'अमेरिका (USA)' },
+      { id: 'C', label: 'C', text: 'भारत (India)' },
+      { id: 'D', label: 'D', text: 'इंडोनेशिया (Indonesia)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't32-fact',
+    type: 'fact',
+    title: 'UNFPA State of World Population 2025',
+    subtitle: 'विश्व जनसंख्या रिपोर्ट 2025',
+    content: [
+      "संयुक्त राष्ट्र (UNFPA) की रिपोर्ट के अनुसार, अप्रैल 2025 तक भारत की जनसंख्या 146.39 करोड़ पहुँच गई है। (India’s population reached 146.39 crore by April 2025 per UNFPA.)",
+      "भारत ने चीन (141.61 करोड़) को पीछे छोड़ दिया है। भारत की कुल प्रजनन दर (TFR) गिरकर 1.9 हो गई है, जो प्रतिस्थापन स्तर (2.1) से नीचे है। (India surpassed China. India’s TFR is 1.9, below replacement level of 2.1.)",
+      "भारत की 68% जनसंख्या कार्यशील आयु वर्ग (15-64 वर्ष) में है। जनसंख्या के 40 वर्षों में गिरावट शुरू होने से पहले 170 करोड़ तक पहुँचने की उम्मीद है। (68% of India's population is in the working-age group. Expected to peak at 170 crore.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1542362567-b054ec4f2175?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 33: National Investment and Infrastructure Fund (NIIF) ---
+  {
+    id: 't33-quiz',
+    type: 'quiz',
+    title: 'National Investment and Infrastructure Fund (NIIF)',
+    subtitle: 'राष्ट्रीय निवेश और अवसंरचना कोष',
+    content: [
+      "राष्ट्रीय निवेश और अवसंरचना कोष (NIIF) की गवर्निंग काउंसिल (GC) की अध्यक्षता किसके द्वारा की जाती है?",
+      "Who chairs the Governing Council (GC) of the National Investment and Infrastructure Fund (NIIF)?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'प्रधानमंत्री (Prime Minister)' },
+      { id: 'B', label: 'B', text: 'नीति आयोग के सीईओ (CEO of NITI Aayog)' },
+      { id: 'C', label: 'C', text: 'केंद्रीय वित्त मंत्री (Union Finance Minister)' },
+      { id: 'D', label: 'D', text: 'भारतीय रिजर्व बैंक के गवर्नर (Governor of RBI)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't33-fact',
+    type: 'fact',
+    title: 'National Investment and Infrastructure Fund (NIIF)',
+    subtitle: 'राष्ट्रीय निवेश और अवसंरचना कोष',
+    content: [
+      "केंद्रीय वित्त मंत्री ने नई दिल्ली में NIIF की गवर्निंग काउंसिल की छठी बैठक की अध्यक्षता की। (The Union Finance Minister chaired the 6th meeting of the Governing Council of NIIF in New Delhi.)",
+      "NIIF को 2015 में भारत सरकार द्वारा एक संप्रभु-लिंक्ड निवेश प्लेटफॉर्म के रूप में स्थापित किया गया था। इसमें भारत सरकार की 49% हिस्सेदारी है। (NIIF was established in 2015 as a sovereign-linked investment platform. GOI holds 49% share.)",
+      "NIIF सेबी (SEBI) के पास वैकल्पिक निवेश कोष (AIF) के रूप में पंजीकृत है। AIF निजी तौर पर एकत्रित निवेश वाहन हैं। (NIIF is registered with SEBI as an Alternative Investment Fund (AIF). AIFs are privately pooled vehicles.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 34: ILOSTAT Report on India’s Social Security ---
+  {
+    id: 't34-quiz',
+    type: 'quiz',
+    title: 'ILOSTAT Report on India’s Social Security',
+    subtitle: 'सामाजिक सुरक्षा पर ILO की रिपोर्ट',
+    content: [
+      "ILOSTAT के 2025 के आंकड़ों के अनुसार, भारत की सामाजिक सुरक्षा कवरेज (Social Security Coverage) बढ़कर कितने प्रतिशत हो गई है?",
+      "According to ILOSTAT 2025 data, India’s social security coverage has increased to what percentage?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '19%' },
+      { id: 'B', label: 'B', text: '45%' },
+      { id: 'C', label: 'C', text: '94%' },
+      { id: 'D', label: 'D', text: '64.3%' }
+    ],
+    correctOptionId: 'D',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't34-fact',
+    type: 'fact',
+    title: 'ILOSTAT Report on India’s Social Security',
+    subtitle: 'सामाजिक सुरक्षा पर ILO की रिपोर्ट',
+    content: [
+      "भारत की सामाजिक सुरक्षा कवरेज 2025 में बढ़कर 64.3% हो गई है, जो एक दशक पहले 19% थी। (According to ILO data, India’s social security coverage rose to 64.3% in 2025 from 19% a decade ago.)",
+      "भारत अब सामाजिक सुरक्षा कवरेज में दुनिया में दूसरे स्थान पर है, जो अपने 94 करोड़ से अधिक नागरिकों को सुरक्षा प्रदान कर रहा है। (India ranks 2nd globally, covering over 94 crore citizens.)",
+      "प्रमुख पहलों में पीएम श्रम योगी मान-धन (PMSYM), अटल पेंशन योजना (APY) और आयुष्मान भारत (PM-JAY) शामिल हैं। (Key initiatives include PMSYM, APY, and Ayushman Bharat.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 35: Lokpal of India: New Motto ---
+  {
+    id: 't35-quiz',
+    type: 'quiz',
+    title: 'Lokpal of India: New Motto',
+    subtitle: 'लोकपाल: नया आदर्श वाक्य',
+    content: [
+      "लोकपाल (Lokpal) द्वारा हाल ही में अपनाया गया नया आदर्श वाक्य (Motto) क्या है?",
+      "What is the new motto recently adopted by the Lokpal of India?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'भ्रष्टाचार मुक्त भारत (Corruption Free India)' },
+      { id: 'B', label: 'B', text: 'नागरिकों को सशक्त बनाएं, भ्रष्टाचार को उजागर करें (Empower Citizens, Expose Corruption)' },
+      { id: 'C', label: 'C', text: 'सत्यमेव जयते (Satyamev Jayate)' },
+      { id: 'D', label: 'D', text: 'लोकहित सर्वोपरि (Public Interest Supreme)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't35-fact',
+    type: 'fact',
+    title: 'Lokpal of India: New Motto',
+    subtitle: 'लोकपाल: नया आदर्श वाक्य',
+    content: [
+      "भारत के लोकपाल की पूर्ण पीठ ने \"नागरिकों को सशक्त बनाएं, भ्रष्टाचार को उजागर करें\" नामक एक नया आदर्श वाक्य अपनाया है। (The Full Bench of Lokpal adopted the new motto “Empower Citizens, Expose Corruption”.)",
+      "लोकपाल सार्वजनिक कार्यालयों में भ्रष्टाचार की शिकायतों के समाधान के लिए एक वैधानिक निकाय है। (Lokpal is a statutory anti-corruption body created via the 2013 Act.)",
+      "लोकपाल का अध्यक्ष सेवानिवृत्त CJI या सुप्रीम कोर्ट का न्यायाधीश होता है जिसकी नियुक्ति चयन समिति की सिफारिश पर की जाती है। (Chairperson is a retired CJI/SC judge appointed by a high-level committee.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1589216532372-1c2a367900d8?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 36: UNESCO Creative City: Lucknow ---
+  {
+    id: 't36-quiz',
+    type: 'quiz',
+    title: 'UNESCO Creative City: Lucknow',
+    subtitle: 'यूनेस्को क्रिएटिव सिटी: लखनऊ',
+    content: [
+      "यूनेस्को (UNESCO) के क्रिएटिव सिटीज नेटवर्क (UCCN) में लखनऊ को किस श्रेणी के लिए प्रस्तावित किया गया है?",
+      "Under which category has Lucknow been proposed for the UNESCO Creative Cities Network (UCCN)?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'साहित्य (Literature)' },
+      { id: 'B', label: 'B', text: 'फिल्म (Film)' },
+      { id: 'C', label: 'C', text: 'संगीत (Music)' },
+      { id: 'D', label: 'D', text: 'गैस्ट्रोनॉमी (Gastronomy)' }
+    ],
+    correctOptionId: 'D',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't36-fact',
+    type: 'fact',
+    title: 'UNESCO Creative City: Lucknow',
+    subtitle: 'यूनेस्को क्रिएटिव सिटी: लखनऊ',
+    content: [
+      "अवधी व्यंजन के लिए 'गैस्ट्रोनॉमी' श्रेणी के तहत लखनऊ को यूनेस्को क्रिएटिव सिटी बनाने का प्रस्ताव विश्व विरासत केंद्र को भेजा गया है। (A proposal for Lucknow under 'Gastronomy' for Awadhi Cuisine was submitted to UNESCO.)",
+      "UCCN की स्थापना 2004 में हुई थी और यह शिल्प, फिल्म, गैस्ट्रोनॉमी, साहित्य और संगीत जैसे क्षेत्रों पर ध्यान केंद्रित करता है। (UCCN was created in 2004 focusing on seven creative fields.)",
+      "भारत के अन्य यूनेस्को क्रिएटिव शहर जयपुर (शिल्प), वाराणसी (संगीत), मुंबई (फिल्म) और हैदराबाद (गैस्ट्रोनॉमी) हैं। (Other Indian cities: Jaipur-Crafts, Varanasi-Music, Mumbai-Film, Hyderabad-Gastronomy.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 37: Exercise ‘Khaan Quest’ ---
+  {
+    id: 't37-quiz',
+    type: 'quiz',
+    title: 'Exercise ‘Khaan Quest’',
+    subtitle: 'अभ्यास ‘खान क्वेस्ट’',
+    content: [
+      "बहुराष्ट्रीय सैन्य अभ्यास 'खान क्वेस्ट' (Khaan Quest) का आयोजन किस देश में किया जा रहा है?",
+      "In which country is the multinational military exercise ‘Khaan Quest’ being organized?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'भारत (India)' },
+      { id: 'B', label: 'B', text: 'अमेरिका (USA)' },
+      { id: 'C', label: 'C', text: 'मंगोलिया (Mongolia)' },
+      { id: 'D', label: 'D', text: 'रूस (Russia)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't37-fact',
+    type: 'fact',
+    title: 'Exercise ‘Khaan Quest’',
+    subtitle: 'अभ्यास ‘खान क्वेस्ट’',
+    content: [
+      "भारतीय सेना का दल बहुराष्ट्रीय सैन्य अभ्यास 'खान क्वेस्ट' में भाग लेने के लिए उलानबटोर, मंगोलिया पहुँचा। (Indian Army reached Mongolia for the multinational Exercise Khaan Quest.)",
+      "यह एक वार्षिक अभ्यास है जो शांति सेना की क्षमताओं (Peacekeeping capabilities) को बढ़ाने के लिए दुनिया भर की सेनाओं को एक साथ लाता है। (Annual exercise to enhance peacekeeping capabilities of global forces.)",
+      "यह 2003 में अमेरिका और मंगोलिया के बीच द्विपक्षीय अभ्यास के रूप में शुरू हुआ था और 2006 से बहुराष्ट्रीय बन गया। (Started in 2003 as US-Mongolia bilateral; multinational since 2006.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1547483129-45009da1476c?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 38: AAIB and Air India Crash ---
+  {
+    id: 't38-quiz',
+    type: 'quiz',
+    title: 'AAIB and Air India Crash',
+    subtitle: 'एएआईबी और एयर इंडिया विमान दुर्घटना',
+    content: [
+      "विमान में 'ब्लैक बॉक्स' (Black Box) का क्या कार्य होता है?",
+      "What is the function of a 'Black Box' in an aircraft?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'इंजन को ठंडा करना (Cooling the engine)' },
+      { id: 'B', label: 'B', text: 'उड़ान की जानकारी और कॉकपिट की आवाज़ रिकॉर्ड करना (Recording flight data and cockpit audio)' },
+      { id: 'C', label: 'C', text: 'यात्रियों को भोजन परोसना (Serving food to passengers)' },
+      { id: 'D', label: 'D', text: 'विमान की दिशा बदलना (Changing aircraft direction)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't38-fact',
+    type: 'fact',
+    title: 'AAIB and Air India Crash',
+    subtitle: 'एएआईबी और एयर इंडिया विमान दुर्घटना',
+    content: [
+      "विमान दुर्घटना जांच ब्यूरो (AAIB) ने अहमदाबाद में एयर इंडिया विमान दुर्घटना की औपचारिक जांच शुरू की है। (AAIB initiated investigation into the Air India crash in Ahmedabad.)",
+      "'ब्लैक बॉक्स' के दो घटक होते हैं: कॉकपिट वॉयस रिकॉर्डर (CVR) और फ्लाइट डेटा रिकॉर्डर (FDR)। यह दुर्घटना के कारणों का पता लगाने में मदद करता है। (Black Box has CVR for audio and FDR for data. It helps discover crash causes.)",
+      "AAIB की स्थापना 2012 में नागरिक उड्डयन मंत्रालय के तहत हुई थी। ICAO एक संयुक्त राष्ट्र एजेंसी है जिसका मुख्यालय मॉन्ट्रियल में है। (AAIB established in 2012 under Ministry of Civil Aviation. ICAO HQ is in Montreal.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 39: Global Gender Gap Index 2025 ---
+  {
+    id: 't39-quiz',
+    type: 'quiz',
+    title: 'Global Gender Gap Index 2025',
+    subtitle: 'ग्लोबल जेंडर गैप इंडेक्स 2025',
+    content: [
+      "'ग्लोबल जेंडर गैप रिपोर्ट 2025' में भारत का कौन सा स्थान है?",
+      "What is India’s rank in the 'Global Gender Gap Report 2025'?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: '127वां (127th)' },
+      { id: 'B', label: 'B', text: '148वां (148th)' },
+      { id: 'C', label: 'C', text: '131वां (131st)' },
+      { id: 'D', label: 'D', text: '1वां (1st)' }
+    ],
+    correctOptionId: 'C',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't39-fact',
+    type: 'fact',
+    title: 'Global Gender Gap Index 2025',
+    subtitle: 'ग्लोबल जेंडर गैप इंडेक्स 2025',
+    content: [
+      "विश्व आर्थिक मंच (WEF) ने ग्लोबल जेंडर गैप रिपोर्ट 2025 का 19वां संस्करण जारी किया है। (World Economic Forum released the 19th edition of the Global Gender Gap Report 2025.)",
+      "भारत 148 देशों में से 131वें स्थान पर खिसक गया है। राजनीतिक सशक्तिकरण में गिरावट रैंकिंग गिरने का मुख्य कारण रहा। (India slipped to 131st out of 148. Decline in political empowerment caused the rank drop.)",
+      "आइसलैंड लगातार 16वें वर्ष सबसे अधिक लिंग-समान देश रहा। पूर्ण लैंगिक समानता प्राप्त करने में अभी भी 123 वर्ष लगेंगे। (Iceland remains 1st for 16 years. 123 years needed to close global gap.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=1000',
+    contentScale: 0.85,
+    contentYOffset: 10
+  },
+
+  // --- TOPIC 40: Interpol’s Silver Notice & Bharatpol ---
+  {
+    id: 't40-quiz',
+    type: 'quiz',
+    title: 'Interpol’s Silver Notice & Bharatpol',
+    subtitle: 'इंटरपोल सिल्वर नोटिस और भारतपोल',
+    content: [
+      "इंटरपोल द्वारा जारी 'सिल्वर नोटिस' (Silver Notice) का मुख्य उद्देश्य क्या है?",
+      "What is the primary purpose of the 'Silver Notice' issued by Interpol?"
+    ],
+    options: [
+      { id: 'A', label: 'A', text: 'भगोड़ों को गिरफ्तार करना (Arresting fugitives)' },
+      { id: 'B', label: 'B', text: 'अपराध की आय और संपत्ति का पता लगाना (Tracing proceeds of crime and assets)' },
+      { id: 'C', label: 'C', text: 'लापता व्यक्तियों को ढूंढना (Finding missing persons)' },
+      { id: 'D', label: 'D', text: 'सार्वजनिक सुरक्षा की चेतावनी (Warning about public safety)' }
+    ],
+    correctOptionId: 'B',
+    contentScale: 0.8,
+    contentYOffset: 20
+  },
+  {
+    id: 't40-fact',
+    type: 'fact',
+    title: 'Interpol’s Silver Notice & Bharatpol',
+    subtitle: 'इंटरपोल सिल्वर नोटिस और भारतपोल',
+    content: [
+      "CBI ने फ्रांस दूतावास वीजा धोखाधड़ी मामले से संबंधित अपराध की आय का पता लगाने के लिए भारत का पहला 'सिल्वर नोटिस' जारी कराया है। (CBI got India’s first ‘silver notice’ to trace proceeds of crime.)",
+      "इंटरपोल का मुख्यालय ल्योन, फ्रांस में है और भारत में इसकी नेशनल सेंट्रल ब्यूरो (NCB) सीबीआई है। (Interpol HQ is in Lyon, France. India’s NCB is the CBI.)",
+      "'भारतपोल' पोर्टल सीबीआई द्वारा विकसित किया गया है जो कानून प्रवर्तन एजेंसियों और इंटरपोल के बीच सहयोग बढ़ाता है। (Bharatpol facilitates cooperation with Interpol. Notices include Red, Yellow, and Blue.)"
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?q=80&w=1000',
     contentScale: 0.85,
     contentYOffset: 10
   }

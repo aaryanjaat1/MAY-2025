@@ -16,16 +16,39 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const GLOW_SHADOW = "shadow-[0_0_40px_rgba(0,0,0,0.5)]";
 
 const App: React.FC = () => {
-  // Persistence state
+  // Persistence state - initialized from localStorage for "instant" recovery
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(() => localStorage.getItem('activeProjectId'));
-  const [slides, setSlides] = useState<SlideData[]>([]);
+  
+  const [slides, setSlides] = useState<SlideData[]>(() => {
+    const saved = localStorage.getItem('cached_slides');
+    return saved ? JSON.parse(saved) : INITIAL_DATA;
+  });
+
   const [currentIdx, setCurrentIdx] = useState(() => {
     const saved = localStorage.getItem('currentIdx');
     return saved ? parseInt(saved, 10) : 0;
   });
+
   const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem('isAdmin') === 'true');
   
+  const [settings, setSettings] = useState<GlobalSettings>(() => {
+    const saved = localStorage.getItem('cached_settings');
+    if (saved) return JSON.parse(saved);
+    return {
+      titleFontScale: 1.1,
+      bodyFontScale: 1.1,
+      factFontScale: 1.1,
+      quizScale: 1.0,
+      factScale: 1.0,
+      boxPadding: 40,
+      defaultContentScale: 1,
+      defaultContentYOffset: 0,
+      defaultBottomPadding: 260,
+      navScale: 0.85,
+    };
+  });
+
   // UI State
   const [editingIdx, setEditingIdx] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -34,44 +57,28 @@ const App: React.FC = () => {
   const [focusedBoxIdx, setFocusedBoxIdx] = useState<number | null>(null);
   const [jumpValue, setJumpValue] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-
-  const [settings, setSettings] = useState<GlobalSettings>({
-    titleFontScale: 1.1,
-    bodyFontScale: 1.1,
-    factFontScale: 1.1,
-    quizScale: 1.0,
-    factScale: 1.0,
-    boxPadding: 40,
-    defaultContentScale: 1,
-    defaultContentYOffset: 0,
-    defaultBottomPadding: 260,
-    navScale: 0.85,
-  });
-
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
 
   const slideRef = useRef<HTMLDivElement>(null);
   const boxRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
 
-  // LocalStorage sync for session state
+  // Effect to persist changes to localStorage instantly
   useEffect(() => {
     if (activeProjectId) localStorage.setItem('activeProjectId', activeProjectId);
-  }, [activeProjectId]);
-
-  useEffect(() => {
     localStorage.setItem('currentIdx', currentIdx.toString());
-  }, [currentIdx]);
-
-  useEffect(() => {
     localStorage.setItem('isAdmin', isAdmin.toString());
-  }, [isAdmin]);
+    localStorage.setItem('cached_settings', JSON.stringify(settings));
+    localStorage.setItem('cached_slides', JSON.stringify(slides));
+  }, [activeProjectId, currentIdx, isAdmin, settings, slides]);
 
+  // Initial loads
   useEffect(() => { fetchProjects(); }, []);
 
   useEffect(() => {
-    if (activeProjectId) { fetchProjectData(activeProjectId); } 
-    else { setSlides(INITIAL_DATA); }
+    if (activeProjectId) { 
+      fetchProjectData(activeProjectId); 
+    } 
   }, [activeProjectId]);
 
   useEffect(() => {
@@ -97,58 +104,71 @@ const App: React.FC = () => {
           setActiveProjectId(data[0].id);
         }
       } else {
-        setSlides(INITIAL_DATA);
         setProjects([]);
       }
     } catch (e) { 
-      console.error(e);
-      setSlides(INITIAL_DATA); 
+      console.error("Fetch projects error:", e);
     }
   };
 
   const fetchProjectData = async (projectId: string) => {
     setIsSyncing(true);
     try {
-      const { data: project } = await supabase.from('projects').select('settings').eq('id', projectId).single();
+      // 1. Load Global Settings from Cloud
+      const { data: project, error: pError } = await supabase.from('projects').select('settings').eq('id', projectId).single();
+      if (pError) throw pError;
+      
       if (project?.settings) {
-        setSettings(prev => ({ ...prev, ...project.settings }));
+        const newSettings = { ...settings, ...project.settings };
+        setSettings(newSettings);
+        localStorage.setItem('cached_settings', JSON.stringify(newSettings));
       }
-      const { data: slidesData } = await supabase
+      
+      // 2. Load Slides from Cloud
+      const { data: slidesData, error: sError } = await supabase
         .from('slides')
         .select('data')
         .eq('project_id', projectId)
         .order('slide_index', { ascending: true });
         
+      if (sError) throw sError;
+
       if (slidesData && slidesData.length > 0) {
-        setSlides(slidesData.map(d => d.data as SlideData));
-      } else {
-        setSlides(INITIAL_DATA);
+        const newSlides = slidesData.map(d => d.data as SlideData);
+        setSlides(newSlides);
+        localStorage.setItem('cached_slides', JSON.stringify(newSlides));
       }
     } catch (err) { 
-      console.error(err);
-      setSlides(INITIAL_DATA);
+      console.error("Fetch project data error:", err);
     } finally { 
       setIsSyncing(false); 
     }
   };
 
   const syncToCloud = async () => {
-    if (!activeProjectId) return;
+    if (!activeProjectId) {
+      alert("No active project to sync to.");
+      return;
+    }
+    
     setIsSyncing(true);
     setSyncSuccess(false);
     try {
+      // 1. Update project global settings (scales, paddings, etc.)
       const { error: pError } = await supabase
         .from('projects')
         .update({ settings: settings })
         .eq('id', activeProjectId);
       if (pError) throw pError;
       
+      // 2. Clear old slide data for this specific project
       const { error: dError } = await supabase
         .from('slides')
         .delete()
         .eq('project_id', activeProjectId);
       if (dError) throw dError;
       
+      // 3. Save all current slides (includes text edits and individual scale overrides)
       const rows = slides.map((s, i) => ({ 
         project_id: activeProjectId, 
         slide_index: i, 
@@ -161,8 +181,8 @@ const App: React.FC = () => {
       setTimeout(() => setSyncSuccess(false), 3000);
       await fetchProjects();
     } catch (err) { 
-      console.error(err);
-      alert("Failed to sync to database."); 
+      console.error("Sync error:", err);
+      alert("Failed to sync to database. Ensure you have run the SQL script in Supabase."); 
     } finally { 
       setIsSyncing(false); 
     }
@@ -173,6 +193,7 @@ const App: React.FC = () => {
     if (!name) return;
     setIsSyncing(true);
     try {
+      // 1. Create the project row
       const { data: newProject, error: pError } = await supabase
         .from('projects')
         .insert([{ name, settings: settings }])
@@ -181,6 +202,7 @@ const App: React.FC = () => {
       
       if (pError) throw pError;
       
+      // 2. Seed with the initial template
       const rows = INITIAL_DATA.map((s, i) => ({ 
         project_id: newProject.id, 
         slide_index: i, 
@@ -191,9 +213,11 @@ const App: React.FC = () => {
       
       setProjects(prev => [newProject, ...prev]);
       setActiveProjectId(newProject.id);
-      alert("Project created and template seeded.");
+      setSlides(INITIAL_DATA);
+      setCurrentIdx(0);
+      alert("New Project created successfully!");
     } catch (err) {
-      console.error(err);
+      console.error("Create project error:", err);
       alert("Error creating project.");
     } finally {
       setIsSyncing(false);
@@ -352,7 +376,7 @@ const App: React.FC = () => {
                       <div key={item.key} className="space-y-2">
                         <div className="flex justify-between items-center">
                           <label className="text-[10px] font-bold text-gray-400">{item.label}</label>
-                          <span className="text-[10px] font-mono text-blue-400">{(settings as any)[item.key].toFixed(2)}x</span>
+                          <span className="text-[10px] font-mono text-blue-400">{(settings as any)[item.key]?.toFixed(2)}x</span>
                         </div>
                         <input type="range" min="0.5" max="2.0" step="0.01" value={(settings as any)[item.key]} onChange={e => setSettings(prev => ({...prev, [item.key]: parseFloat(e.target.value)}))} className="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
                       </div>

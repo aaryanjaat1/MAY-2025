@@ -62,8 +62,8 @@ const App: React.FC = () => {
   }, []);
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } 
-    else { document.exitFullscreen(); }
+    if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e => console.error(e)); } 
+    else { document.exitFullscreen().catch(e => console.error(e)); }
   };
 
   const fetchProjects = async () => {
@@ -103,38 +103,53 @@ const App: React.FC = () => {
     setIsSyncing(true);
     setSyncSuccess(false);
     try {
+      // 1. Update project settings (global scales, paddings, etc)
       await supabase.from('projects').update({ settings: settings }).eq('id', activeProjectId);
+      
+      // 2. Clear old slide data for this project
       await supabase.from('slides').delete().eq('project_id', activeProjectId);
+      
+      // 3. Save current slide state (all text, images, and individual overrides)
       const rows = slides.map((s, i) => ({ project_id: activeProjectId, slide_index: i, data: s }));
       await supabase.from('slides').insert(rows);
+      
       setSyncSuccess(true);
       setTimeout(() => setSyncSuccess(false), 3000);
       fetchProjects();
-    } catch (err) { alert("Failed to sync."); } 
-    finally { setIsSyncing(false); }
+    } catch (err) { 
+      console.error(err);
+      alert("Failed to sync to database."); 
+    } finally { setIsSyncing(false); }
   };
 
-  // Fix: Implemented handleCreateNewProject to handle creation of new projects in the CMS
   const handleCreateNewProject = async () => {
-    const name = prompt("Enter project name:");
+    const name = prompt("Enter Name for New Batch (e.g., June 2025):");
     if (!name) return;
     setIsSyncing(true);
     try {
-      const { data, error } = await supabase
+      // Create project entry
+      const { data: newProject, error: pError } = await supabase
         .from('projects')
         .insert([{ name, settings: settings }])
         .select()
         .single();
       
-      if (error) throw error;
-      if (data) {
-        setProjects(prev => [data, ...prev]);
-        setActiveProjectId(data.id);
-        alert("Project created successfully!");
-      }
+      if (pError) throw pError;
+      
+      // Seed with initial template slides
+      const rows = INITIAL_DATA.map((s, i) => ({ 
+        project_id: newProject.id, 
+        slide_index: i, 
+        data: s 
+      }));
+      await supabase.from('slides').insert(rows);
+      
+      setProjects(prev => [newProject, ...prev]);
+      setActiveProjectId(newProject.id);
+      alert("Project created and template seeded.");
     } catch (err) {
       console.error(err);
-      alert("Failed to create project.");
+      alert("Error creating project.");
     } finally {
       setIsSyncing(false);
     }

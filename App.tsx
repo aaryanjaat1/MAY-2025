@@ -16,11 +16,17 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const GLOW_SHADOW = "shadow-[0_0_40px_rgba(0,0,0,0.5)]";
 
 const App: React.FC = () => {
+  // Persistence state
   const [projects, setProjects] = useState<Project[]>([]);
-  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(() => localStorage.getItem('activeProjectId'));
   const [slides, setSlides] = useState<SlideData[]>([]);
-  const [currentIdx, setCurrentIdx] = useState(0);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [currentIdx, setCurrentIdx] = useState(() => {
+    const saved = localStorage.getItem('currentIdx');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem('isAdmin') === 'true');
+  
+  // UI State
   const [editingIdx, setEditingIdx] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [adminTab, setAdminTab] = useState<'slides' | 'settings' | 'projects'>('slides');
@@ -48,6 +54,19 @@ const App: React.FC = () => {
   const slideRef = useRef<HTMLDivElement>(null);
   const boxRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
 
+  // LocalStorage sync for session state
+  useEffect(() => {
+    if (activeProjectId) localStorage.setItem('activeProjectId', activeProjectId);
+  }, [activeProjectId]);
+
+  useEffect(() => {
+    localStorage.setItem('currentIdx', currentIdx.toString());
+  }, [currentIdx]);
+
+  useEffect(() => {
+    localStorage.setItem('isAdmin', isAdmin.toString());
+  }, [isAdmin]);
+
   useEffect(() => { fetchProjects(); }, []);
 
   useEffect(() => {
@@ -62,8 +81,11 @@ const App: React.FC = () => {
   }, []);
 
   const toggleFullscreen = () => {
-    if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(e => console.error(e)); } 
-    else { document.exitFullscreen().catch(e => console.error(e)); }
+    if (!document.fullscreenElement) { 
+      document.documentElement.requestFullscreen().catch(e => console.error(e)); 
+    } else { 
+      document.exitFullscreen().catch(e => console.error(e)); 
+    }
   };
 
   const fetchProjects = async () => {
@@ -71,12 +93,17 @@ const App: React.FC = () => {
       const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
       if (data && data.length > 0) {
         setProjects(data);
-        if (!activeProjectId) setActiveProjectId(data[0].id);
+        if (!activeProjectId || !data.find(p => p.id === activeProjectId)) {
+          setActiveProjectId(data[0].id);
+        }
       } else {
         setSlides(INITIAL_DATA);
         setProjects([]);
       }
-    } catch (e) { setSlides(INITIAL_DATA); }
+    } catch (e) { 
+      console.error(e);
+      setSlides(INITIAL_DATA); 
+    }
   };
 
   const fetchProjectData = async (projectId: string) => {
@@ -86,16 +113,23 @@ const App: React.FC = () => {
       if (project?.settings) {
         setSettings(prev => ({ ...prev, ...project.settings }));
       }
-      const { data: slidesData } = await supabase.from('slides').select('data').eq('project_id', projectId).order('slide_index', { ascending: true });
+      const { data: slidesData } = await supabase
+        .from('slides')
+        .select('data')
+        .eq('project_id', projectId)
+        .order('slide_index', { ascending: true });
+        
       if (slidesData && slidesData.length > 0) {
         setSlides(slidesData.map(d => d.data as SlideData));
       } else {
         setSlides(INITIAL_DATA);
       }
-      setCurrentIdx(0);
-      setEditingIdx(0);
-    } catch (err) { setSlides(INITIAL_DATA); } 
-    finally { setIsSyncing(false); }
+    } catch (err) { 
+      console.error(err);
+      setSlides(INITIAL_DATA);
+    } finally { 
+      setIsSyncing(false); 
+    }
   };
 
   const syncToCloud = async () => {
@@ -103,23 +137,35 @@ const App: React.FC = () => {
     setIsSyncing(true);
     setSyncSuccess(false);
     try {
-      // 1. Update project settings (global scales, paddings, etc)
-      await supabase.from('projects').update({ settings: settings }).eq('id', activeProjectId);
+      const { error: pError } = await supabase
+        .from('projects')
+        .update({ settings: settings })
+        .eq('id', activeProjectId);
+      if (pError) throw pError;
       
-      // 2. Clear old slide data for this project
-      await supabase.from('slides').delete().eq('project_id', activeProjectId);
+      const { error: dError } = await supabase
+        .from('slides')
+        .delete()
+        .eq('project_id', activeProjectId);
+      if (dError) throw dError;
       
-      // 3. Save current slide state (all text, images, and individual overrides)
-      const rows = slides.map((s, i) => ({ project_id: activeProjectId, slide_index: i, data: s }));
-      await supabase.from('slides').insert(rows);
+      const rows = slides.map((s, i) => ({ 
+        project_id: activeProjectId, 
+        slide_index: i, 
+        data: s 
+      }));
+      const { error: iError } = await supabase.from('slides').insert(rows);
+      if (iError) throw iError;
       
       setSyncSuccess(true);
       setTimeout(() => setSyncSuccess(false), 3000);
-      fetchProjects();
+      await fetchProjects();
     } catch (err) { 
       console.error(err);
       alert("Failed to sync to database."); 
-    } finally { setIsSyncing(false); }
+    } finally { 
+      setIsSyncing(false); 
+    }
   };
 
   const handleCreateNewProject = async () => {
@@ -127,7 +173,6 @@ const App: React.FC = () => {
     if (!name) return;
     setIsSyncing(true);
     try {
-      // Create project entry
       const { data: newProject, error: pError } = await supabase
         .from('projects')
         .insert([{ name, settings: settings }])
@@ -136,13 +181,13 @@ const App: React.FC = () => {
       
       if (pError) throw pError;
       
-      // Seed with initial template slides
       const rows = INITIAL_DATA.map((s, i) => ({ 
         project_id: newProject.id, 
         slide_index: i, 
         data: s 
       }));
-      await supabase.from('slides').insert(rows);
+      const { error: sError } = await supabase.from('slides').insert(rows);
+      if (sError) throw sError;
       
       setProjects(prev => [newProject, ...prev]);
       setActiveProjectId(newProject.id);
@@ -388,7 +433,7 @@ const App: React.FC = () => {
                    </div>
                    {activeSlide?.type === 'fact' && (
                      <div className="space-y-2 pt-4">
-                       <label className="text-[10px] font-black text-gray-500 uppercase">Image URL (Verbatim Content)</label>
+                       <label className="text-[10px] font-black text-gray-500 uppercase">Image URL</label>
                        <input type="text" value={activeSlide?.imageUrl || ''} onChange={e => { const s = [...slides]; s[editingIdx].imageUrl = e.target.value; setSlides(s); }} className="w-full bg-[#121215] border border-white/10 p-4 rounded-xl text-[10px] font-mono focus:border-blue-500 outline-none" />
                      </div>
                    )}
